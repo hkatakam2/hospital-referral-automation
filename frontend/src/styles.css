@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+:root { font-family: 'DM Sans', system-ui, sans-serif; color: #183b36; background: #f5f7f5; font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+main { max-width: 1080px; margin: auto; padding: 40px 36px; }
+header { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 17px; }
+.mark { display: grid; place-items: center; height: 36px; width: 36px; border-radius: 10px; color: white; background: #0f766e; font-size: 28px; font-weight: 400; }
+.intro { padding: 100px 0 52px; max-width: 760px; }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #52746c; }
+h1 { margin: 20px 0; font-size: clamp(38px, 6vw, 64px); line-height: 1.12; font-weight: 500; letter-spacing: -.045em; }
+.description { max-width: 570px; color: #61756e; font-size: 17px; line-height: 1.8; }
+.status-card { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 30px; background: white; border: 1px solid #dce6e0; border-radius: 18px; }
+h2 { margin: 12px 0; font-size: 23px; font-weight: 500; }
+.status { display: flex; gap: 9px; align-items: center; color: #61756e; font-size: 14px; line-height: 1.5; }
+.dot { width: 8px; height: 8px; flex-shrink: 0; border-radius: 50%; background: #97a69e; }
+.connected .dot { background: #14947c; }
+.unavailable .dot { background: #c58a39; }
+button { flex-shrink: 0; border: 1px solid #cbdcd4; border-radius: 8px; padding: 12px 17px; background: #f7faf8; font: inherit; font-size: 13px; color: #185c50; cursor: pointer; }
+button span { margin-left: 18px; }
+button:hover { background: #eaf3ed; }
+button:focus-visible { outline: 3px solid #0f766e; outline-offset: 3px; }
+button:disabled { opacity: .6; cursor: wait; }
+footer { margin-top: 52px; color: #7c8f85; font-size: 12px; }
+@media (max-width: 600px) { main { padding: 24px; } .intro { padding-top: 64px; } .status-card { align-items: flex-start; flex-direction: column; padding: 24px; } }
