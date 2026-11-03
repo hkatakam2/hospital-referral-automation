@@ -1,41 +1,45 @@
 from datetime import datetime, timezone
-from threading import Lock
 from uuid import UUID, uuid4
 
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from app.models.referral import ReferralRecord
 from app.schemas.referral import Referral, ReferralCreate, ReferralUpdate
 
 
-class InMemoryReferralRepository:
-    def __init__(self) -> None:
-        self._referrals: dict[UUID, Referral] = {}
-        self._lock = Lock()
+class ReferralRepository:
+    def __init__(self, session: Session) -> None:
+        self.session = session
+
+    @staticmethod
+    def _response(record: ReferralRecord) -> Referral:
+        return Referral.model_validate(record, from_attributes=True)
 
     def create(self, data: ReferralCreate) -> Referral:
-        referral = Referral(
-            **data.model_dump(),
-            id=uuid4(),
-            created_at=datetime.now(timezone.utc),
+        record = ReferralRecord(
+            **data.model_dump(), id=uuid4(), created_at=datetime.now(timezone.utc),
         )
-        with self._lock:
-            self._referrals[referral.id] = referral
-        return referral
+        self.session.add(record)
+        self.session.commit()
+        return self._response(record)
 
     def get(self, referral_id: UUID) -> Referral | None:
-        with self._lock:
-            return self._referrals.get(referral_id)
+        record = self.session.get(ReferralRecord, referral_id)
+        return self._response(record) if record is not None else None
 
     def list(self) -> list[Referral]:
-        with self._lock:
-            return list(self._referrals.values())
+        records = self.session.scalars(
+            select(ReferralRecord).order_by(ReferralRecord.created_at, ReferralRecord.id),
+        )
+        return [self._response(record) for record in records]
 
     def update(self, referral_id: UUID, changes: ReferralUpdate) -> Referral | None:
-        with self._lock:
-            existing = self._referrals.get(referral_id)
-            if existing is None:
-                return None
-            updated = Referral.model_validate({
-                **existing.model_dump(),
-                **changes.model_dump(exclude_unset=True),
-            })
-            self._referrals[referral_id] = updated
-            return updated
+        record = self.session.get(ReferralRecord, referral_id)
+        if record is None:
+            return None
+        # Only supplied columns are written, preserving unrelated concurrent corrections.
+        for field, value in changes.model_dump(exclude_unset=True).items():
+            setattr(record, field, value)
+        self.session.commit()
+        return self._response(record)

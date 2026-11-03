@@ -1,19 +1,23 @@
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
 
-from app.repositories.referrals import InMemoryReferralRepository
+from app.database import get_session
+from app.repositories.referrals import ReferralRepository
 from app.schemas.referral import Referral, ReferralCreate, ReferralUpdate
 
 router = APIRouter(prefix="/referrals", tags=["referrals"])
 
 
-def get_referral_repository(request: Request) -> InMemoryReferralRepository:
-    return request.app.state.referral_repository
+def get_referral_repository(
+    session: Annotated[Session, Depends(get_session)],
+) -> ReferralRepository:
+    return ReferralRepository(session)
 
 
-Repository = Annotated[InMemoryReferralRepository, Depends(get_referral_repository)]
+Repository = Annotated[ReferralRepository, Depends(get_referral_repository)]
 
 
 @router.post("", response_model=Referral, status_code=status.HTTP_201_CREATED)

@@ -11,6 +11,9 @@ dependencies = [
     "fastapi>=0.115,<1.0",
     "uvicorn[standard]>=0.34,<1.0",
     "pydantic-settings>=2.7,<3.0",
+    "sqlalchemy>=2.0,<2.1",
+    "alembic>=1.14,<2.0",
+    "psycopg[binary]>=3.2,<4.0",
 ]
 
 [project.optional-dependencies]
@@ -28,3 +31,6 @@ line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]
+
+[tool.ruff.lint.isort]
+known-third-party = ["alembic"]
