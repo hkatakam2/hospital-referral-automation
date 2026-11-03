@@ -1,0 +1,6 @@
+SYNTHETIC DATA — Complete referral
+Patient: Avery Morgan
+DOB: 1974-03-12
+Referring Organization: Lakeside Primary Care
+Requested Specialty: cardiology
+Reason: Recurrent palpitations

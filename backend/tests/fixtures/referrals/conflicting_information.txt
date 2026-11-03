@@ -1,0 +1,12 @@
+SYNTHETIC DATA — Conflicting referral packet
+
+Referral letter:
+Patient: Casey Rowan
+DOB: 1965-11-08
+Referring Organization: Meadow Family Practice
+Requested Specialty: cardiology
+Reason: Recurrent palpitations
+
+Attached patient information sheet:
+Patient: Casey Rowan
+DOB: 1965-11-18
