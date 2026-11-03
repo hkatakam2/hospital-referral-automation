@@ -47,7 +47,25 @@ def test_migration_can_downgrade_and_rebuild_empty_database(db_engine):
         assert "referrals" not in inspect(connection).get_table_names()
         command.upgrade(config, "head")
         assert "referrals" in inspect(connection).get_table_names()
+        assert "documents" in inspect(connection).get_table_names()
+        assert "document_pages" in inspect(connection).get_table_names()
         assert connection.scalar(text("SELECT count(*) FROM referrals")) == 0
+        command.check(config)
+
+
+def test_document_migration_preserves_existing_referrals(db_engine):
+    config = Config(str(Path(__file__).parents[1] / "alembic.ini"))
+    with db_engine.begin() as connection:
+        config.attributes["connection"] = connection
+        command.downgrade(config, "0001")
+    with Session(db_engine) as session:
+        referral = ReferralRepository(session).create(ReferralCreate(**DATA))
+    with db_engine.begin() as connection:
+        config.attributes["connection"] = connection
+        command.upgrade(config, "head")
+        command.check(config)
+    with Session(db_engine) as session:
+        assert ReferralRepository(session).get(referral.id) == referral
 
 
 def test_database_rejects_invalid_write_and_request_session_rolls_back(db_engine):

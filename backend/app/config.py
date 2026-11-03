@@ -1,3 +1,6 @@
+from pathlib import Path
+
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -10,6 +13,10 @@ class Settings(BaseSettings):
 
     app_name: str = "Hospital Referral API"
     cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
+    document_storage_dir: Path = Path(__file__).resolve().parents[1] / "var" / "documents"
+    document_max_bytes: int = Field(default=10 * 1024 * 1024, gt=0)
+    document_max_pages: int = Field(default=100, gt=0)
+    document_max_text_chars: int = Field(default=2_000_000, gt=0)
 
 
 settings = Settings()

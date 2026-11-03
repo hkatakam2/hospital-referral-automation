@@ -3,6 +3,7 @@ from sqlalchemy import create_engine, pool
 
 from app.config import settings
 from app.database import Base
+from app.models.document import DocumentPageRecord, DocumentRecord  # noqa: F401
 from app.models.referral import ReferralRecord  # noqa: F401
 
 config = context.config
