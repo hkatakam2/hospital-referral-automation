@@ -107,7 +107,8 @@ This completes manual intake with persistent PostgreSQL storage.
 Referrals and corrections are stored in PostgreSQL and survive backend restarts.
 List results are ordered by creation time, then UUID for equal timestamps.
 The frontend still shows the connection page; use `/docs` for intake, listing,
-inspection, and corrections. Document uploads are not implemented yet.
+inspection, and corrections. PDF upload and page-level text inspection are also
+available through `/docs`, as described below.
 
 Database tables are managed by Alembic; starting the API does not create them.
 Run `alembic upgrade head` from `backend/` before using the referral endpoints.
@@ -130,6 +131,101 @@ Three fictional packets and their expected review outcomes are available in
 [`backend/tests/fixtures/referrals`](backend/tests/fixtures/referrals/expected_outcomes.md).
 These text files are manual examples, not uploadable API inputs.
 
+## PDF document intake
+
+After updating the backend dependencies, run `alembic upgrade head` from
+`backend/` to create the document tables. Existing referrals are retained.
+Create a referral first using the manual workflow above, then attach a PDF:
+
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| POST | `/api/referrals/{referral_id}/documents` | Upload and parse one PDF |
+| GET | `/api/referrals/{referral_id}/documents` | List document metadata in creation order |
+| GET | `/api/referrals/{referral_id}/documents/{document_id}` | Retrieve metadata and numbered page text |
+
+In `/docs`, expand the document POST endpoint, select **Try it out**, supply an
+existing referral UUID, and choose a synthetic text-based PDF in the `file` field.
+The request uses `multipart/form-data`. A successful request returns `201` after
+the original file, document metadata, and extracted pages have been saved.
+The detail endpoint returns the same response; list responses omit `pages`.
+
+For example, with an existing referral ID and a local synthetic PDF:
+
+```sh
+curl --fail-with-body \
+  -F 'file=@/absolute/path/to/synthetic-referral.pdf;type=application/pdf' \
+  http://127.0.0.1:8000/api/referrals/REFERRAL_UUID/documents
+```
+
+The response includes a generated document UUID, referral UUID, display filename,
+SHA-256 checksum of the original bytes, byte size, page count, parser version,
+UTC creation timestamp, and `parse_status`. Each entry in `pages` has a one-based
+`page_number`, extracted `text`, and `text_status`:
+
+```json
+{
+  "page_number": 1,
+  "text": "Patient: Avery Morgan\nDOB: 1974-03-12",
+  "text_status": "extracted"
+}
+```
+
+- `parsed`: every page produced non-whitespace text.
+- `partial`: at least one page produced text and at least one did not. Those
+  pages retain their numbers and have `text_status: "no_text"`. This can indicate
+  a blank page or an image-only page; the parser does not determine which.
+
+These statuses describe text extraction only. A PDF with an image and a small
+text header may still omit important information from the extracted text.
+Parsing does not populate referral fields, check completeness, or approve a case.
+Text order follows the PDF parser and may differ from visual reading order.
+
+| Response | Meaning |
+| --- | --- |
+| `404` | Referral does not exist, or document does not belong to the supplied referral |
+| `413` | Uploaded bytes, page count, or extracted text exceed a configured limit |
+| `415` | File content does not begin with a PDF header |
+| `422` | Missing file, malformed UUID, empty/corrupt/encrypted PDF, no pages, or no usable text anywhere |
+
+File extensions and client MIME types are advisory; the backend checks the PDF
+header and parses the actual content. Blank and image-only PDFs are unsupported
+by this text-only pipeline. OCR is a later increment. Repeating an upload creates
+a separate document with the same checksum; there is no deduplication yet.
+
+Originals default to `backend/var/documents/`, outside the public web directory
+and ignored by Git. Filenames on disk are generated UUIDs, files use private
+permissions, and the API never exposes storage paths. Client filenames are
+sanitized display metadata. Set `DOCUMENT_STORAGE_DIR` to an absolute path to
+override the default. Preserve this directory alongside PostgreSQL: the database
+contains metadata and text, while the original PDF lives on disk. There is no
+original-file download endpoint yet.
+
+Configuration in `backend/.env`:
+
+```dotenv
+DOCUMENT_MAX_BYTES=10485760
+DOCUMENT_MAX_PAGES=100
+DOCUMENT_MAX_TEXT_CHARS=2000000
+```
+
+Processing is synchronous and intended for local synthetic documents. The byte
+limit is enforced while copying the multipart file into application storage;
+FastAPI may spool the incoming multipart upload before this check. Page and text
+limits are application bounds, not hard parser CPU or memory isolation.
+
+Validation and ordinary storage/database failures clean up the request's files
+and roll back its database changes. Filesystem moves and database commits cannot
+form one atomic transaction. A process crash between these steps can leave an
+orphan file, and an indeterminate database commit can require reconciliation.
+Automated reconciliation is not implemented.
+
+To verify manually, upload a two-page synthetic PDF, check both page numbers and
+their text, restart FastAPI, and retrieve the same document UUID again. An image-only
+PDF should return `422`; a mixed PDF should retain empty pages and return `partial`.
+Automated tests generate synthetic text, image, blank, encrypted, and corrupt
+cases, use temporary file storage and an isolated PostgreSQL database, and also
+verify retrieval across two real backend processes.
+
 ## Project layout
 
 ```text
@@ -137,10 +233,16 @@ backend/
   app/
     api/health.py       # API routes and response models
     api/referrals.py    # Create, list, retrieve, and correct referrals
+    api/documents.py    # Upload, list, and inspect PDF documents
     schemas/referral.py # Create/update validation and response model
+    schemas/document.py # Document metadata and numbered page responses
     database.py         # Engine and request-scoped sessions
     models/referral.py  # PostgreSQL table mapping
+    models/document.py  # Document and document-page table mappings
     repositories/       # Transactional referral storage
+    services/           # Document-ingestion orchestration
+    document_processing/ # PDF-to-page-text reader
+    storage/            # Private local original-file storage
     config.py           # Environment settings
     main.py             # FastAPI application and CORS
   alembic/              # Versioned database migrations
@@ -185,7 +287,8 @@ npm run build
 
 For a separate frontend origin, set `CORS_ORIGINS` in the backend environment to a JSON array of allowed origins, for example `["https://referrals.example.com"]`. Variables prefixed with `VITE_` are public browser configuration; never put secrets in them.
 
-This is a development prototype with manual referral intake and corrections.
-PostgreSQL storage is implemented; authentication and approval workflows are not.
+This is a development prototype with manual referral intake, corrections, and
+text-based PDF ingestion. PostgreSQL and local file storage are implemented;
+authentication, field extraction, and approval workflows are not.
 
 Framework references: [Vite guide](https://vite.dev/guide/) and [FastAPI CORS](https://fastapi.tiangolo.com/tutorial/cors/).
