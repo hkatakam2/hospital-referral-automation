@@ -6,8 +6,25 @@ FastAPI backend and React + TypeScript frontend, built with Vite.
 
 - Python 3.11 or newer (use `python3.13` below if your default `python3` is older).
 - Node.js 22.12+ (or 20.19+) and npm.
+- Docker with Docker Compose v2, running locally.
 
 ## Run locally
+
+Start PostgreSQL from the project root (Docker must be running). On a fresh
+checkout, create the backend environment file first; keep an existing `.env`:
+
+```sh
+cp backend/.env.example backend/.env
+docker compose --env-file backend/.env up -d --wait db
+```
+
+Only PostgreSQL runs in Docker. FastAPI and Vite run on your Mac. The Compose
+service uses PostgreSQL 17, a localhost-only port, a readiness health check, and a
+named volume. The example credentials are for synthetic local development.
+`POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`, and `POSTGRES_PORT` configure
+Compose; `DATABASE_URL` configures FastAPI and Alembic. If you customize them,
+update the URL to match (URL-encode special characters in credentials).
+Changing these variables does not change users/passwords in an existing volume.
 
 Start the backend from the project root:
 
@@ -16,7 +33,7 @@ cd backend
 python3.13 -m venv .venv
 source .venv/bin/activate
 python -m pip install -e '.[dev]'
-cp .env.example .env
+alembic upgrade head
 uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
@@ -85,14 +102,29 @@ history yet.
 
 To verify the manual workflow, create two synthetic referrals, list them, correct
 one referral, and retrieve both to confirm only the intended record changed.
-This completes the Level 2 manual intake API from `docs/overall.md`; persistence
-is the next roadmap step.
+This completes manual intake with persistent PostgreSQL storage.
 
-Storage is in memory in a single backend process. Restarting or reloading the
-backend removes every referral; multiple worker processes do not share records.
-Run one backend worker for this prototype. The frontend still shows the connection
-page; use `/docs` for intake, listing, inspection, and corrections. Persistence
-and document uploads are not implemented yet.
+Referrals and corrections are stored in PostgreSQL and survive backend restarts.
+List results are ordered by creation time, then UUID for equal timestamps.
+The frontend still shows the connection page; use `/docs` for intake, listing,
+inspection, and corrections. Document uploads are not implemented yet.
+
+Database tables are managed by Alembic; starting the API does not create them.
+Run `alembic upgrade head` from `backend/` before using the referral endpoints.
+The health endpoint checks the application only, not database readiness.
+Database outages cause referral requests to fail; writes never fall back to memory.
+
+From the project root, `docker compose stop db` stops PostgreSQL, and
+`docker compose --env-file backend/.env up -d --wait db` starts it again.
+`docker compose down` removes the container/network but keeps the named volume;
+`docker compose down -v` deletes the stored database. A volume is not a backup.
+
+To verify persistence, create two synthetic referrals and correct one through
+`/docs`. Record their IDs and response bodies. Restart FastAPI, recreate the
+container with `docker compose --env-file backend/.env up -d --force-recreate --wait db`,
+and retrieve both IDs. The responses should retain the correction, original IDs,
+and creation timestamps. Records held by the old in-memory implementation are
+not migrated.
 
 Three fictional packets and their expected review outcomes are available in
 [`backend/tests/fixtures/referrals`](backend/tests/fixtures/referrals/expected_outcomes.md).
@@ -106,11 +138,16 @@ backend/
     api/health.py       # API routes and response models
     api/referrals.py    # Create, list, retrieve, and correct referrals
     schemas/referral.py # Create/update validation and response model
-    repositories/      # In-memory referral storage
+    database.py         # Engine and request-scoped sessions
+    models/referral.py  # PostgreSQL table mapping
+    repositories/       # Transactional referral storage
     config.py           # Environment settings
     main.py             # FastAPI application and CORS
-  tests/                # API smoke tests
+  alembic/              # Versioned database migrations
+  alembic.ini
+  tests/                # API and PostgreSQL integration tests
   pyproject.toml        # Python dependencies and tools
+compose.yaml            # PostgreSQL service and persistent volume
 frontend/
   src/
     api.ts              # Typed API client
@@ -120,6 +157,14 @@ frontend/
 ```
 
 ## Checks
+
+Start PostgreSQL using the Compose command above before running backend tests.
+The test suite creates a randomly named `referral_test_*` database, applies real
+migrations, isolates each database test, and drops only that temporary database
+at teardown. The development database is never cleared. The local Compose role
+can create databases. Optionally set `TEST_DATABASE_URL` to a different PostgreSQL
+server whose role has `CREATEDB`; the supplied database name is replaced with a
+random test database name. Test credentials should be dedicated to development.
 
 ```sh
 cd backend
@@ -141,6 +186,6 @@ npm run build
 For a separate frontend origin, set `CORS_ORIGINS` in the backend environment to a JSON array of allowed origins, for example `["https://referrals.example.com"]`. Variables prefixed with `VITE_` are public browser configuration; never put secrets in them.
 
 This is a development prototype with manual referral intake and corrections.
-Database storage, authentication, and approval workflows are not implemented yet.
+PostgreSQL storage is implemented; authentication and approval workflows are not.
 
 Framework references: [Vite guide](https://vite.dev/guide/) and [FastAPI CORS](https://fastapi.tiangolo.com/tutorial/cors/).

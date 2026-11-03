@@ -2,22 +2,6 @@ from datetime import datetime, timedelta, timezone
 from uuid import UUID, uuid4
 
 import pytest
-from fastapi.testclient import TestClient
-
-from app.api.referrals import get_referral_repository
-from app.main import app
-from app.repositories.referrals import InMemoryReferralRepository
-
-
-@pytest.fixture
-def client():
-    repository = InMemoryReferralRepository()
-    app.dependency_overrides[get_referral_repository] = lambda: repository
-    try:
-        with TestClient(app) as test_client:
-            yield test_client
-    finally:
-        app.dependency_overrides.pop(get_referral_repository, None)
 
 
 @pytest.fixture
@@ -128,13 +112,6 @@ def test_unknown_referral_returns_not_found(client):
 
 def test_malformed_id_is_rejected(client):
     assert client.get("/api/referrals/not-a-uuid").status_code == 422
-
-
-def test_new_repository_does_not_contain_previous_records(client, referral_data):
-    created = client.post("/api/referrals", json=referral_data).json()
-    fresh_repository = InMemoryReferralRepository()
-    app.dependency_overrides[get_referral_repository] = lambda: fresh_repository
-    assert client.get(f"/api/referrals/{created['id']}").status_code == 404
 
 
 def test_list_starts_empty(client):
