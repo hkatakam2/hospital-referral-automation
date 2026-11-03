@@ -135,3 +135,112 @@ def test_new_repository_does_not_contain_previous_records(client, referral_data)
     fresh_repository = InMemoryReferralRepository()
     app.dependency_overrides[get_referral_repository] = lambda: fresh_repository
     assert client.get(f"/api/referrals/{created['id']}").status_code == 404
+
+
+def test_list_starts_empty(client):
+    response = client.get("/api/referrals")
+    assert response.status_code == 200
+    assert response.json() == []
+
+
+def test_list_returns_created_records_in_creation_order(client, referral_data):
+    first = client.post("/api/referrals", json=referral_data).json()
+    second = client.post(
+        "/api/referrals", json={**referral_data, "patient_name": "Jordan Ellis"},
+    ).json()
+
+    response = client.get("/api/referrals")
+    assert response.status_code == 200
+    assert response.json() == [first, second]
+
+
+def test_correct_referral_preserves_other_fields_and_records(client, referral_data):
+    first = client.post("/api/referrals", json=referral_data).json()
+    second = client.post("/api/referrals", json=referral_data).json()
+    changes = {"date_of_birth": "1974-03-21"}
+
+    response = client.patch(f"/api/referrals/{first['id']}", json=changes)
+    expected = {**first, **changes}
+    assert response.status_code == 200
+    assert response.json() == expected
+    assert client.get(f"/api/referrals/{first['id']}").json() == expected
+    assert client.get(f"/api/referrals/{second['id']}").json() == second
+    assert client.get("/api/referrals").json() == [expected, second]
+
+
+def test_correct_all_fields_trims_text_and_preserves_server_fields(client, referral_data):
+    created = client.post("/api/referrals", json=referral_data).json()
+    changes = {
+        "patient_name": "  Jordan Ellis\n",
+        "date_of_birth": "1980-01-02",
+        "referring_organization": "  Pine Clinic\t",
+        "requested_specialty": "cardiology",
+        "referral_reason": "  Follow-up consultation  ",
+    }
+    expected = {**created, **{key: value.strip() for key, value in changes.items()}}
+    response = client.patch(f"/api/referrals/{created['id']}", json=changes)
+    assert response.status_code == 200
+    assert response.json() == expected
+    assert client.get(f"/api/referrals/{created['id']}").json() == expected
+
+
+def test_empty_correction_is_a_no_op(client, referral_data):
+    created = client.post("/api/referrals", json=referral_data).json()
+    response = client.patch(f"/api/referrals/{created['id']}", json={})
+    assert response.status_code == 200
+    assert response.json() == created
+    assert client.get(f"/api/referrals/{created['id']}").json() == created
+
+
+@pytest.mark.parametrize("field", [
+    "patient_name", "date_of_birth", "referring_organization",
+    "requested_specialty", "referral_reason",
+])
+def test_correction_cannot_clear_required_fields(client, referral_data, field):
+    created = client.post("/api/referrals", json=referral_data).json()
+    response = client.patch(f"/api/referrals/{created['id']}", json={field: None})
+    assert response.status_code == 422
+    assert client.get(f"/api/referrals/{created['id']}").json() == created
+
+
+@pytest.mark.parametrize("changes", [
+    {"patient_name": ""},
+    {"patient_name": " \t\n"},
+    {"referring_organization": ""},
+    {"referring_organization": " \t\n"},
+    {"referral_reason": ""},
+    {"referral_reason": " \t\n"},
+    {"date_of_birth": "not-a-date"},
+    {"date_of_birth": "1974-02-30"},
+    {"date_of_birth": "9999-12-31"},
+    {"requested_specialty": "neurology"},
+    {"requested_specialty": ""},
+    {"patient_nmae": "Typo"},
+    {"id": str(uuid4())},
+    {"created_at": "2000-01-01T00:00:00Z"},
+])
+def test_invalid_correction_leaves_record_unchanged(client, referral_data, changes):
+    created = client.post("/api/referrals", json=referral_data).json()
+    # Include a valid change to prove that mixed updates never apply partially.
+    response = client.patch(
+        f"/api/referrals/{created['id']}", json={"patient_name": "Jordan Ellis", **changes},
+    )
+    assert response.status_code == 422
+    assert client.get(f"/api/referrals/{created['id']}").json() == created
+    assert client.get("/api/referrals").json() == [created]
+
+
+def test_correct_unknown_referral_returns_not_found(client):
+    response = client.patch(
+        f"/api/referrals/{uuid4()}", json={"patient_name": "Jordan Ellis"},
+    )
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Referral not found"}
+    assert client.get("/api/referrals").json() == []
+
+
+def test_correct_malformed_id_is_rejected(client):
+    response = client.patch(
+        "/api/referrals/not-a-uuid", json={"patient_name": "Jordan Ellis"},
+    )
+    assert response.status_code == 422

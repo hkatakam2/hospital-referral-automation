@@ -61,11 +61,38 @@ of birth cannot be later than today's UTC date, and specialty must be exactly
 rejected. Creation registers information; it does not approve a packet or detect
 conflicting documents.
 
+Use `GET /api/referrals` to browse all registered referrals in creation order.
+It returns `200` with a JSON array, or `[]` when no referrals exist. The list is
+not paginated in this prototype.
+
+To correct a saved record, use `PATCH /api/referrals/{referral_id}` in `/docs`.
+For example, submit just the corrected date of birth:
+
+```json
+{
+  "date_of_birth": "1974-03-21"
+}
+```
+
+The response is `200` with the complete updated record. Omitted fields retain
+their values; the ID and creation timestamp remain unchanged. Supplied fields
+follow the creation validation rules: required fields cannot be cleared with
+`null` or blank text, and unknown or server-managed fields are rejected. Invalid
+updates return `422` and leave the record unchanged. An unknown UUID returns
+`404`; a malformed ID returns `422`. An empty object is a no-op returning the
+existing record. Corrections overwrite the current values; there is no audit
+history yet.
+
+To verify the manual workflow, create two synthetic referrals, list them, correct
+one referral, and retrieve both to confirm only the intended record changed.
+This completes the Level 2 manual intake API from `docs/overall.md`; persistence
+is the next roadmap step.
+
 Storage is in memory in a single backend process. Restarting or reloading the
 backend removes every referral; multiple worker processes do not share records.
 Run one backend worker for this prototype. The frontend still shows the connection
-page; use `/docs` for intake. Listing, editing, persistence, and document uploads
-are not implemented yet.
+page; use `/docs` for intake, listing, inspection, and corrections. Persistence
+and document uploads are not implemented yet.
 
 Three fictional packets and their expected review outcomes are available in
 [`backend/tests/fixtures/referrals`](backend/tests/fixtures/referrals/expected_outcomes.md).
@@ -77,8 +104,8 @@ These text files are manual examples, not uploadable API inputs.
 backend/
   app/
     api/health.py       # API routes and response models
-    api/referrals.py    # Create and retrieve referrals
-    schemas/referral.py # Referral request validation and response model
+    api/referrals.py    # Create, list, retrieve, and correct referrals
+    schemas/referral.py # Create/update validation and response model
     repositories/      # In-memory referral storage
     config.py           # Environment settings
     main.py             # FastAPI application and CORS
@@ -113,7 +140,7 @@ npm run build
 
 For a separate frontend origin, set `CORS_ORIGINS` in the backend environment to a JSON array of allowed origins, for example `["https://referrals.example.com"]`. Variables prefixed with `VITE_` are public browser configuration; never put secrets in them.
 
-This is a development prototype with manual referral creation and retrieval.
+This is a development prototype with manual referral intake and corrections.
 Database storage, authentication, and approval workflows are not implemented yet.
 
 Framework references: [Vite guide](https://vite.dev/guide/) and [FastAPI CORS](https://fastapi.tiangolo.com/tutorial/cors/).
