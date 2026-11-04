@@ -21,6 +21,7 @@ class ExecutionMetadata(BaseModel):
 class ExtractionOutput(BaseModel):
     fields: dict[str, FieldResult]
     execution: ExecutionMetadata = Field(default_factory=ExecutionMetadata)
+    original_claims: dict | None = Field(default=None, exclude=True)
 
 
 class Extractor(Protocol):

@@ -3,7 +3,11 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.models.extraction import ExtractionRunDocumentRecord, ExtractionRunRecord
+from app.models.extraction import (
+    ExtractionArtifactRecord,
+    ExtractionRunDocumentRecord,
+    ExtractionRunRecord,
+)
 from app.schemas.extraction import ExtractionDetail, ExtractionSummary
 
 
@@ -11,13 +15,16 @@ class ExtractionRepository:
     def __init__(self, session: Session):
         self.session = session
 
-    def add(self, result: ExtractionDetail) -> None:
+    def add(self, result: ExtractionDetail, artifact: dict) -> None:
         self.session.add(ExtractionRunRecord(
             id=result.id, referral_id=result.referral_id,
             extractor_version=result.extractor_version, checklist_version=result.checklist_version,
             created_at=result.created_at, result_json=result.model_dump(mode="json"),
         ))
         self.session.flush()
+        self.session.add(ExtractionArtifactRecord(
+            extraction_run_id=result.id, artifact_json=artifact,
+        ))
         self.session.add_all([
             ExtractionRunDocumentRecord(extraction_run_id=result.id, document_id=document_id)
             for document_id in result.source_document_ids

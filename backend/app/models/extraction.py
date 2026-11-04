@@ -26,3 +26,14 @@ class ExtractionRunDocumentRecord(Base):
         ForeignKey("extraction_runs.id", ondelete="CASCADE"), primary_key=True,
     )
     document_id: Mapped[UUID] = mapped_column(ForeignKey("documents.id"), primary_key=True)
+
+
+class ExtractionArtifactRecord(Base):
+    """Internal original claims/response; never serialized through the public API."""
+
+    __tablename__ = "extraction_artifacts"
+
+    extraction_run_id: Mapped[UUID] = mapped_column(
+        ForeignKey("extraction_runs.id", ondelete="CASCADE"), primary_key=True,
+    )
+    artifact_json: Mapped[dict] = mapped_column(JSONB)

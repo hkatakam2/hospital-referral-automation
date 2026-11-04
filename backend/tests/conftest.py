@@ -49,14 +49,14 @@ def postgres_engine():
 def db_engine(postgres_engine, monkeypatch):
     with postgres_engine.begin() as connection:
         connection.execute(text(
-            "TRUNCATE extraction_run_documents, extraction_runs, "
+            "TRUNCATE extraction_artifacts, extraction_run_documents, extraction_runs, "
             "document_pages, documents, referrals"
         ))
     monkeypatch.setattr(database, "engine", postgres_engine)
     yield postgres_engine
     with postgres_engine.begin() as connection:
         connection.execute(text(
-            "TRUNCATE extraction_run_documents, extraction_runs, "
+            "TRUNCATE extraction_artifacts, extraction_run_documents, extraction_runs, "
             "document_pages, documents, referrals"
         ))
 

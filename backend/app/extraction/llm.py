@@ -166,4 +166,6 @@ class LLMExtractor:
                     deduplicate_evidence=True,
                 )
             fields[field] = result
-        return ExtractionOutput(fields=fields, execution=execution)
+        return ExtractionOutput(
+            fields=fields, execution=execution, original_claims=claims.model_dump(mode="json"),
+        )

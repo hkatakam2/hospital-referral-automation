@@ -44,6 +44,17 @@ class Finding(BaseModel):
     status: Literal["found", "missing", "conflicting", "invalid"]
 
 
+class ExtractionProvenance(BaseModel):
+    evidence_version: str
+    candidates_checked: int
+    candidates_rejected: int
+    provider: str | None = None
+    model: str | None = None
+    model_version: str | None = None
+    prompt_version: str | None = None
+    request_ms: float | None = None
+
+
 class ExtractionDetail(BaseModel):
     id: UUID
     referral_id: UUID
@@ -55,6 +66,7 @@ class ExtractionDetail(BaseModel):
     findings: list[Finding]
     warnings: list[str]
     complete: bool
+    provenance: ExtractionProvenance | None = None
 
 
 class ExtractionSummary(BaseModel):

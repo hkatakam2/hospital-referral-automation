@@ -10,7 +10,11 @@ from app.extraction.assessment import REQUIRED_FIELDS, assess_sources
 from app.extraction.base import ExtractionOutput
 from app.extraction.rule_based import RuleBasedExtractor
 from app.main import app
-from app.models.extraction import ExtractionRunDocumentRecord, ExtractionRunRecord
+from app.models.extraction import (
+    ExtractionArtifactRecord,
+    ExtractionRunDocumentRecord,
+    ExtractionRunRecord,
+)
 from app.schemas.extraction import Candidate, Evidence, FieldResult, SourceDocument, SourcePage
 from app.services.referral_extraction import ReferralExtractionService
 
@@ -236,6 +240,7 @@ def test_commit_failure_rolls_back_run_and_links(client, pdf_factory, db_engine,
             with pytest.raises(RuntimeError, match="commit failed"):
                 service.run(referral["id"])
         assert session.scalar(select(func.count()).select_from(ExtractionRunRecord)) == 0
+        assert session.scalar(select(func.count()).select_from(ExtractionArtifactRecord)) == 0
         assert session.scalar(select(func.count()).select_from(ExtractionRunDocumentRecord)) == 0
         assert service.run(referral["id"]).id
 
