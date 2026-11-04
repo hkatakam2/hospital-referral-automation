@@ -3,6 +3,18 @@ from collections.abc import Sequence
 
 from app.schemas.extraction import Evidence, SourceDocument
 
+EVIDENCE_VERSION = "literal-source/1"
+
+
+def candidate_evidence_issue(raw_value: str, evidence: Sequence[Evidence],
+                             sources: Sequence[SourceDocument]) -> str | None:
+    issue = evidence_issue(evidence, sources)
+    if issue:
+        return issue
+    if not any(raw_value in item.quote for item in evidence):
+        return "Source value is absent from evidence quotes"
+    return None
+
 
 def evidence_issue(evidence: Sequence[Evidence], sources: Sequence[SourceDocument]) -> str | None:
     pages = {(source.document_id, page.page_number): page.text

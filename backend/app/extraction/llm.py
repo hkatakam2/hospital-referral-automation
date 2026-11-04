@@ -1,9 +1,7 @@
 """Gemini generateContent adapter; one bounded request per source-text packet."""
 
 import json
-import re
 from collections.abc import Sequence
-from datetime import datetime
 from pathlib import Path
 from time import perf_counter
 
@@ -13,10 +11,10 @@ from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, Settings
 
 from app.extraction.base import ExecutionMetadata, ExtractionOutput
 from app.extraction.candidates import add_candidate
-from app.extraction.grounding import evidence_issue
+from app.extraction.grounding import candidate_evidence_issue
 from app.extraction.llm_schema import LLMClaims
-from app.extraction.normalization import normalize
-from app.schemas.extraction import Candidate, Evidence, FieldName, FieldResult, SourceDocument
+from app.extraction.normalization import normalize_claim
+from app.schemas.extraction import Candidate, Evidence, FieldResult, SourceDocument
 
 PROMPT_VERSION = "referral-claims/1"
 SYSTEM_PROMPT = """Extract the five administrative referral fields from synthetic source text.
@@ -71,30 +69,6 @@ class LLMExtractionError(RuntimeError):
     def __init__(self, message: str, execution: ExecutionMetadata):
         super().__init__(message)
         self.execution = execution
-
-
-def normalize_claim(field: FieldName, raw: str, proposed: str | None):
-    """Dates gain explicit formats; ordinary text cannot be rewritten by the model."""
-    value, issue = normalize(field, raw)
-    if field != "date_of_birth":
-        return value, issue
-    if value is not None:
-        return value, None
-    compact = " ".join(raw.split())
-    # Numeric month/day formats are accepted only when day > 12 removes ambiguity.
-    numeric = re.fullmatch(r"(\d{1,2})/(\d{1,2})/(\d{4})", compact)
-    formats = ["%B %d, %Y", "%b %d, %Y"]
-    if numeric and int(numeric[2]) > 12:
-        formats.append("%m/%d/%Y")
-    for fmt in formats:
-        try:
-            canonical = datetime.strptime(compact, fmt).date().isoformat()
-        except ValueError:
-            continue
-        value, issue = normalize(field, canonical)
-        if value is not None and proposed == value:
-            return value, None
-    return None, issue or "Unsupported or ambiguous date"
 
 
 class LLMExtractor:
@@ -176,12 +150,7 @@ class LLMExtractor:
             for claim in getattr(claims, field):
                 evidence = [Evidence(**item.model_dump()) for item in claim.evidence]
                 value, issue = normalize_claim(field, claim.source_value, claim.proposed_value)
-                grounding_issue = evidence_issue(evidence, sources)
-                # A real but unrelated quote must not support an invented source_value.
-                if not any(claim.source_value in item.quote for item in evidence):
-                    grounding_issue = (
-                        grounding_issue or "Source value is absent from evidence quotes"
-                    )
+                grounding_issue = candidate_evidence_issue(claim.source_value, evidence, sources)
                 execution.source_checks["checked"] += 1
                 if grounding_issue:
                     execution.source_checks["rejected"] += 1

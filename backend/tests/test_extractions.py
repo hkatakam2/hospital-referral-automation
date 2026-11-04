@@ -11,7 +11,7 @@ from app.extraction.base import ExtractionOutput
 from app.extraction.rule_based import RuleBasedExtractor
 from app.main import app
 from app.models.extraction import ExtractionRunDocumentRecord, ExtractionRunRecord
-from app.schemas.extraction import Candidate, FieldResult, SourceDocument, SourcePage
+from app.schemas.extraction import Candidate, Evidence, FieldResult, SourceDocument, SourcePage
 from app.services.referral_extraction import ReferralExtractionService
 
 DATA = {
@@ -52,9 +52,9 @@ def test_assessment_fills_missing_fields_and_derives_selection(output):
     assert not assessment.complete
     assert assessment.extractor_version == "incomplete/test"
     for finding in assessment.findings:
-        assert finding.status == ("found" if finding.field in output else "missing")
+        assert finding.status == ("invalid" if finding.field in output else "missing")
     if output:
-        assert assessment.fields["patient_name"].value == "Avery Morgan"
+        assert assessment.fields["patient_name"].value is None
         assert output["patient_name"].value == "Untrusted selection"
 
 
@@ -77,7 +77,12 @@ def test_assessment_keeps_findings_and_selected_values_consistent(candidates, st
                 "patient_name": FieldResult(value="Stale value", candidates=candidates),
             })
 
-    source = SourceDocument(document_id=uuid4(), parse_status="parsed", pages=[])
+    source = SourceDocument(document_id=uuid4(), parse_status="parsed", pages=[
+        SourcePage(page_number=1, text="A B bad"),
+    ])
+    for candidate in candidates:
+        candidate.evidence = [Evidence(document_id=source.document_id, page_number=1,
+                                       quote="A B bad")]
     assessment = assess_sources(CandidateExtractor(), [source])
     assert assessment.fields["patient_name"].value == selected
     assert assessment.findings[0].status == status
