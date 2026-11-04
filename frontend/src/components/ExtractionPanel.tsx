@@ -1,34 +1,21 @@
-import { useState } from 'react'
-import { errorMessage } from '../api/client'
-import { createExtraction } from '../api/extractions'
 import { fieldLabels, fieldNames } from '../api/types'
 import type { FieldName } from '../api/types'
 import type { ReferralWorkspace } from '../hooks/useReferralWorkspace'
 
-export function ExtractionPanel({ id, workspace: w, onUse, saving }: {
-  id: string; workspace: ReferralWorkspace; saving: boolean; onUse: (field: FieldName, value: string) => void
+export function ExtractionPanel({ workspace: w, onUse, saving }: {
+  workspace: ReferralWorkspace; saving: boolean; onUse: (field: FieldName, value: string) => void
 }) {
-  const [pending, setPending] = useState(false)
-  const [error, setError] = useState('')
-  async function run() {
-    if (pending) return
-    setPending(true); setError('')
-    try {
-      const result = await createExtraction(id)
-      w.setSelectedRunId(result.id); w.runs.refresh()
-    } catch (err) { setError(`${errorMessage(err)} If the connection was interrupted, refresh history before retrying.`) }
-    finally { setPending(false) }
-  }
+  const { pending, error } = w.runExtraction
   const result = w.selectedExtraction
   return <section className="card" aria-labelledby="extraction-title">
-    <div className="section-toolbar"><h2 id="extraction-title">Extraction review</h2><button className="primary" onClick={run} disabled={pending || !w.documents.data?.length}>{pending ? 'Extracting…' : 'Run extraction'}</button></div>
+    <div className="section-toolbar"><h2 id="extraction-title">Extraction review</h2><button className="primary" onClick={() => w.runExtraction.execute()} disabled={pending || !w.documents.data?.length}>{pending ? 'Extracting…' : 'Run extraction'}</button></div>
     <p>Each run preserves the source findings. Review candidates before copying them into your correction draft.</p>
     {error && <p role="alert" className="error">{error}</p>}
     <div className="section-toolbar"><h3>Saved run history</h3><button disabled={w.runs.loading} onClick={w.runs.refresh}>Refresh history</button></div>
     {w.runs.loading && <p role="status">Loading extraction history…</p>}
     {w.runs.error && <p role="alert" className="error">{w.runs.error}</p>}
     {w.runs.data?.length === 0 && <p>No extraction runs yet.</p>}
-    {!!w.runs.data?.length && <label>Extraction run<select value={w.selectedRunId ?? ''} onChange={event => w.setSelectedRunId(event.target.value)}>
+    {!!w.runs.data?.length && <label>Extraction run<select value={w.selectedRunId ?? ''} onChange={event => w.selectRun(event.target.value)}>
       {w.runs.data.map((run, index) => <option key={run.id} value={run.id}>{index === 0 ? 'Latest · ' : ''}{new Date(run.created_at).toLocaleString()} · {run.id.slice(0, 8)}</option>)}
     </select></label>}
     {w.extraction.loading && <p role="status">Loading extraction…</p>}

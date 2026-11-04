@@ -105,3 +105,126 @@ test('history errors do not block correction or document inspection', async ({ p
   await page.getByRole('button', { name: 'Refresh history' }).click()
   await expect(page.getByText('No extraction runs yet.')).toBeVisible()
 })
+
+test('a committed upload survives a failed list refresh without repeating the write', async ({ page, request }) => {
+  const referral = await (await request.post('/api/referrals', { data })).json()
+  let writes = 0
+  let failRefresh = true
+  await page.route(`**/api/referrals/${referral.id}/documents`, route => {
+    if (route.request().method() === 'POST') {
+      writes++
+      return route.continue()
+    }
+    return writes && failRefresh
+      ? route.fulfill({ status: 503, json: { detail: 'Document list refresh failed' } })
+      : route.continue()
+  })
+  await page.goto(`/referrals/${referral.id}`)
+  await page.getByLabel('Attach a synthetic PDF').setInputFiles({ name: 'saved.pdf', mimeType: 'application/pdf', buffer: pdf([complete]) })
+  await page.getByRole('button', { name: 'Upload PDF', exact: true }).click()
+  await expect(page.getByText('Uploaded saved.pdf.', { exact: false })).toBeVisible()
+  await expect(page.getByText('Document list refresh failed')).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Source: saved.pdf, page 1' })).toBeVisible()
+  failRefresh = false
+  await page.getByRole('button', { name: 'Refresh documents' }).click()
+  await expect(page.getByRole('button', { name: 'saved.pdf', exact: true })).toBeVisible()
+  expect(writes).toBe(1)
+  expect(await (await request.get(`/api/referrals/${referral.id}/documents`)).json()).toHaveLength(1)
+})
+
+test('extraction retries are explicit and a failed history refresh does not repeat a committed run', async ({ page, request }) => {
+  const referral = await (await request.post('/api/referrals', { data })).json()
+  const base = `/api/referrals/${referral.id}`
+  await request.post(`${base}/documents`, { multipart: { file: {
+    name: 'complete.pdf', mimeType: 'application/pdf', buffer: pdf([complete]),
+  } } })
+  let writes = 0
+  let failHistory = true
+  await page.route(`**${base}/extractions`, route => {
+    if (route.request().method() === 'POST') {
+      writes++
+      return writes === 1
+        ? route.fulfill({ status: 503, json: { detail: 'Extraction unavailable' } })
+        : route.continue()
+    }
+    return writes > 1 && failHistory
+      ? route.fulfill({ status: 503, json: { detail: 'History refresh failed' } })
+      : route.continue()
+  })
+  await page.goto(`/referrals/${referral.id}`)
+  const run = page.getByRole('button', { name: 'Run extraction', exact: true })
+  await run.click()
+  await expect(page.getByRole('alert')).toContainText('Extraction unavailable')
+  expect(writes).toBe(1)
+  await run.click()
+  await expect(page.getByText('Extraction checklist: all five fields found', { exact: false })).toBeVisible()
+  await expect(page.getByText('History refresh failed')).toBeVisible()
+  await expect(page.getByText('Extraction unavailable', { exact: false })).toHaveCount(0)
+  failHistory = false
+  await page.getByRole('button', { name: 'Refresh history' }).click()
+  await expect(page.getByLabel('Extraction run').locator('option')).toHaveCount(1)
+  expect(writes).toBe(2)
+  expect(await (await request.get(`${base}/extractions`)).json()).toHaveLength(1)
+})
+
+test('late extraction reads cannot replace the selected run', async ({ page, request }) => {
+  const referral = await (await request.post('/api/referrals', { data })).json()
+  const base = `/api/referrals/${referral.id}`
+  await request.post(`${base}/documents`, { multipart: { file: {
+    name: 'original.pdf', mimeType: 'application/pdf', buffer: pdf([complete]),
+  } } })
+  const older = await (await request.post(`${base}/extractions`)).json()
+  await request.post(`${base}/documents`, { multipart: { file: {
+    name: 'conflict.pdf', mimeType: 'application/pdf', buffer: pdf([['DOB: 1974-03-21']]),
+  } } })
+  const latest = await (await request.post(`${base}/extractions`)).json()
+  let release = () => {}
+  const gate = new Promise<void>(resolve => { release = resolve })
+  await page.route(`**${base}/extractions/${older.id}`, async route => {
+    await gate
+    await route.fulfill({ json: older }).catch(() => {})
+  })
+  await page.goto(`/referrals/${referral.id}`)
+  await expect(page.getByText('conflicting', { exact: true })).toBeVisible()
+  const pending = page.waitForRequest(`**${base}/extractions/${older.id}`)
+  await page.getByLabel('Extraction run').selectOption(older.id)
+  await pending
+  await page.getByLabel('Extraction run').selectOption(latest.id)
+  await expect(page.getByText('conflicting', { exact: true })).toBeVisible()
+  release()
+  await expect(page.getByLabel('Extraction run')).toHaveValue(latest.id)
+  await expect(page.getByText('Extraction checklist: all five fields found', { exact: false })).toHaveCount(0)
+})
+
+test('a write finishing after navigation cannot select a run in another workspace', async ({ page, request }) => {
+  const first = await (await request.post('/api/referrals', { data })).json()
+  const other = await (await request.post('/api/referrals', { data: { ...data, patient_name: 'Other workspace' } })).json()
+  const base = `/api/referrals/${first.id}`
+  await request.post(`${base}/documents`, { multipart: { file: {
+    name: 'complete.pdf', mimeType: 'application/pdf', buffer: pdf([complete]),
+  } } })
+  let release = () => {}
+  let committed = () => {}
+  const gate = new Promise<void>(resolve => { release = resolve })
+  const writeCommitted = new Promise<void>(resolve => { committed = resolve })
+  await page.route(`**${base}/extractions`, async route => {
+    if (route.request().method() !== 'POST') return route.continue()
+    const response = await route.fetch()
+    committed()
+    await gate
+    await route.fulfill({ response }).catch(() => {})
+  })
+  await page.goto(`/referrals/${first.id}`)
+  await page.getByRole('button', { name: 'Run extraction', exact: true }).click()
+  await writeCommitted
+  await page.getByRole('link', { name: '← Referral inbox' }).click()
+  await page.getByRole('link', { name: 'Other workspace', exact: true }).click()
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Other workspace')
+  const completed = page.waitForResponse(response => response.url().endsWith(`${base}/extractions`) && response.request().method() === 'POST')
+  release()
+  await completed
+  await expect(page.getByText('No extraction runs yet.')).toBeVisible()
+  await expect(page.getByText('Extraction checklist:', { exact: false })).toHaveCount(0)
+  expect(await (await request.get(`${base}/extractions`)).json()).toHaveLength(1)
+  expect(await (await request.get(`/api/referrals/${other.id}/extractions`)).json()).toHaveLength(0)
+})

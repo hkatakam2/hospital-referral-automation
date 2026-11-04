@@ -46,7 +46,7 @@ function ReviewWorkspace({ referral, workspace }: { referral: Referral; workspac
   return <>
     <div className="page-heading"><p className="eyebrow">Cardiology referral</p><h1>{saved.patient_name}</h1><p className="identifier">{saved.id}</p></div>
     <div className="workspace-grid">
-      <div className="stack"><DocumentPanel id={saved.id} workspace={workspace} /></div>
+      <div className="stack"><DocumentPanel workspace={workspace} /></div>
       <div className="stack">
         <section className="card" aria-labelledby="corrections-title">
           <h2 id="corrections-title">Saved referral and corrections</h2>
@@ -57,7 +57,7 @@ function ReviewWorkspace({ referral, workspace }: { referral: Referral; workspac
           {notice && <p role="status" className="success">{notice}</p>}
           <ReferralForm value={draft} onChange={value => { setDraft(value); setNotice('') }} onSave={save} submitLabel="Save corrections" />
         </section>
-        <ExtractionPanel id={saved.id} workspace={workspace} onUse={useCandidate} saving={saving} />
+        <ExtractionPanel workspace={workspace} onUse={useCandidate} saving={saving} />
       </div>
     </div>
   </>

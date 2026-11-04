@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { errorMessage } from '../api/client'
-import { getDocument, listDocuments } from '../api/documents'
-import { getExtraction, listExtractions } from '../api/extractions'
+import { getDocument, listDocuments, uploadDocument } from '../api/documents'
+import { createExtraction, getExtraction, listExtractions } from '../api/extractions'
 import { getReferral } from '../api/referrals'
 import type { Evidence } from '../api/types'
 
@@ -37,6 +37,20 @@ export function useReferralWorkspace(id: string) {
   const extraction = useResource(useCallback(signal => runId ? getExtraction(id, runId, signal) : Promise.resolve(null), [id, runId]))
   const documentId = selection?.documentId ?? null
   const document = useResource(useCallback(signal => documentId ? getDocument(id, documentId, signal) : Promise.resolve(null), [id, documentId]))
+  const upload = useWorkspaceWrite(async (file: File) => {
+    const result = await uploadDocument(id, file)
+    return { result, publish: () => {
+      documents.refresh()
+      setSelection({ documentId: result.id, page: 1 })
+    } }
+  }, 'refresh documents')
+  const runExtraction = useWorkspaceWrite(async () => {
+    const result = await createExtraction(id)
+    return { result, publish: () => {
+      setSelectedRunId(result.id)
+      runs.refresh()
+    } }
+  }, 'refresh history')
   // Stale data may remain during a refresh, but must never render as another selection.
   const selectedDocument = document.data?.id === documentId ? document.data : null
   const selectedExtraction = extraction.data?.id === runId ? extraction.data : null
@@ -49,7 +63,48 @@ export function useReferralWorkspace(id: string) {
   )
   return {
     referral, documents, runs, extraction, document, selection, selectedDocument,
-    selectedExtraction, selectedRunId: runId, setSelectedRunId, setSelection, openEvidence, sourcesChanged,
+    selectedExtraction, selectedRunId: runId, selectRun: setSelectedRunId,
+    selectDocument: (documentId: string) => setSelection({ documentId, page: 1 }),
+    selectPage: (page: number) => {
+      if (documentId) setSelection({ documentId, page })
+    },
+    openEvidence, sourcesChanged, upload, runExtraction,
   }
 }
 export type ReferralWorkspace = ReturnType<typeof useReferralWorkspace>
+
+// Writes are explicit and never retried. Only an active workspace may publish their
+// consequences; aborting a read cannot undo a write that the server has committed.
+function useWorkspaceWrite<Args extends unknown[], T>(
+  write: (...args: Args) => Promise<{ result: T; publish: () => void }>, recovery: string,
+) {
+  const active = useRef(false)
+  const locked = useRef(false)
+  const [state, setState] = useState<{ pending: boolean; error: string; data: T | null }>({
+    pending: false, error: '', data: null,
+  })
+  useEffect(() => {
+    active.current = true
+    return () => { active.current = false }
+  }, [])
+  async function execute(...args: Args): Promise<T | null> {
+    if (locked.current || !active.current) return null
+    locked.current = true
+    setState({ pending: true, error: '', data: null })
+    try {
+      const { result, publish } = await write(...args)
+      if (!active.current) return null
+      publish()
+      setState({ pending: false, error: '', data: result })
+      return result
+    } catch (error) {
+      if (active.current) setState({ pending: false, data: null,
+        error: `${errorMessage(error)} If the connection was interrupted, ${recovery} before retrying.`,
+      })
+      return null
+    } finally {
+      locked.current = false
+    }
+  }
+  return { ...state, execute }
+}
