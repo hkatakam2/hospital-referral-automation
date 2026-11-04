@@ -238,6 +238,12 @@ curl --fail-with-body -X POST \
 Apply the latest migration first (`cd backend` then `alembic upgrade head` in
 its virtual environment). `POST` returns `201` with a new immutable extraction
 run; `GET /api/referrals/{referral_id}/extractions/{extraction_id}` retrieves it.
+List saved run summaries with `GET /api/referrals/{referral_id}/extractions`.
+Summaries omit field candidates and evidence, include source document IDs and
+versions, and are ordered newest first (creation time, then UUID descending).
+An existing referral with no runs returns `[]`; an unknown referral returns `404`.
+Use the run detail endpoint to load its evidence.
+
 An unknown referral or scoped extraction returns `404`; a malformed UUID or
 attempt to extract before attaching documents returns `422`.
 

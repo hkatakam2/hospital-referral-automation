@@ -140,3 +140,34 @@ def test_commit_failure_rolls_back_run_and_links(client, pdf_factory, db_engine,
         assert session.scalar(select(func.count()).select_from(ExtractionRunRecord)) == 0
         assert session.scalar(select(func.count()).select_from(ExtractionRunDocumentRecord)) == 0
         assert service.run(referral["id"]).id
+
+
+def test_list_runs_is_scoped_newest_first_and_omits_evidence(client, pdf_factory, db_engine):
+    referral = client.post("/api/referrals", json=DATA).json()
+    base = f"/api/referrals/{referral['id']}"
+    assert client.get(base + "/extractions").json() == []
+    attach(client, base, pdf_factory, ("Patient: Avery Morgan",))
+    first = client.post(base + "/extractions").json()
+    second = client.post(base + "/extractions").json()
+    response = client.get(base + "/extractions")
+    assert response.status_code == 200
+    runs = response.json()
+    assert [run["id"] for run in runs] == [second["id"], first["id"]]
+    assert runs[0] == {key: second[key] for key in (
+        "id", "referral_id", "extractor_version", "checklist_version", "created_at",
+        "source_document_ids", "complete",
+    )}
+    other = client.post("/api/referrals", json=DATA).json()["id"]
+    assert client.get(f"/api/referrals/{other}/extractions").json() == []
+    assert client.get(f"/api/referrals/{uuid4()}/extractions").status_code == 404
+    assert client.get("/api/referrals/not-a-uuid/extractions").status_code == 422
+
+    # Tied timestamps still have a deterministic UUID tie-breaker.
+    with Session(db_engine) as session:
+        records = session.scalars(select(ExtractionRunRecord)).all()
+        for record in records:
+            record.created_at = records[0].created_at
+        session.commit()
+    assert [run["id"] for run in client.get(base + "/extractions").json()] == sorted(
+        [first["id"], second["id"]], reverse=True,
+    )

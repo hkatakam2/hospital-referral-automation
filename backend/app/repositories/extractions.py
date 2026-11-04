@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models.extraction import ExtractionRunDocumentRecord, ExtractionRunRecord
-from app.schemas.extraction import ExtractionDetail
+from app.schemas.extraction import ExtractionDetail, ExtractionSummary
 
 
 class ExtractionRepository:
@@ -29,3 +29,10 @@ class ExtractionRepository:
             ExtractionRunRecord.id == extraction_id, ExtractionRunRecord.referral_id == referral_id,
         ))
         return ExtractionDetail.model_validate(record.result_json) if record else None
+
+    def list(self, referral_id: UUID) -> list[ExtractionSummary]:
+        records = self.session.scalars(
+            select(ExtractionRunRecord).where(ExtractionRunRecord.referral_id == referral_id)
+            .order_by(ExtractionRunRecord.created_at.desc(), ExtractionRunRecord.id.desc())
+        )
+        return [ExtractionSummary.model_validate(record.result_json) for record in records]

@@ -55,3 +55,13 @@ class ExtractionDetail(BaseModel):
     findings: list[Finding]
     warnings: list[str]
     complete: bool
+
+
+class ExtractionSummary(BaseModel):
+    id: UUID
+    referral_id: UUID
+    extractor_version: str
+    checklist_version: str
+    created_at: datetime
+    source_document_ids: list[UUID]
+    complete: bool
