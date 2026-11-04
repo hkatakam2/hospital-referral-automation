@@ -13,3 +13,6 @@ dist/
 *.tsbuildinfo
 *.log
 backend/var/
+
+frontend/test-results/
+frontend/playwright-report/
