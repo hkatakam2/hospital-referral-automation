@@ -321,6 +321,27 @@ browser review panel can copy suggestions into an explicit correction draft.
 The synthetic fixture expectations also cover automated extraction in
 `tests/test_extractions.py`.
 
+## Extraction quality evaluation
+
+A versioned corpus of 30 independently annotated synthetic source-text packets
+measures the rule-based extractor and shared five-field assessment offline:
+
+```sh
+cd backend
+.venv/bin/python -m app.evaluation --output evaluation-results
+```
+
+The command needs no PostgreSQL, browser, network, or credentials. It writes JSON
+and Markdown with per-field and per-document-type quality metrics, explicit
+numerators/denominators, evidence agreement, processing latency, and failure
+examples. Narrative and alternate-format packets deliberately expose baseline
+limitations. This evaluates parsed text rather than PDF parsing or OCR.
+
+See the [evaluation scoring contract](backend/app/evaluation/README.md),
+[dataset annotation rules](backend/app/evaluation/data/README.md), and
+[committed baseline](backend/reports/extraction-baseline-v1/report.md).
+The curated dataset is a challenge set, not an estimate of clinical performance.
+
 ## Project layout
 
 ```text
