@@ -177,3 +177,17 @@ network calls are later increments; this CLI requires no database or server.
 
 Provider contract references: [Gemini structured outputs](https://ai.google.dev/gemini-api/docs/structured-output)
 and [generateContent API and usage metadata](https://ai.google.dev/api/generate-content).
+
+
+## Retained live comparison
+
+The first 30-packet Gemini run is retained in
+[`reports/extraction-gemini-v1`](../../reports/extraction-gemini-v1/comparison.md).
+It records the unchanged dataset/scoring contract, measured gains and regressions,
+latency, usage, and the remaining normalization/finding discrepancies.
+
+Process environment variables take precedence over `.env`. If a refreshed file key
+is still rejected, check for a stale `GEMINI_API_KEY` export. With the intended key
+stored in `backend/.env`, run `env -u GEMINI_API_KEY .venv/bin/python -m app.evaluation
+--extractor gemini --output evaluation-results/gemini-new-run` from `backend/`.
+Do not print the key while diagnosing configuration.

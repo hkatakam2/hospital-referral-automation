@@ -1,0 +1,5430 @@
+{
+  "report_schema_version": 2,
+  "dataset_version": "synthetic-referrals/1",
+  "dataset_sha256": "e9c52a8214d43b92ab11674a1b06251ac5806bb01b9a4194910486470f2e2f66",
+  "extractor_version": "gemini-claims/1",
+  "checklist_version": "five-required-fields/2",
+  "python_version": "3.13.12",
+  "packet_count": 30,
+  "overall": {
+    "counts": {
+      "conflicting_fn": 0,
+      "conflicting_fp": 0,
+      "conflicting_tp": 3,
+      "evidence_fn": 1,
+      "evidence_fp": 0,
+      "evidence_tp": 153,
+      "exact_matches": 147,
+      "fields": 150,
+      "invalid_fn": 1,
+      "invalid_fp": 1,
+      "invalid_tp": 3,
+      "missing_fn": 0,
+      "missing_fp": 1,
+      "missing_tp": 6,
+      "status_matches": 148,
+      "value_fn": 3,
+      "value_fp": 2,
+      "value_tp": 134
+    },
+    "metrics": {
+      "exact_match_accuracy": {
+        "numerator": 147,
+        "denominator": 150,
+        "rate": 0.98
+      },
+      "finding_accuracy": {
+        "numerator": 148,
+        "denominator": 150,
+        "rate": 0.9866666666666667
+      },
+      "value_precision": {
+        "numerator": 134,
+        "denominator": 136,
+        "rate": 0.9852941176470589
+      },
+      "value_recall": {
+        "numerator": 134,
+        "denominator": 137,
+        "rate": 0.9781021897810219
+      },
+      "evidence_precision": {
+        "numerator": 153,
+        "denominator": 153,
+        "rate": 1.0
+      },
+      "evidence_recall": {
+        "numerator": 153,
+        "denominator": 154,
+        "rate": 0.9935064935064936
+      },
+      "missing_precision": {
+        "numerator": 6,
+        "denominator": 7,
+        "rate": 0.8571428571428571
+      },
+      "missing_recall": {
+        "numerator": 6,
+        "denominator": 6,
+        "rate": 1.0
+      },
+      "conflicting_precision": {
+        "numerator": 3,
+        "denominator": 3,
+        "rate": 1.0
+      },
+      "conflicting_recall": {
+        "numerator": 3,
+        "denominator": 3,
+        "rate": 1.0
+      },
+      "invalid_precision": {
+        "numerator": 3,
+        "denominator": 4,
+        "rate": 0.75
+      },
+      "invalid_recall": {
+        "numerator": 3,
+        "denominator": 4,
+        "rate": 0.75
+      },
+      "false_completeness_rate": {
+        "numerator": 0,
+        "denominator": 15,
+        "rate": 0.0
+      },
+      "packet_completeness_accuracy": {
+        "numerator": 29,
+        "denominator": 30,
+        "rate": 0.9666666666666667
+      }
+    }
+  },
+  "by_field": {
+    "patient_name": {
+      "counts": {
+        "conflicting_fn": 0,
+        "conflicting_fp": 0,
+        "conflicting_tp": 1,
+        "evidence_fn": 0,
+        "evidence_fp": 0,
+        "evidence_tp": 31,
+        "exact_matches": 30,
+        "fields": 30,
+        "invalid_fn": 0,
+        "invalid_fp": 0,
+        "invalid_tp": 0,
+        "missing_fn": 0,
+        "missing_fp": 0,
+        "missing_tp": 1,
+        "status_matches": 30,
+        "value_fn": 0,
+        "value_fp": 0,
+        "value_tp": 28
+      },
+      "metrics": {
+        "exact_match_accuracy": {
+          "numerator": 30,
+          "denominator": 30,
+          "rate": 1.0
+        },
+        "finding_accuracy": {
+          "numerator": 30,
+          "denominator": 30,
+          "rate": 1.0
+        },
+        "value_precision": {
+          "numerator": 28,
+          "denominator": 28,
+          "rate": 1.0
+        },
+        "value_recall": {
+          "numerator": 28,
+          "denominator": 28,
+          "rate": 1.0
+        },
+        "evidence_precision": {
+          "numerator": 31,
+          "denominator": 31,
+          "rate": 1.0
+        },
+        "evidence_recall": {
+          "numerator": 31,
+          "denominator": 31,
+          "rate": 1.0
+        },
+        "missing_precision": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "missing_recall": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "conflicting_precision": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "conflicting_recall": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "invalid_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        }
+      }
+    },
+    "date_of_birth": {
+      "counts": {
+        "conflicting_fn": 0,
+        "conflicting_fp": 0,
+        "conflicting_tp": 1,
+        "evidence_fn": 1,
+        "evidence_fp": 0,
+        "evidence_tp": 31,
+        "exact_matches": 29,
+        "fields": 30,
+        "invalid_fn": 1,
+        "invalid_fp": 1,
+        "invalid_tp": 2,
+        "missing_fn": 0,
+        "missing_fp": 1,
+        "missing_tp": 1,
+        "status_matches": 28,
+        "value_fn": 1,
+        "value_fp": 0,
+        "value_tp": 24
+      },
+      "metrics": {
+        "exact_match_accuracy": {
+          "numerator": 29,
+          "denominator": 30,
+          "rate": 0.9666666666666667
+        },
+        "finding_accuracy": {
+          "numerator": 28,
+          "denominator": 30,
+          "rate": 0.9333333333333333
+        },
+        "value_precision": {
+          "numerator": 24,
+          "denominator": 24,
+          "rate": 1.0
+        },
+        "value_recall": {
+          "numerator": 24,
+          "denominator": 25,
+          "rate": 0.96
+        },
+        "evidence_precision": {
+          "numerator": 31,
+          "denominator": 31,
+          "rate": 1.0
+        },
+        "evidence_recall": {
+          "numerator": 31,
+          "denominator": 32,
+          "rate": 0.96875
+        },
+        "missing_precision": {
+          "numerator": 1,
+          "denominator": 2,
+          "rate": 0.5
+        },
+        "missing_recall": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "conflicting_precision": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "conflicting_recall": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "invalid_precision": {
+          "numerator": 2,
+          "denominator": 3,
+          "rate": 0.6666666666666666
+        },
+        "invalid_recall": {
+          "numerator": 2,
+          "denominator": 3,
+          "rate": 0.6666666666666666
+        }
+      }
+    },
+    "referring_organization": {
+      "counts": {
+        "conflicting_fn": 0,
+        "conflicting_fp": 0,
+        "conflicting_tp": 0,
+        "evidence_fn": 0,
+        "evidence_fp": 0,
+        "evidence_tp": 29,
+        "exact_matches": 30,
+        "fields": 30,
+        "invalid_fn": 0,
+        "invalid_fp": 0,
+        "invalid_tp": 0,
+        "missing_fn": 0,
+        "missing_fp": 0,
+        "missing_tp": 2,
+        "status_matches": 30,
+        "value_fn": 0,
+        "value_fp": 0,
+        "value_tp": 28
+      },
+      "metrics": {
+        "exact_match_accuracy": {
+          "numerator": 30,
+          "denominator": 30,
+          "rate": 1.0
+        },
+        "finding_accuracy": {
+          "numerator": 30,
+          "denominator": 30,
+          "rate": 1.0
+        },
+        "value_precision": {
+          "numerator": 28,
+          "denominator": 28,
+          "rate": 1.0
+        },
+        "value_recall": {
+          "numerator": 28,
+          "denominator": 28,
+          "rate": 1.0
+        },
+        "evidence_precision": {
+          "numerator": 29,
+          "denominator": 29,
+          "rate": 1.0
+        },
+        "evidence_recall": {
+          "numerator": 29,
+          "denominator": 29,
+          "rate": 1.0
+        },
+        "missing_precision": {
+          "numerator": 2,
+          "denominator": 2,
+          "rate": 1.0
+        },
+        "missing_recall": {
+          "numerator": 2,
+          "denominator": 2,
+          "rate": 1.0
+        },
+        "conflicting_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "conflicting_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        }
+      }
+    },
+    "requested_specialty": {
+      "counts": {
+        "conflicting_fn": 0,
+        "conflicting_fp": 0,
+        "conflicting_tp": 0,
+        "evidence_fn": 0,
+        "evidence_fp": 0,
+        "evidence_tp": 31,
+        "exact_matches": 30,
+        "fields": 30,
+        "invalid_fn": 0,
+        "invalid_fp": 0,
+        "invalid_tp": 1,
+        "missing_fn": 0,
+        "missing_fp": 0,
+        "missing_tp": 1,
+        "status_matches": 30,
+        "value_fn": 0,
+        "value_fp": 0,
+        "value_tp": 28
+      },
+      "metrics": {
+        "exact_match_accuracy": {
+          "numerator": 30,
+          "denominator": 30,
+          "rate": 1.0
+        },
+        "finding_accuracy": {
+          "numerator": 30,
+          "denominator": 30,
+          "rate": 1.0
+        },
+        "value_precision": {
+          "numerator": 28,
+          "denominator": 28,
+          "rate": 1.0
+        },
+        "value_recall": {
+          "numerator": 28,
+          "denominator": 28,
+          "rate": 1.0
+        },
+        "evidence_precision": {
+          "numerator": 31,
+          "denominator": 31,
+          "rate": 1.0
+        },
+        "evidence_recall": {
+          "numerator": 31,
+          "denominator": 31,
+          "rate": 1.0
+        },
+        "missing_precision": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "missing_recall": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "conflicting_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "conflicting_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_precision": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "invalid_recall": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        }
+      }
+    },
+    "referral_reason": {
+      "counts": {
+        "conflicting_fn": 0,
+        "conflicting_fp": 0,
+        "conflicting_tp": 1,
+        "evidence_fn": 0,
+        "evidence_fp": 0,
+        "evidence_tp": 31,
+        "exact_matches": 28,
+        "fields": 30,
+        "invalid_fn": 0,
+        "invalid_fp": 0,
+        "invalid_tp": 0,
+        "missing_fn": 0,
+        "missing_fp": 0,
+        "missing_tp": 1,
+        "status_matches": 30,
+        "value_fn": 2,
+        "value_fp": 2,
+        "value_tp": 26
+      },
+      "metrics": {
+        "exact_match_accuracy": {
+          "numerator": 28,
+          "denominator": 30,
+          "rate": 0.9333333333333333
+        },
+        "finding_accuracy": {
+          "numerator": 30,
+          "denominator": 30,
+          "rate": 1.0
+        },
+        "value_precision": {
+          "numerator": 26,
+          "denominator": 28,
+          "rate": 0.9285714285714286
+        },
+        "value_recall": {
+          "numerator": 26,
+          "denominator": 28,
+          "rate": 0.9285714285714286
+        },
+        "evidence_precision": {
+          "numerator": 31,
+          "denominator": 31,
+          "rate": 1.0
+        },
+        "evidence_recall": {
+          "numerator": 31,
+          "denominator": 31,
+          "rate": 1.0
+        },
+        "missing_precision": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "missing_recall": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "conflicting_precision": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "conflicting_recall": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "invalid_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        }
+      }
+    }
+  },
+  "by_document_type": {
+    "alternate_format": {
+      "counts": {
+        "conflicting_fn": 0,
+        "conflicting_fp": 0,
+        "conflicting_tp": 0,
+        "evidence_fn": 0,
+        "evidence_fp": 0,
+        "evidence_tp": 25,
+        "exact_matches": 24,
+        "fields": 25,
+        "invalid_fn": 0,
+        "invalid_fp": 1,
+        "invalid_tp": 0,
+        "missing_fn": 0,
+        "missing_fp": 0,
+        "missing_tp": 0,
+        "status_matches": 24,
+        "value_fn": 1,
+        "value_fp": 0,
+        "value_tp": 24
+      },
+      "metrics": {
+        "exact_match_accuracy": {
+          "numerator": 24,
+          "denominator": 25,
+          "rate": 0.96
+        },
+        "finding_accuracy": {
+          "numerator": 24,
+          "denominator": 25,
+          "rate": 0.96
+        },
+        "value_precision": {
+          "numerator": 24,
+          "denominator": 24,
+          "rate": 1.0
+        },
+        "value_recall": {
+          "numerator": 24,
+          "denominator": 25,
+          "rate": 0.96
+        },
+        "evidence_precision": {
+          "numerator": 25,
+          "denominator": 25,
+          "rate": 1.0
+        },
+        "evidence_recall": {
+          "numerator": 25,
+          "denominator": 25,
+          "rate": 1.0
+        },
+        "missing_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "missing_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "conflicting_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "conflicting_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_precision": {
+          "numerator": 0,
+          "denominator": 1,
+          "rate": 0.0
+        },
+        "invalid_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "false_completeness_rate": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "packet_completeness_accuracy": {
+          "numerator": 4,
+          "denominator": 5,
+          "rate": 0.8
+        }
+      }
+    },
+    "conflicting": {
+      "counts": {
+        "conflicting_fn": 0,
+        "conflicting_fp": 0,
+        "conflicting_tp": 3,
+        "evidence_fn": 0,
+        "evidence_fp": 0,
+        "evidence_tp": 24,
+        "exact_matches": 20,
+        "fields": 20,
+        "invalid_fn": 0,
+        "invalid_fp": 0,
+        "invalid_tp": 1,
+        "missing_fn": 0,
+        "missing_fp": 0,
+        "missing_tp": 0,
+        "status_matches": 20,
+        "value_fn": 0,
+        "value_fp": 0,
+        "value_tp": 16
+      },
+      "metrics": {
+        "exact_match_accuracy": {
+          "numerator": 20,
+          "denominator": 20,
+          "rate": 1.0
+        },
+        "finding_accuracy": {
+          "numerator": 20,
+          "denominator": 20,
+          "rate": 1.0
+        },
+        "value_precision": {
+          "numerator": 16,
+          "denominator": 16,
+          "rate": 1.0
+        },
+        "value_recall": {
+          "numerator": 16,
+          "denominator": 16,
+          "rate": 1.0
+        },
+        "evidence_precision": {
+          "numerator": 24,
+          "denominator": 24,
+          "rate": 1.0
+        },
+        "evidence_recall": {
+          "numerator": 24,
+          "denominator": 24,
+          "rate": 1.0
+        },
+        "missing_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "missing_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "conflicting_precision": {
+          "numerator": 3,
+          "denominator": 3,
+          "rate": 1.0
+        },
+        "conflicting_recall": {
+          "numerator": 3,
+          "denominator": 3,
+          "rate": 1.0
+        },
+        "invalid_precision": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "invalid_recall": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "false_completeness_rate": {
+          "numerator": 0,
+          "denominator": 4,
+          "rate": 0.0
+        },
+        "packet_completeness_accuracy": {
+          "numerator": 4,
+          "denominator": 4,
+          "rate": 1.0
+        }
+      }
+    },
+    "invalid": {
+      "counts": {
+        "conflicting_fn": 0,
+        "conflicting_fp": 0,
+        "conflicting_tp": 0,
+        "evidence_fn": 1,
+        "evidence_fp": 0,
+        "evidence_tp": 14,
+        "exact_matches": 15,
+        "fields": 15,
+        "invalid_fn": 1,
+        "invalid_fp": 0,
+        "invalid_tp": 2,
+        "missing_fn": 0,
+        "missing_fp": 1,
+        "missing_tp": 0,
+        "status_matches": 14,
+        "value_fn": 0,
+        "value_fp": 0,
+        "value_tp": 12
+      },
+      "metrics": {
+        "exact_match_accuracy": {
+          "numerator": 15,
+          "denominator": 15,
+          "rate": 1.0
+        },
+        "finding_accuracy": {
+          "numerator": 14,
+          "denominator": 15,
+          "rate": 0.9333333333333333
+        },
+        "value_precision": {
+          "numerator": 12,
+          "denominator": 12,
+          "rate": 1.0
+        },
+        "value_recall": {
+          "numerator": 12,
+          "denominator": 12,
+          "rate": 1.0
+        },
+        "evidence_precision": {
+          "numerator": 14,
+          "denominator": 14,
+          "rate": 1.0
+        },
+        "evidence_recall": {
+          "numerator": 14,
+          "denominator": 15,
+          "rate": 0.9333333333333333
+        },
+        "missing_precision": {
+          "numerator": 0,
+          "denominator": 1,
+          "rate": 0.0
+        },
+        "missing_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "conflicting_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "conflicting_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_precision": {
+          "numerator": 2,
+          "denominator": 2,
+          "rate": 1.0
+        },
+        "invalid_recall": {
+          "numerator": 2,
+          "denominator": 3,
+          "rate": 0.6666666666666666
+        },
+        "false_completeness_rate": {
+          "numerator": 0,
+          "denominator": 3,
+          "rate": 0.0
+        },
+        "packet_completeness_accuracy": {
+          "numerator": 3,
+          "denominator": 3,
+          "rate": 1.0
+        }
+      }
+    },
+    "labeled": {
+      "counts": {
+        "conflicting_fn": 0,
+        "conflicting_fp": 0,
+        "conflicting_tp": 0,
+        "evidence_fn": 0,
+        "evidence_fp": 0,
+        "evidence_tp": 25,
+        "exact_matches": 25,
+        "fields": 25,
+        "invalid_fn": 0,
+        "invalid_fp": 0,
+        "invalid_tp": 0,
+        "missing_fn": 0,
+        "missing_fp": 0,
+        "missing_tp": 0,
+        "status_matches": 25,
+        "value_fn": 0,
+        "value_fp": 0,
+        "value_tp": 25
+      },
+      "metrics": {
+        "exact_match_accuracy": {
+          "numerator": 25,
+          "denominator": 25,
+          "rate": 1.0
+        },
+        "finding_accuracy": {
+          "numerator": 25,
+          "denominator": 25,
+          "rate": 1.0
+        },
+        "value_precision": {
+          "numerator": 25,
+          "denominator": 25,
+          "rate": 1.0
+        },
+        "value_recall": {
+          "numerator": 25,
+          "denominator": 25,
+          "rate": 1.0
+        },
+        "evidence_precision": {
+          "numerator": 25,
+          "denominator": 25,
+          "rate": 1.0
+        },
+        "evidence_recall": {
+          "numerator": 25,
+          "denominator": 25,
+          "rate": 1.0
+        },
+        "missing_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "missing_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "conflicting_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "conflicting_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "false_completeness_rate": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "packet_completeness_accuracy": {
+          "numerator": 5,
+          "denominator": 5,
+          "rate": 1.0
+        }
+      }
+    },
+    "missing": {
+      "counts": {
+        "conflicting_fn": 0,
+        "conflicting_fp": 0,
+        "conflicting_tp": 0,
+        "evidence_fn": 0,
+        "evidence_fp": 0,
+        "evidence_tp": 20,
+        "exact_matches": 25,
+        "fields": 25,
+        "invalid_fn": 0,
+        "invalid_fp": 0,
+        "invalid_tp": 0,
+        "missing_fn": 0,
+        "missing_fp": 0,
+        "missing_tp": 5,
+        "status_matches": 25,
+        "value_fn": 0,
+        "value_fp": 0,
+        "value_tp": 20
+      },
+      "metrics": {
+        "exact_match_accuracy": {
+          "numerator": 25,
+          "denominator": 25,
+          "rate": 1.0
+        },
+        "finding_accuracy": {
+          "numerator": 25,
+          "denominator": 25,
+          "rate": 1.0
+        },
+        "value_precision": {
+          "numerator": 20,
+          "denominator": 20,
+          "rate": 1.0
+        },
+        "value_recall": {
+          "numerator": 20,
+          "denominator": 20,
+          "rate": 1.0
+        },
+        "evidence_precision": {
+          "numerator": 20,
+          "denominator": 20,
+          "rate": 1.0
+        },
+        "evidence_recall": {
+          "numerator": 20,
+          "denominator": 20,
+          "rate": 1.0
+        },
+        "missing_precision": {
+          "numerator": 5,
+          "denominator": 5,
+          "rate": 1.0
+        },
+        "missing_recall": {
+          "numerator": 5,
+          "denominator": 5,
+          "rate": 1.0
+        },
+        "conflicting_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "conflicting_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "false_completeness_rate": {
+          "numerator": 0,
+          "denominator": 5,
+          "rate": 0.0
+        },
+        "packet_completeness_accuracy": {
+          "numerator": 5,
+          "denominator": 5,
+          "rate": 1.0
+        }
+      }
+    },
+    "multipage": {
+      "counts": {
+        "conflicting_fn": 0,
+        "conflicting_fp": 0,
+        "conflicting_tp": 0,
+        "evidence_fn": 0,
+        "evidence_fp": 0,
+        "evidence_tp": 11,
+        "exact_matches": 10,
+        "fields": 10,
+        "invalid_fn": 0,
+        "invalid_fp": 0,
+        "invalid_tp": 0,
+        "missing_fn": 0,
+        "missing_fp": 0,
+        "missing_tp": 0,
+        "status_matches": 10,
+        "value_fn": 0,
+        "value_fp": 0,
+        "value_tp": 10
+      },
+      "metrics": {
+        "exact_match_accuracy": {
+          "numerator": 10,
+          "denominator": 10,
+          "rate": 1.0
+        },
+        "finding_accuracy": {
+          "numerator": 10,
+          "denominator": 10,
+          "rate": 1.0
+        },
+        "value_precision": {
+          "numerator": 10,
+          "denominator": 10,
+          "rate": 1.0
+        },
+        "value_recall": {
+          "numerator": 10,
+          "denominator": 10,
+          "rate": 1.0
+        },
+        "evidence_precision": {
+          "numerator": 11,
+          "denominator": 11,
+          "rate": 1.0
+        },
+        "evidence_recall": {
+          "numerator": 11,
+          "denominator": 11,
+          "rate": 1.0
+        },
+        "missing_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "missing_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "conflicting_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "conflicting_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "false_completeness_rate": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "packet_completeness_accuracy": {
+          "numerator": 2,
+          "denominator": 2,
+          "rate": 1.0
+        }
+      }
+    },
+    "multiple_documents": {
+      "counts": {
+        "conflicting_fn": 0,
+        "conflicting_fp": 0,
+        "conflicting_tp": 0,
+        "evidence_fn": 0,
+        "evidence_fp": 0,
+        "evidence_tp": 15,
+        "exact_matches": 10,
+        "fields": 10,
+        "invalid_fn": 0,
+        "invalid_fp": 0,
+        "invalid_tp": 0,
+        "missing_fn": 0,
+        "missing_fp": 0,
+        "missing_tp": 0,
+        "status_matches": 10,
+        "value_fn": 0,
+        "value_fp": 0,
+        "value_tp": 10
+      },
+      "metrics": {
+        "exact_match_accuracy": {
+          "numerator": 10,
+          "denominator": 10,
+          "rate": 1.0
+        },
+        "finding_accuracy": {
+          "numerator": 10,
+          "denominator": 10,
+          "rate": 1.0
+        },
+        "value_precision": {
+          "numerator": 10,
+          "denominator": 10,
+          "rate": 1.0
+        },
+        "value_recall": {
+          "numerator": 10,
+          "denominator": 10,
+          "rate": 1.0
+        },
+        "evidence_precision": {
+          "numerator": 15,
+          "denominator": 15,
+          "rate": 1.0
+        },
+        "evidence_recall": {
+          "numerator": 15,
+          "denominator": 15,
+          "rate": 1.0
+        },
+        "missing_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "missing_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "conflicting_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "conflicting_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "false_completeness_rate": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "packet_completeness_accuracy": {
+          "numerator": 2,
+          "denominator": 2,
+          "rate": 1.0
+        }
+      }
+    },
+    "narrative": {
+      "counts": {
+        "conflicting_fn": 0,
+        "conflicting_fp": 0,
+        "conflicting_tp": 0,
+        "evidence_fn": 0,
+        "evidence_fp": 0,
+        "evidence_tp": 9,
+        "exact_matches": 8,
+        "fields": 10,
+        "invalid_fn": 0,
+        "invalid_fp": 0,
+        "invalid_tp": 0,
+        "missing_fn": 0,
+        "missing_fp": 0,
+        "missing_tp": 1,
+        "status_matches": 10,
+        "value_fn": 2,
+        "value_fp": 2,
+        "value_tp": 7
+      },
+      "metrics": {
+        "exact_match_accuracy": {
+          "numerator": 8,
+          "denominator": 10,
+          "rate": 0.8
+        },
+        "finding_accuracy": {
+          "numerator": 10,
+          "denominator": 10,
+          "rate": 1.0
+        },
+        "value_precision": {
+          "numerator": 7,
+          "denominator": 9,
+          "rate": 0.7777777777777778
+        },
+        "value_recall": {
+          "numerator": 7,
+          "denominator": 9,
+          "rate": 0.7777777777777778
+        },
+        "evidence_precision": {
+          "numerator": 9,
+          "denominator": 9,
+          "rate": 1.0
+        },
+        "evidence_recall": {
+          "numerator": 9,
+          "denominator": 9,
+          "rate": 1.0
+        },
+        "missing_precision": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "missing_recall": {
+          "numerator": 1,
+          "denominator": 1,
+          "rate": 1.0
+        },
+        "conflicting_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "conflicting_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "false_completeness_rate": {
+          "numerator": 0,
+          "denominator": 1,
+          "rate": 0.0
+        },
+        "packet_completeness_accuracy": {
+          "numerator": 2,
+          "denominator": 2,
+          "rate": 1.0
+        }
+      }
+    },
+    "partial": {
+      "counts": {
+        "conflicting_fn": 0,
+        "conflicting_fp": 0,
+        "conflicting_tp": 0,
+        "evidence_fn": 0,
+        "evidence_fp": 0,
+        "evidence_tp": 10,
+        "exact_matches": 10,
+        "fields": 10,
+        "invalid_fn": 0,
+        "invalid_fp": 0,
+        "invalid_tp": 0,
+        "missing_fn": 0,
+        "missing_fp": 0,
+        "missing_tp": 0,
+        "status_matches": 10,
+        "value_fn": 0,
+        "value_fp": 0,
+        "value_tp": 10
+      },
+      "metrics": {
+        "exact_match_accuracy": {
+          "numerator": 10,
+          "denominator": 10,
+          "rate": 1.0
+        },
+        "finding_accuracy": {
+          "numerator": 10,
+          "denominator": 10,
+          "rate": 1.0
+        },
+        "value_precision": {
+          "numerator": 10,
+          "denominator": 10,
+          "rate": 1.0
+        },
+        "value_recall": {
+          "numerator": 10,
+          "denominator": 10,
+          "rate": 1.0
+        },
+        "evidence_precision": {
+          "numerator": 10,
+          "denominator": 10,
+          "rate": 1.0
+        },
+        "evidence_recall": {
+          "numerator": 10,
+          "denominator": 10,
+          "rate": 1.0
+        },
+        "missing_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "missing_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "conflicting_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "conflicting_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "invalid_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "false_completeness_rate": {
+          "numerator": 0,
+          "denominator": 2,
+          "rate": 0.0
+        },
+        "packet_completeness_accuracy": {
+          "numerator": 2,
+          "denominator": 2,
+          "rate": 1.0
+        }
+      }
+    }
+  },
+  "latency_ms": {
+    "scope": "One in-process extraction plus assessment per packet; no warmup, dataset IO or scoring; includes provider IO when selected",
+    "samples": 30,
+    "mean": 7831.601466634311,
+    "p50": 7739.915770944208,
+    "p95": 11931.522667058744,
+    "min": 5512.646957999095,
+    "max": 12602.01987507753
+  },
+  "execution": {
+    "source_checks": {
+      "checked": 148,
+      "rejected": 0
+    },
+    "pricing": null,
+    "estimated_total_cost": null,
+    "request_ms": [
+      7769.021167070605,
+      7647.821459104307,
+      8160.732874996029,
+      10532.96083305031,
+      6130.461166030727,
+      6338.552542030811,
+      6272.100583068095,
+      12600.65879195463,
+      10400.828375015408,
+      5511.5630000364035,
+      6210.7392500620335,
+      5770.293249981478,
+      7702.164666960016,
+      7781.08104201965,
+      5840.574542060494,
+      8965.07933398243,
+      7550.47612497583,
+      8283.782582962885,
+      8239.720499957912,
+      8707.605791976675,
+      11925.74133304879,
+      6897.517083096318,
+      9197.341584018432,
+      6144.058916950598,
+      5966.927249915898,
+      9255.598624935374,
+      5943.782166927122,
+      6937.397583038546,
+      8208.511083968915,
+      7987.307333969511
+    ]
+  },
+  "packets": [
+    {
+      "packet_id": "standard-labels",
+      "document_type": "labeled",
+      "expected_complete": true,
+      "actual_complete": true,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 7769.021167070605,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 307,
+          "candidatesTokenCount": 425,
+          "totalTokenCount": 1237,
+          "thoughtsTokenCount": 505
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "long-labels",
+      "document_type": "labeled",
+      "expected_complete": true,
+      "actual_complete": true,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 7647.821459104307,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 311,
+          "candidatesTokenCount": 429,
+          "totalTokenCount": 1117,
+          "thoughtsTokenCount": 377
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "lowercase-labels",
+      "document_type": "labeled",
+      "expected_complete": true,
+      "actual_complete": true,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 8160.732874996029,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 307,
+          "candidatesTokenCount": 425,
+          "totalTokenCount": 1353,
+          "thoughtsTokenCount": 621
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "extra-whitespace",
+      "document_type": "labeled",
+      "expected_complete": true,
+      "actual_complete": true,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 10532.96083305031,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 325,
+          "candidatesTokenCount": 443,
+          "totalTokenCount": 1533,
+          "thoughtsTokenCount": 765
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "requested-service",
+      "document_type": "labeled",
+      "expected_complete": true,
+      "actual_complete": true,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 6130.461166030727,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 308,
+          "candidatesTokenCount": 427,
+          "totalTokenCount": 1069,
+          "thoughtsTokenCount": 334
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "two-page-form",
+      "document_type": "multipage",
+      "expected_complete": true,
+      "actual_complete": true,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 6338.552542030811,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 318,
+          "candidatesTokenCount": 425,
+          "totalTokenCount": 1087,
+          "thoughtsTokenCount": 344
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "split-documents",
+      "document_type": "multiple_documents",
+      "expected_complete": true,
+      "actual_complete": true,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 6272.100583068095,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 371,
+          "candidatesTokenCount": 420,
+          "totalTokenCount": 1164,
+          "thoughtsTokenCount": 373
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "duplicate-documents",
+      "document_type": "multiple_documents",
+      "expected_complete": true,
+      "actual_complete": true,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 2,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 2,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 2,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 2,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 2,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 12600.65879195463,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 416,
+          "candidatesTokenCount": 708,
+          "totalTokenCount": 2272,
+          "thoughtsTokenCount": 1148
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "repeated-equivalent-specialty",
+      "document_type": "multipage",
+      "expected_complete": true,
+      "actual_complete": true,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 2,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 10400.828375015408,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 6,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 325,
+          "candidatesTokenCount": 500,
+          "totalTokenCount": 1631,
+          "thoughtsTokenCount": 806
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "missing-patient_name",
+      "document_type": "missing",
+      "expected_complete": false,
+      "actual_complete": false,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 0,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 0,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 1,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 5511.5630000364035,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 4,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 302,
+          "candidatesTokenCount": 352,
+          "totalTokenCount": 1040,
+          "thoughtsTokenCount": 386
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "missing-date_of_birth",
+      "document_type": "missing",
+      "expected_complete": false,
+      "actual_complete": false,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 0,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 0,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 1,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 6210.7392500620335,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 4,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 293,
+          "candidatesTokenCount": 328,
+          "totalTokenCount": 1139,
+          "thoughtsTokenCount": 518
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "missing-referring_organization",
+      "document_type": "missing",
+      "expected_complete": false,
+      "actual_complete": false,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 0,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 0,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 1,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 5770.293249981478,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 4,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 301,
+          "candidatesTokenCount": 346,
+          "totalTokenCount": 976,
+          "thoughtsTokenCount": 329
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "missing-requested_specialty",
+      "document_type": "missing",
+      "expected_complete": false,
+      "actual_complete": false,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 0,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 0,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 1,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 7702.164666960016,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 4,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 303,
+          "candidatesTokenCount": 354,
+          "totalTokenCount": 1128,
+          "thoughtsTokenCount": 471
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "missing-referral_reason",
+      "document_type": "missing",
+      "expected_complete": false,
+      "actual_complete": false,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 0,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 0,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 1,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 7781.08104201965,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 4,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 302,
+          "candidatesTokenCount": 351,
+          "totalTokenCount": 1307,
+          "thoughtsTokenCount": 654
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "empty-dob",
+      "document_type": "invalid",
+      "expected_complete": false,
+      "actual_complete": false,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 0,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 0,
+          "evidence_tp": 0,
+          "evidence_fp": 0,
+          "evidence_fn": 1,
+          "missing_tp": 0,
+          "missing_fp": 1,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 1
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [
+        {
+          "field": "date_of_birth",
+          "expected_value": null,
+          "actual_value": null,
+          "expected_status": "invalid",
+          "actual_status": "missing",
+          "missing_evidence": [
+            [
+              "00000000-0000-0000-0000-0000000005dc",
+              1,
+              "DOB: "
+            ]
+          ],
+          "unexpected_evidence": []
+        }
+      ],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 5840.574542060494,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 4,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 295,
+          "candidatesTokenCount": 324,
+          "totalTokenCount": 986,
+          "thoughtsTokenCount": 367
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "impossible-dob",
+      "document_type": "invalid",
+      "expected_complete": false,
+      "actual_complete": false,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 0,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 1,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 8965.07933398243,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 307,
+          "candidatesTokenCount": 416,
+          "totalTokenCount": 1431,
+          "thoughtsTokenCount": 708
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "unsupported-specialty",
+      "document_type": "invalid",
+      "expected_complete": false,
+      "actual_complete": false,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 0,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 1,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 7550.47612497583,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 307,
+          "candidatesTokenCount": 647,
+          "totalTokenCount": 1376,
+          "thoughtsTokenCount": 422
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "conflicting-date_of_birth",
+      "document_type": "conflicting",
+      "expected_complete": false,
+      "actual_complete": false,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 0,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 2,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 1,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 8283.782582962885,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 6,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 389,
+          "candidatesTokenCount": 523,
+          "totalTokenCount": 1516,
+          "thoughtsTokenCount": 604
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "conflicting-patient_name",
+      "document_type": "conflicting",
+      "expected_complete": false,
+      "actual_complete": false,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 0,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 2,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 1,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 8239.720499957912,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 6,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 379,
+          "candidatesTokenCount": 498,
+          "totalTokenCount": 1486,
+          "thoughtsTokenCount": 609
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "conflicting-referral_reason",
+      "document_type": "conflicting",
+      "expected_complete": false,
+      "actual_complete": false,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 0,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 2,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 1,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 8707.605791976675,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 6,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 383,
+          "candidatesTokenCount": 509,
+          "totalTokenCount": 1686,
+          "thoughtsTokenCount": 794
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "valid-and-invalid-dob",
+      "document_type": "conflicting",
+      "expected_complete": false,
+      "actual_complete": false,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 0,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 2,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 1,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 11925.74133304879,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 6,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 379,
+          "candidatesTokenCount": 495,
+          "totalTokenCount": 1747,
+          "thoughtsTokenCount": 873
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "blank-second-page",
+      "document_type": "partial",
+      "expected_complete": false,
+      "actual_complete": false,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 6897.517083096318,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 319,
+          "candidatesTokenCount": 425,
+          "totalTokenCount": 1153,
+          "thoughtsTokenCount": 409
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "blank-first-page",
+      "document_type": "partial",
+      "expected_complete": false,
+      "actual_complete": false,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 9197.341584018432,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 319,
+          "candidatesTokenCount": 479,
+          "totalTokenCount": 1569,
+          "thoughtsTokenCount": 771
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "abbreviated-patient",
+      "document_type": "alternate_format",
+      "expected_complete": true,
+      "actual_complete": true,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 6144.058916950598,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 307,
+          "candidatesTokenCount": 425,
+          "totalTokenCount": 1137,
+          "thoughtsTokenCount": 405
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "abbreviated-organization",
+      "document_type": "alternate_format",
+      "expected_complete": true,
+      "actual_complete": true,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 5966.927249915898,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 307,
+          "candidatesTokenCount": 425,
+          "totalTokenCount": 1100,
+          "thoughtsTokenCount": 368
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "us-format-dob",
+      "document_type": "alternate_format",
+      "expected_complete": true,
+      "actual_complete": false,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 0,
+          "value_fp": 0,
+          "value_fn": 1,
+          "exact_matches": 0,
+          "status_matches": 0,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 1,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [
+        {
+          "field": "date_of_birth",
+          "expected_value": "1974-03-12",
+          "actual_value": null,
+          "expected_status": "found",
+          "actual_status": "invalid",
+          "missing_evidence": [],
+          "unexpected_evidence": []
+        }
+      ],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 9255.598624935374,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 307,
+          "candidatesTokenCount": 416,
+          "totalTokenCount": 1261,
+          "thoughtsTokenCount": 538
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "unfamiliar-service-label",
+      "document_type": "alternate_format",
+      "expected_complete": true,
+      "actual_complete": true,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 5943.782166927122,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 307,
+          "candidatesTokenCount": 425,
+          "totalTokenCount": 1136,
+          "thoughtsTokenCount": 404
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "narrative-letter",
+      "document_type": "narrative",
+      "expected_complete": true,
+      "actual_complete": true,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 0,
+          "value_fp": 1,
+          "value_fn": 1,
+          "exact_matches": 0,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [
+        {
+          "field": "referral_reason",
+          "expected_value": "Recurrent palpitations",
+          "actual_value": "recurrent palpitations",
+          "expected_status": "found",
+          "actual_status": "found",
+          "missing_evidence": [],
+          "unexpected_evidence": []
+        }
+      ],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 6937.397583038546,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 295,
+          "candidatesTokenCount": 455,
+          "totalTokenCount": 1243,
+          "thoughtsTokenCount": 493
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "inline-fields",
+      "document_type": "alternate_format",
+      "expected_complete": true,
+      "actual_complete": true,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 8208.511083968915,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 5,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 307,
+          "candidatesTokenCount": 443,
+          "totalTokenCount": 1349,
+          "thoughtsTokenCount": 599
+        },
+        "estimated_cost": null
+      }
+    },
+    {
+      "packet_id": "narrative-missing-organization",
+      "document_type": "narrative",
+      "expected_complete": false,
+      "actual_complete": false,
+      "fields": {
+        "patient_name": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "date_of_birth": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referring_organization": {
+          "fields": 1,
+          "value_tp": 0,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 0,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 1,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "requested_specialty": {
+          "fields": 1,
+          "value_tp": 1,
+          "value_fp": 0,
+          "value_fn": 0,
+          "exact_matches": 1,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        },
+        "referral_reason": {
+          "fields": 1,
+          "value_tp": 0,
+          "value_fp": 1,
+          "value_fn": 1,
+          "exact_matches": 0,
+          "status_matches": 1,
+          "evidence_tp": 1,
+          "evidence_fp": 0,
+          "evidence_fn": 0,
+          "missing_tp": 0,
+          "missing_fp": 0,
+          "missing_fn": 0,
+          "conflicting_tp": 0,
+          "conflicting_fp": 0,
+          "conflicting_fn": 0,
+          "invalid_tp": 0,
+          "invalid_fp": 0,
+          "invalid_fn": 0
+        }
+      },
+      "failures": [
+        {
+          "field": "referral_reason",
+          "expected_value": "Recurrent palpitations",
+          "actual_value": "recurrent palpitations",
+          "expected_status": "found",
+          "actual_status": "found",
+          "missing_evidence": [],
+          "unexpected_evidence": []
+        }
+      ],
+      "execution": {
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 7987.307333969511,
+        "request_config": {
+          "max_output_tokens": 8192,
+          "timeout_seconds": 60.0,
+          "max_input_chars": 100000
+        },
+        "source_checks": {
+          "checked": 4,
+          "rejected": 0
+        },
+        "usage": {
+          "promptTokenCount": 301,
+          "candidatesTokenCount": 344,
+          "totalTokenCount": 1350,
+          "thoughtsTokenCount": 705
+        },
+        "estimated_cost": null
+      }
+    }
+  ]
+}
