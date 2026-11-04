@@ -4,15 +4,10 @@ import { ApiError, errorMessage } from '../api/client'
 import { fieldLabels, fieldNames } from '../api/types'
 import type { FieldName, ReferralInput } from '../api/types'
 
-const empty: ReferralInput = {
-  patient_name: '', date_of_birth: '', referring_organization: '',
-  requested_specialty: 'cardiology', referral_reason: '',
-}
-
-export function ReferralForm({ initial = empty, onSave, submitLabel = 'Create referral' }: {
-  initial?: ReferralInput; onSave: (data: ReferralInput) => Promise<void>; submitLabel?: string
+export function ReferralForm({ value: draft, onChange, onSave, submitLabel = 'Create referral' }: {
+  value: ReferralInput; onChange: (value: ReferralInput) => void
+  onSave: (data: ReferralInput) => Promise<void>; submitLabel?: string
 }) {
-  const [draft, setDraft] = useState<ReferralInput>({ ...initial })
   const [pending, setPending] = useState(false)
   const [error, setError] = useState('')
   const [fields, setFields] = useState<Record<string, string>>({})
@@ -24,7 +19,7 @@ export function ReferralForm({ initial = empty, onSave, submitLabel = 'Create re
     finally { setPending(false) }
   }
   function change(field: FieldName, value: string) {
-    setDraft(current => ({ ...current, [field]: value }))
+    onChange({ ...draft, [field]: value })
   }
   return <form onSubmit={submit}>
     <fieldset disabled={pending}>

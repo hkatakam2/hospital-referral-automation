@@ -50,7 +50,41 @@ npm run dev
 - API health: http://127.0.0.1:8000/api/health
 - Interactive API docs: http://127.0.0.1:8000/docs
 
-The starter page checks the backend connection. Vite forwards `/api` requests to port 8000 during development. Edit `API_PROXY_TARGET` in `frontend/.env` if the backend runs elsewhere. Restart Vite after environment changes.
+Open `/referrals` for the referral inbox. Vite forwards `/api` requests to port
+8000 during development. Edit `API_PROXY_TARGET` in `frontend/.env` if the backend
+runs elsewhere. Restart Vite after environment changes.
+
+## Browser intake and review
+
+Use synthetic data only. From the inbox:
+
+1. Create a referral using the five required fields, or open an existing referral.
+2. Choose a text-based PDF and select **Upload PDF**. Inspect the attached
+   document's numbered page text; partial PDFs retain warnings and textless pages.
+3. Select **Run extraction** to assess all currently attached documents. The
+   browser restores the latest saved run on reload; use **Extraction run** to
+   inspect older snapshots.
+4. Inspect findings and candidates. **View evidence** opens and focuses the cited
+   document/page and shows its exact quote. This viewer displays extracted text,
+   rather than rendering the original PDF.
+5. Edit the correction draft, or use a valid candidate to copy a value into it.
+   Select **Save corrections** to persist only changed fields. Copying a candidate
+   preserves other draft edits. Validation failures retain the draft.
+
+Saved referral values, unsaved corrections, and extraction snapshots are separate.
+Corrections do not rewrite historical candidates or resolve source-text findings.
+An extraction checklist with all five fields found is not approval. New documents
+produce a **Documents changed since this extraction** warning until a new run
+includes them. The warning is derived from saved source IDs and survives reload.
+
+Reads have independent loading/error states and refresh controls. Uploads and
+extractions are explicit synchronous actions, with repeat submissions disabled
+while pending; they are never automatically retried. If the connection fails,
+refresh documents/history before retrying because the server may have committed
+the first request. Each repeated upload or extraction creates a separate record.
+
+Creation still requires manual values before upload. Approval, audit history,
+document-first drafts, OCR, and original-PDF viewing remain later increments.
 
 ## Manual referral intake
 
@@ -276,9 +310,10 @@ The checklist is an illustrative prototype requirement, not institutional policy
 
 Manual referral values never fill extraction gaps and extraction does not update
 them. Creating a referral still requires the five manually entered fields; draft
-or document-first intake, OCR, LLM extraction, and applying suggestions through a
-review UI are later increments. The synthetic fixture expectations now also cover
-automated extraction in `tests/test_extractions.py`.
+or document-first intake, OCR, and LLM extraction are later increments. The
+browser review panel can copy suggestions into an explicit correction draft.
+The synthetic fixture expectations also cover automated extraction in
+`tests/test_extractions.py`.
 
 ## Project layout
 
@@ -306,8 +341,11 @@ backend/
 compose.yaml            # PostgreSQL service and persistent volume
 frontend/
   src/
-    api.ts              # Typed API client
-    App.tsx             # Starter page and connection state
+    api/                # Shared fetch client and typed resource operations
+    App.tsx             # Inbox/detail routes and application shell
+    pages/              # Referral inbox and review workspace
+    components/         # Forms, document text, and extraction panels
+    hooks/              # Independent resources and review selections
     styles.css          # Responsive styles
   vite.config.ts        # Development server and API proxy
 ```
@@ -335,15 +373,39 @@ npm run lint
 npm run build
 ```
 
+Browser workflow checks use Playwright and the real API. After installing the
+backend dev dependencies and starting PostgreSQL:
+
+```sh
+cd frontend
+npm ci
+npx playwright install chromium
+npm run test:e2e
+```
+
+The runner starts Vite on port 5174 and FastAPI on port 8001, creates a random
+`referral_test_browser_*` PostgreSQL database, applies migrations, and uses a
+temporary document directory. Normal shutdown drops only its owned database and
+removes temporary files. Development records and originals are not modified.
+`TEST_DATABASE_URL` optionally selects a dedicated server with `CREATEDB` rights.
+Both ports must be free. Browser checks cover real PDF ingestion/extraction,
+source evidence, missing/conflicting findings, partial pages, saved corrections,
+reload/history recovery, section failures, and obsolete response isolation.
+Playwright traces and screenshots are written under ignored `frontend/test-results/`.
+A forcibly killed runner can leave its temporary database for manual cleanup.
+
 ## Deployment configuration
 
-`npm run build` creates `frontend/dist`. Serve that directory with a static web server. Configure that server to proxy `/api` to FastAPI, or set `VITE_API_BASE_URL` to the API's public origin **before building**. Vite's proxy only runs during development.
+`npm run build` creates `frontend/dist`. Serve that directory with a static web server. Configure that server to proxy `/api` to FastAPI, or set `VITE_API_BASE_URL` to the API's public origin **before building**. Vite's proxy only runs during development. Configure a frontend fallback to
+`index.html` for `/referrals` and `/referrals/*` so direct links and reloads work;
+keep `/api/*` routed to FastAPI.
 
 For a separate frontend origin, set `CORS_ORIGINS` in the backend environment to a JSON array of allowed origins, for example `["https://referrals.example.com"]`. Variables prefixed with `VITE_` are public browser configuration; never put secrets in them.
 
 This is a development prototype with manual referral intake, corrections, and
 text-based PDF ingestion. PostgreSQL and local file storage are implemented;
-rule-based field extraction is implemented. Authentication and approval workflows
+rule-based field extraction and browser review are implemented. Authentication
+and approval workflows
 are not.
 
 Framework references: [Vite guide](https://vite.dev/guide/) and [FastAPI CORS](https://fastapi.tiangolo.com/tutorial/cors/).

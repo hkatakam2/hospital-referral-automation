@@ -8,6 +8,10 @@ export const fieldLabels = {
 export type FieldName = keyof typeof fieldLabels
 export const fieldNames = Object.keys(fieldLabels) as FieldName[]
 export type ReferralInput = Record<FieldName, string>
+export const emptyReferral: ReferralInput = {
+  patient_name: '', date_of_birth: '', referring_organization: '',
+  requested_specialty: 'cardiology', referral_reason: '',
+}
 export interface Referral extends ReferralInput { id: string; created_at: string }
 export interface DocumentSummary {
   id: string; referral_id: string; original_filename: string; sha256: string
