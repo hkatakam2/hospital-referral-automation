@@ -3,12 +3,12 @@ from uuid import UUID, uuid4
 
 from sqlalchemy.orm import Session
 
+from app.extraction.assessment import assess_sources
 from app.extraction.base import Extractor
 from app.models.referral import ReferralRecord
 from app.repositories.documents import DocumentRepository
 from app.repositories.extractions import ExtractionRepository
 from app.schemas.extraction import ExtractionDetail
-from app.services.completeness import CHECKLIST_VERSION, check_completeness
 
 
 class ExtractionInputError(Exception):
@@ -29,13 +29,11 @@ class ReferralExtractionService:
         sources = DocumentRepository(self.session).load_extraction_sources(referral_id)
         if not sources:
             raise ExtractionInputError("Attach at least one document before extraction", 422)
-        fields = self.extractor.extract(sources)
-        findings, warnings, complete = check_completeness(fields, sources)
+        assessment = assess_sources(self.extractor, sources)
         result = ExtractionDetail(
-            id=uuid4(), referral_id=referral_id, extractor_version=self.extractor.version,
-            checklist_version=CHECKLIST_VERSION, created_at=datetime.now(timezone.utc),
+            id=uuid4(), referral_id=referral_id, created_at=datetime.now(timezone.utc),
             source_document_ids=[source.document_id for source in sources],
-            fields=fields, findings=findings, warnings=warnings, complete=complete,
+            **assessment.model_dump(),
         )
         try:
             ExtractionRepository(self.session).add(result)

@@ -6,11 +6,11 @@ from fastapi.testclient import TestClient
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from app.extraction.assessment import REQUIRED_FIELDS, assess_sources
 from app.extraction.rule_based import RuleBasedExtractor
 from app.main import app
 from app.models.extraction import ExtractionRunDocumentRecord, ExtractionRunRecord
-from app.schemas.extraction import SourceDocument, SourcePage
-from app.services.completeness import check_completeness
+from app.schemas.extraction import Candidate, FieldResult, SourceDocument, SourcePage
 from app.services.referral_extraction import ReferralExtractionService
 
 DATA = {
@@ -26,8 +26,74 @@ def extract(text):
         document_id=uuid4(), parse_status="parsed",
         pages=[SourcePage(page_number=1, text=text)],
     )
-    fields = RuleBasedExtractor().extract([source])
-    return source, fields, check_completeness(fields, [source])
+    assessment = assess_sources(RuleBasedExtractor(), [source])
+    return source, assessment.fields, (
+        assessment.findings, assessment.warnings, assessment.complete,
+    )
+
+
+@pytest.mark.parametrize("output", [{}, {
+    "patient_name": FieldResult(value="Untrusted selection", candidates=[
+        Candidate(raw_value="Avery Morgan", value="Avery Morgan"),
+    ]),
+}])
+def test_assessment_fills_missing_fields_and_derives_selection(output):
+    class IncompleteExtractor:
+        version = "incomplete/test"
+
+        def extract(self, sources):
+            return output
+
+    source = SourceDocument(document_id=uuid4(), parse_status="parsed", pages=[])
+    assessment = assess_sources(IncompleteExtractor(), [source])
+    assert set(assessment.fields) == set(REQUIRED_FIELDS)
+    assert len(assessment.findings) == 5
+    assert not assessment.complete
+    assert assessment.extractor_version == "incomplete/test"
+    for finding in assessment.findings:
+        assert finding.status == ("found" if finding.field in output else "missing")
+    if output:
+        assert assessment.fields["patient_name"].value == "Avery Morgan"
+        assert output["patient_name"].value == "Untrusted selection"
+
+
+@pytest.mark.parametrize("candidates,status,selected", [
+    ([], "missing", None),
+    ([Candidate(raw_value="A", value="A")], "found", "A"),
+    ([Candidate(raw_value="A", value="A"), Candidate(raw_value="B", value="B")],
+     "conflicting", None),
+    ([Candidate(raw_value="bad", value=None)], "invalid", None),
+    ([Candidate(raw_value="A", value="A", issue="Invalid candidate")], "invalid", None),
+    ([Candidate(raw_value="A", value="A"), Candidate(raw_value="bad", value=None)],
+     "invalid", None),
+])
+def test_assessment_keeps_findings_and_selected_values_consistent(candidates, status, selected):
+    class CandidateExtractor:
+        version = "candidates/test"
+
+        def extract(self, sources):
+            return {"patient_name": FieldResult(value="Stale value", candidates=candidates)}
+
+    source = SourceDocument(document_id=uuid4(), parse_status="parsed", pages=[])
+    assessment = assess_sources(CandidateExtractor(), [source])
+    assert assessment.fields["patient_name"].value == selected
+    assert assessment.findings[0].status == status
+    assert not assessment.complete
+
+
+def test_assessment_without_sources_is_not_complete():
+    assert not assess_sources(RuleBasedExtractor(), []).complete
+
+
+def test_assessment_rejects_unknown_fields():
+    class UnknownFieldExtractor:
+        version = "unknown/test"
+
+        def extract(self, sources):
+            return {"unknown_field": FieldResult()}
+
+    with pytest.raises(ValueError, match="unknown referral fields"):
+        assess_sources(UnknownFieldExtractor(), [])
 
 
 @pytest.mark.parametrize("name,status,complete", [
@@ -79,6 +145,30 @@ def attach(client, base, pdf_factory, pages):
     )
     assert response.status_code == 201
     return response.json()
+
+
+def test_incomplete_extractor_persists_a_complete_shape_with_missing_findings(
+    client, pdf_factory, db_engine,
+):
+    class EmptyExtractor:
+        version = "empty/test"
+
+        def extract(self, sources):
+            return {}
+
+    referral = client.post("/api/referrals", json=DATA).json()
+    base = f"/api/referrals/{referral['id']}"
+    source = attach(client, base, pdf_factory, ("Patient: Avery Morgan",))
+    with Session(db_engine) as session:
+        result = ReferralExtractionService(session, EmptyExtractor()).run(referral["id"])
+    saved = client.get(f"{base}/extractions/{result.id}").json()
+    assert set(saved["fields"]) == set(REQUIRED_FIELDS)
+    assert len(saved["findings"]) == 5
+    assert all(finding["status"] == "missing" for finding in saved["findings"])
+    assert saved["complete"] is False
+    assert saved["extractor_version"] == "empty/test"
+    assert saved["source_document_ids"] == [source["id"]]
+    assert client.get(base).json() == referral
 
 
 def test_api_snapshot_conflicts_scope_and_reopened_connections(client, pdf_factory, db_engine):

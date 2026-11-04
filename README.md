@@ -283,9 +283,15 @@ attempt to extract before attaching documents returns `422`.
 
 Each run processes all currently attached documents in stable document/page
 order using persisted text, records its source document IDs, extractor version
-(`rules/1`) and checklist version (`five-required-fields/1`), and survives backend
+(`rules/1`) and checklist version (`five-required-fields/2`), and survives backend
 restarts. Later uploads do not change old runs. Repeating extraction creates a
 new run. Results and source associations are committed in one database transaction.
+
+Source-text assessment owns selected values, findings, and coverage warnings as
+one result. Checklist version 2 always includes all five fields, treating omitted
+extractor fields as missing and candidates without normalized values as invalid.
+An incomplete extractor result cannot mark a packet complete. Previously saved
+run snapshots retain their original versions and findings.
 
 The five fields are patient name, date of birth, referring organization,
 requested specialty, and referral reason. Recognized labels include `Patient`

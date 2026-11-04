@@ -62,7 +62,4 @@ class RuleBasedExtractor:
                             document_id=source.document_id,
                             page_number=page.page_number, quote=line,
                         ))
-        for result in results.values():
-            if len(result.candidates) == 1 and result.candidates[0].issue is None:
-                result.value = result.candidates[0].value
         return results
