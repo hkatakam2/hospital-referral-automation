@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "implementation_commit": "ca4d7cc",
+  "tested_base_commit": "05ba2c8eea63a66f9d93d6c00b869921373c18c5",
+  "tested_worktree": "Combined implementation worktree before commit, including pre-existing documentation changes",
+  "source_fingerprint": "80a7a0c09fa17aa486998864a991fbe82eeadda0549d020dee28e79d9847a64f",
+  "source_unchanged_during_suite": true,
+  "default_suite": {
+    "status": "passed",
+    "backend_tests": 203,
+    "browser_tests": 14,
+    "separate_intake_journeys": 1,
+    "unverified_checks": [],
+    "provider_mode": "deterministic HTTP stub through production Gemini adapter",
+    "checks": [
+      {
+        "name": "backend",
+        "exitCode": 0
+      },
+      {
+        "name": "ruff",
+        "exitCode": 0
+      },
+      {
+        "name": "eslint",
+        "exitCode": 0
+      },
+      {
+        "name": "build",
+        "exitCode": 0
+      },
+      {
+        "name": "diff",
+        "exitCode": 0
+      },
+      {
+        "name": "browser",
+        "exitCode": 0
+      },
+      {
+        "name": "live",
+        "exitCode": 0
+      }
+    ],
+    "evidence_directory": "/var/folders/rl/b87sjmhd2hlbw2l8xc1gnstw0000gn/T/referral-verification-j9wr6f1a"
+  },
+  "live_gemini_browser": {
+    "status": "passed",
+    "tests": 1,
+    "provider_requests": 1,
+    "test_duration_seconds": 12.4,
+    "suite_duration_seconds": 16.1,
+    "snapshot_summary": {
+      "extractor_version": "gemini-claims/1",
+      "checklist_version": "five-required-fields/2",
+      "created_at": "2026-11-04T13:54:52.846930Z",
+      "complete": true,
+      "provenance": {
+        "evidence_version": "literal-source/1",
+        "candidates_checked": 5,
+        "candidates_rejected": 0,
+        "provider": "gemini",
+        "model": "gemini-3.8-flash",
+        "model_version": "gemini-3.8-flash",
+        "prompt_version": "referral-claims/1",
+        "request_ms": 10542.375957942568
+      }
+    },
+    "evidence_directory": "/private/tmp/referral-gemini-live-browser-20261104",
+    "cost_usd": null
+  },
+  "visual_inspection": [
+    "Stub Gemini desktop and 390px mobile screenshots",
+    "Live Gemini desktop and 390px mobile screenshots"
+  ],
+  "limitations": [
+    "One synthetic packet is integration evidence, not a quality benchmark",
+    "The failed subsequent POST in the browser journey is mocked",
+    "Provider failures and connection release are tested with mocked provider HTTP",
+    "Evidence directories are local temporary artifacts, not durable hosted links",
+    "Development database and local enablement were not changed"
+  ]
+}

@@ -105,3 +105,5 @@ Which responsibility changed?** Introduce function names only when they help loc
 that behavior. For proof that the workflow works, use the repository's
 [verification guide](../.agents/skills/verify-hospital-referrals/SKILL.md) and
 [feature coverage map](../.agents/skills/verify-hospital-referrals/features/README.md).
+The [retained Gemini workflow check](verification/gemini-workflow-2026-11-04.md)
+distinguishes the default stubbed suite from the live synthetic provider journey.
