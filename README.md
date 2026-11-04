@@ -226,6 +226,54 @@ Automated tests generate synthetic text, image, blank, encrypted, and corrupt
 cases, use temporary file storage and an isolated PostgreSQL database, and also
 verify retrieval across two real backend processes.
 
+## Rule-based field extraction
+
+After attaching documents to an existing referral, use FastAPI `/docs` or:
+
+```sh
+curl --fail-with-body -X POST \
+  http://127.0.0.1:8000/api/referrals/REFERRAL_UUID/extractions
+```
+
+Apply the latest migration first (`cd backend` then `alembic upgrade head` in
+its virtual environment). `POST` returns `201` with a new immutable extraction
+run; `GET /api/referrals/{referral_id}/extractions/{extraction_id}` retrieves it.
+An unknown referral or scoped extraction returns `404`; a malformed UUID or
+attempt to extract before attaching documents returns `422`.
+
+Each run processes all currently attached documents in stable document/page
+order using persisted text, records its source document IDs, extractor version
+(`rules/1`) and checklist version (`five-required-fields/1`), and survives backend
+restarts. Later uploads do not change old runs. Repeating extraction creates a
+new run. Results and source associations are committed in one database transaction.
+
+The five fields are patient name, date of birth, referring organization,
+requested specialty, and referral reason. Recognized labels include `Patient`
+/ `Patient Name`, `DOB` / `Date of Birth`, `Referring Organization` /
+`Referring Clinic`, `Requested Specialty` / `Specialty` / `Requested Service`,
+and `Reason` / `Referral Reason`. Labels must occupy individual `Label: value`
+lines. Matching ignores label case; values retain case with whitespace normalized.
+Only ISO dates and cardiology (including `Cardiology consultation`) are supported.
+
+Results contain field candidates with raw values, normalized values, validation
+issues, and exact source quotes with document IDs and one-based page numbers.
+Repeated equivalent values combine their evidence. Missing values remain null;
+invalid or conflicting fields have no selected value. Checklist findings are
+`found`, `missing`, `invalid`, or `conflicting`; invalid candidates take precedence
+when a field also has other candidates, all of which remain visible.
+
+`complete` means all five fields were found without conflicting/invalid candidates
+and no document had textless pages. Partial PDFs retain a source-coverage warning
+and cannot produce `complete: true`. Even `parsed` PDFs can omit image content;
+this is a limited text baseline, not approval or proof of packet completeness.
+The checklist is an illustrative prototype requirement, not institutional policy.
+
+Manual referral values never fill extraction gaps and extraction does not update
+them. Creating a referral still requires the five manually entered fields; draft
+or document-first intake, OCR, LLM extraction, and applying suggestions through a
+review UI are later increments. The synthetic fixture expectations now also cover
+automated extraction in `tests/test_extractions.py`.
+
 ## Project layout
 
 ```text
@@ -289,6 +337,7 @@ For a separate frontend origin, set `CORS_ORIGINS` in the backend environment to
 
 This is a development prototype with manual referral intake, corrections, and
 text-based PDF ingestion. PostgreSQL and local file storage are implemented;
-authentication, field extraction, and approval workflows are not.
+rule-based field extraction is implemented. Authentication and approval workflows
+are not.
 
 Framework references: [Vite guide](https://vite.dev/guide/) and [FastAPI CORS](https://fastapi.tiangolo.com/tutorial/cors/).

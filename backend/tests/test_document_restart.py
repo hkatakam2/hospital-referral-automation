@@ -65,9 +65,14 @@ def test_document_survives_real_backend_process_restart(db_engine, document_stor
         response = api.post(url, files={"file": ("referral.pdf", original, "application/pdf")})
         assert response.status_code == 201
         document = response.json()
+        extraction_url = url.removesuffix("/documents") + "/extractions"
+        response = api.post(extraction_url)
+        assert response.status_code == 201
+        extraction = response.json()
     with running_api() as restarted:
         response = restarted.get(f"{url}/{document['id']}")
         assert response.status_code == 200
         assert response.json() == document
+        assert restarted.get(f"{extraction_url}/{extraction['id']}").json() == extraction
         assert restarted.get(url).json()[0]["sha256"] == document["sha256"]
     assert (document_storage / f"{document['id']}.pdf").read_bytes() == original

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from uuid import UUID
 
 from sqlalchemy import select
@@ -5,6 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.models.document import DocumentPageRecord, DocumentRecord
 from app.schemas.document import DocumentDetail, DocumentPage, DocumentSummary
+from app.schemas.extraction import SourceDocument, SourcePage
 
 
 class DocumentRepository:
@@ -39,3 +42,22 @@ class DocumentRepository:
             **DocumentSummary.model_validate(record).model_dump(),
             pages=[DocumentPage.model_validate(page) for page in pages],
         )
+
+    def load_extraction_sources(self, referral_id: UUID) -> list[SourceDocument]:
+        # One joined query captures the documents/pages visible to this run.
+        rows = self.session.execute(
+            select(DocumentRecord, DocumentPageRecord)
+            .join(DocumentPageRecord, DocumentPageRecord.document_id == DocumentRecord.id)
+            .where(DocumentRecord.referral_id == referral_id)
+            .order_by(DocumentRecord.created_at, DocumentRecord.id, DocumentPageRecord.page_number)
+        )
+        sources: dict[UUID, SourceDocument] = {}
+        for document, page in rows:
+            if document.id not in sources:
+                sources[document.id] = SourceDocument(
+                    document_id=document.id, parse_status=document.parse_status, pages=[],
+                )
+            sources[document.id].pages.append(SourcePage(
+                page_number=page.page_number, text=page.text,
+            ))
+        return list(sources.values())

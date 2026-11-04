@@ -48,11 +48,17 @@ def postgres_engine():
 @pytest.fixture
 def db_engine(postgres_engine, monkeypatch):
     with postgres_engine.begin() as connection:
-        connection.execute(text("TRUNCATE document_pages, documents, referrals"))
+        connection.execute(text(
+            "TRUNCATE extraction_run_documents, extraction_runs, "
+            "document_pages, documents, referrals"
+        ))
     monkeypatch.setattr(database, "engine", postgres_engine)
     yield postgres_engine
     with postgres_engine.begin() as connection:
-        connection.execute(text("TRUNCATE document_pages, documents, referrals"))
+        connection.execute(text(
+            "TRUNCATE extraction_run_documents, extraction_runs, "
+            "document_pages, documents, referrals"
+        ))
 
 
 @pytest.fixture

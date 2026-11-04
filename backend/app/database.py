@@ -14,7 +14,7 @@ engine = create_engine(settings.database_url, pool_pre_ping=True)
 
 
 def get_session() -> Iterator[Session]:
-    # Writes commit in the repository before a successful response is returned.
+    # Writes commit in their owning repository or service before a successful response is returned.
     with Session(engine) as session:
         try:
             yield session
