@@ -15,6 +15,9 @@ uses httpx MockTransport through the actual adapter: schema/header/payload,
 missing/duplicate/conflicting claims, source-location rejection, normalization,
 blocked/truncated/malformed responses, HTTP/transport errors without retries,
 input limits, execution artifacts, cost and committed-baseline quality parity.
+Configuration probes verify file-key precedence over stale process keys, explicit
+constructor overrides, environment fallback, empty/missing-key validation, stable
+backend/.env location and unchanged model environment precedence.
 These tests prove local behavior, not live Gemini compatibility or quality.
 
 A live check requires GEMINI_API_KEY and GEMINI_MODEL in backend/.env or the process

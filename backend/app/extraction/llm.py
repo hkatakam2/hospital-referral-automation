@@ -4,11 +4,12 @@ import json
 import re
 from collections.abc import Sequence
 from datetime import datetime
+from pathlib import Path
 from time import perf_counter
 
 import httpx
 from pydantic import Field, SecretStr, ValidationError
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, SettingsConfigDict
 
 from app.extraction.base import ExecutionMetadata, ExtractionOutput
 from app.extraction.candidates import add_candidate
@@ -34,7 +35,7 @@ Never infer a date from ambiguous numeric formats (e.g. 03/04/1974).
 
 class GeminiSettings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=Path(__file__).resolve().parents[2] / ".env",
         env_prefix="GEMINI_",
         extra="ignore",
         allow_inf_nan=False,
@@ -44,6 +45,24 @@ class GeminiSettings(BaseSettings):
     timeout_seconds: float = Field(default=60, gt=0, le=300)
     max_input_chars: int = Field(default=100_000, gt=0)
     max_output_tokens: int = Field(default=8192, gt=0)
+
+
+    @classmethod
+    def settings_customise_sources(
+        cls,
+        settings_cls: type[BaseSettings],
+        init_settings: PydanticBaseSettingsSource,
+        env_settings: PydanticBaseSettingsSource,
+        dotenv_settings: PydanticBaseSettingsSource,
+        file_secret_settings: PydanticBaseSettingsSource,
+    ):
+        def dotenv_api_key():
+            # A refreshed local key must win over a stale shell export. Keep the
+            # usual environment precedence for model, timeout and other settings.
+            values = dotenv_settings()
+            return {"api_key": values["api_key"]} if "api_key" in values else {}
+
+        return init_settings, dotenv_api_key, env_settings, dotenv_settings, file_secret_settings
 
 
 class LLMExtractionError(RuntimeError):

@@ -1,4 +1,5 @@
 import json
+import os
 from copy import deepcopy
 
 import httpx
@@ -268,3 +269,55 @@ def test_rule_quality_remains_identical_to_committed_baseline():
     actual = evaluate(DEFAULT_DATASET)
     for key in ["overall", "by_field", "by_document_type", "dataset_sha256"]:
         assert actual[key] == baseline[key]
+
+
+
+def test_dotenv_key_wins_over_process_key_without_overriding_other_settings(tmp_path, monkeypatch):
+    dotenv = tmp_path / "gemini.env"
+    dotenv.write_text("GEMINI_API_KEY=file-key\nGEMINI_MODEL=file-model\n")
+    monkeypatch.setenv("GEMINI_API_KEY", "stale-process-key")
+    monkeypatch.setenv("GEMINI_MODEL", "process-model")
+    settings = GeminiSettings(_env_file=dotenv)
+    assert settings.api_key.get_secret_value() == "file-key"
+    assert settings.model == "process-model"
+    assert os.environ["GEMINI_API_KEY"] == "stale-process-key"
+
+
+@pytest.mark.parametrize("file_exists", [True, False])
+def test_process_key_is_fallback_when_file_key_is_absent(tmp_path, monkeypatch, file_exists):
+    dotenv = tmp_path / "gemini.env"
+    if file_exists:
+        dotenv.write_text("GEMINI_MODEL=file-model\n")
+    monkeypatch.setenv("GEMINI_API_KEY", "process-key")
+    settings = GeminiSettings(_env_file=dotenv, model="test-model")
+    assert settings.api_key.get_secret_value() == "process-key"
+
+
+def test_explicit_key_still_overrides_dotenv_and_environment(tmp_path, monkeypatch):
+    dotenv = tmp_path / "gemini.env"
+    dotenv.write_text("GEMINI_API_KEY=file-key\n")
+    monkeypatch.setenv("GEMINI_API_KEY", "process-key")
+    settings = GeminiSettings(_env_file=dotenv, api_key="explicit-key", model="test-model")
+    assert settings.api_key.get_secret_value() == "explicit-key"
+
+
+def test_empty_file_key_fails_instead_of_using_stale_process_key(tmp_path, monkeypatch):
+    dotenv = tmp_path / "gemini.env"
+    dotenv.write_text("GEMINI_API_KEY=\n")
+    monkeypatch.setenv("GEMINI_API_KEY", "stale-process-key")
+    with pytest.raises(ValidationError):
+        GeminiSettings(_env_file=dotenv, model="test-model")
+
+
+def test_missing_key_still_requires_configuration(tmp_path, monkeypatch):
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    with pytest.raises(ValidationError):
+        GeminiSettings(_env_file=tmp_path / "missing.env", model="test-model")
+
+
+def test_default_dotenv_location_is_independent_of_working_directory(tmp_path, monkeypatch):
+    from pathlib import Path
+
+    monkeypatch.chdir(tmp_path)
+    expected = Path(__file__).resolve().parents[1] / ".env"
+    assert GeminiSettings.model_config["env_file"] == expected

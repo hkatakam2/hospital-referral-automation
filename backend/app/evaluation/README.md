@@ -186,8 +186,10 @@ The first 30-packet Gemini run is retained in
 It records the unchanged dataset/scoring contract, measured gains and regressions,
 latency, usage, and the remaining normalization/finding discrepancies.
 
-Process environment variables take precedence over `.env`. If a refreshed file key
-is still rejected, check for a stale `GEMINI_API_KEY` export. With the intended key
-stored in `backend/.env`, run `env -u GEMINI_API_KEY .venv/bin/python -m app.evaluation
---extractor gemini --output evaluation-results/gemini-new-run` from `backend/`.
-Do not print the key while diagnosing configuration.
+Gemini API-key precedence is explicit constructor argument, then `GEMINI_API_KEY`
+in `backend/.env`, then the process environment. This prevents stale shell exports
+from overriding a refreshed file key. If the file/key is absent, environment-only
+configuration still works. An empty file key fails validation instead of silently
+using another key. The file path is anchored to `backend/`, regardless of working
+directory. Other Gemini settings retain environment-over-file precedence.
+No process environment is modified, and no key is printed.
