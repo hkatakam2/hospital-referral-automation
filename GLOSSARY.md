@@ -6,3 +6,5 @@
 | Source-text assessment | An evaluation of document text that produces candidates, selected values, findings and source-coverage warnings for all five required referral fields. It does not grant approval. |
 | Extraction run | A saved snapshot of a source-text assessment for a particular set of attached documents. Later documents and corrections do not rewrite it. |
 | Correction draft | Unsaved changes to the registered referral, including values copied from extraction candidates. |
+| Source claim | A proposed field value and supporting source quotation, before the application assesses it. |
+| Source-location check | A check that cited documents, pages, quotations, and claimed source text exist in the supplied packet. It does not establish that the text supports the meaning of a claim. |

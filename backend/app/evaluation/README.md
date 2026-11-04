@@ -1,4 +1,4 @@
-# Offline extraction evaluation
+# Extraction quality evaluation
 
 From `backend/`, using the existing virtual environment:
 
@@ -21,7 +21,7 @@ Python version; and timing. Markdown includes aggregate tables and every failing
 packet with its discrepancies. Document type denotes the packet's fixture category,
 not a clinical taxonomy. Reports retain synthetic text only.
 
-## Scoring contract (report schema 1)
+## Scoring contract (report schema 2)
 
 Expected values and findings are authored independently of the extractor. See
 [data/README.md](data/README.md) for annotation and normalization rules. Predictions
@@ -72,7 +72,8 @@ Latency is one `perf_counter` sample per packet around extraction plus assessmen
 excluding dataset loading, scoring, report generation, PDF parsing, and persistence.
 The report gives sample count, mean, median, nearest-rank p95, minimum and maximum
 in milliseconds. There is no warmup. This lightweight local timing varies between
-runs; all other output is repeatable with the same dataset, code and Python version.
+runs; rule-based quality output is repeatable with the same dataset, code and Python version.
+Live model output and token usage may vary between requests.
 The underlying date validator uses today's UTC date, so all version 1 valid dates
 are historical and the invalid cases avoid time-dependent future dates.
 
@@ -89,8 +90,90 @@ it from `backend/` with:
 
 `evaluate(dataset_path, extractor=...)` also accepts an extractor implementing the
 existing protocol, so future adapters can reuse exactly the same assessment and
-scoring path. CLI currently selects only the deterministic extractor. Keep this
+scoring path. The CLI selects rules by default and Gemini explicitly. Keep this
 challenge set version fixed when comparing extractors; do not rewrite ground truth
 to improve a score. The 30 packets intentionally share synthetic identities and
 exercise known failure modes: results are not statistical estimates for hospital
 traffic. Future model tuning needs a separate held-out set to avoid overfitting.
+
+
+## Gemini comparison
+
+Install backend runtime dependencies from `backend/` with `.venv/bin/python -m pip install -e '.[dev]'`.
+Set `GEMINI_API_KEY` and `GEMINI_MODEL` in `backend/.env` or the process environment.
+No model is silently selected. Use a model available to your key that supports
+`generateContent` structured output. Never put the key in CLI arguments or reports.
+The rules command remains network- and credential-free.
+
+From `backend/`:
+
+```sh
+.venv/bin/python -m app.evaluation --extractor rules --output evaluation-results/rules
+.venv/bin/python -m app.evaluation --extractor gemini --output evaluation-results/gemini-run-1
+```
+
+The Gemini command sends synthetic page text to Google's Gemini API and can incur
+usage charges. It makes one sequential request per packet (30 requests for version 1).
+The output directory must be new. It retains `artifacts/0000.json` etc. containing
+packet IDs, original provider responses, execution configuration, versions, usage,
+request timing and failure details. Artifact filenames use indexes, not packet IDs.
+A failed packet aborts the run with a nonzero exit status; completed and failed
+attempt artifacts remain, and no aggregate quality report is published. There are
+no automatic retries, fallback to rules, truncation of input, or dropped packets.
+Inspect a failure before making a new run; earlier calls may already have incurred cost.
+
+Settings: `GEMINI_TIMEOUT_SECONDS` (per HTTP phase, default 60, maximum 300),
+`GEMINI_MAX_INPUT_CHARS` (serialized packet bound, default 100000), and
+`GEMINI_MAX_OUTPUT_TOKENS` (default 8192). Oversized packets fail before any request;
+blocked, malformed, truncated, or incomplete responses fail explicitly.
+
+Pricing is optional and never guessed. Supply current USD prices per million tokens:
+
+```sh
+.venv/bin/python -m app.evaluation --extractor gemini \
+  --output evaluation-results/gemini-priced-1 \
+  --input-price-per-million 0.10 --output-price-per-million 0.40
+```
+
+These numbers illustrate the flags; they are not a statement of Gemini pricing.
+Cost estimates apply the input rate to uncached prompt tokens and the output rate
+to candidate plus reported thinking tokens. If cached tokens occur, supply
+`--cached-input-price-per-million` too. Missing prices or required usage produce
+`null`, including the total if any packet cost is unknown. Estimates exclude taxes,
+other service charges, and pricing tiers; record the applicable rates for the chosen
+model/context size yourself. JSON retains each packet's provider usage separately.
+
+The report preserves existing quality counts and exact evidence scoring. Schema 2
+adds per-packet execution metadata and aggregate cost/source checks. Latency includes
+provider IO for Gemini but excludes artifact writes and scoring; request-only timing
+is separate. Compare overall, per-field and per-document-type quality against
+`reports/extraction-baseline-v1/report.json`; historical schema 1 remains unchanged.
+Do not tune prompts on this challenge set and describe it as held-out performance.
+
+## Claims, normalization, and grounding limits
+
+The model returns five required candidate lists. Empty lists mean absent information;
+multiple distinct values survive as conflicts. It cannot set findings, completeness,
+validation issues, or selected values. Equivalent candidates combine evidence.
+Application normalization preserves source text case and collapses whitespace;
+cardiology aliases normalize as before. ISO dates retain rules/1 validation. Gemini
+also accepts named-month dates and unambiguous US numeric dates where the day exceeds
+12, only when the proposed ISO date agrees with deterministic parsing. Ambiguous
+`03/12/1974` remains invalid even though the corpus annotates that fixture as US format.
+This conservative policy is explicit; it does not change annotations or rules/1.
+
+Every returned citation must identify an input document/page and quote an exact
+substring. The claimed source value must occur in a supporting quote. Unsupported
+claims remain visible as invalid candidates with no selected value. Source-check
+counts are reported independently of exact annotation evidence agreement. These
+checks do not establish semantic entailment: a real quote could describe someone
+other than the patient. Instruction-like source text is treated as untrusted data
+in the prompt, but prompting does not prove resistance to all prompt injection.
+
+Raw responses remain separate from assessed fields and are excluded from public
+API models. Browser/API extraction continues to use rules/1. Full evidence
+verification, live browser integration, and transaction changes for long-running
+network calls are later increments; this CLI requires no database or server.
+
+Provider contract references: [Gemini structured outputs](https://ai.google.dev/gemini-api/docs/structured-output)
+and [generateContent API and usage metadata](https://ai.google.dev/api/generate-content).

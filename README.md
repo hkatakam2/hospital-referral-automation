@@ -331,7 +331,7 @@ cd backend
 .venv/bin/python -m app.evaluation --output evaluation-results
 ```
 
-The command needs no PostgreSQL, browser, network, or credentials. It writes JSON
+The default rule-based command needs no PostgreSQL, browser, network, or credentials. It writes JSON
 and Markdown with per-field and per-document-type quality metrics, explicit
 numerators/denominators, evidence agreement, processing latency, and failure
 examples. Narrative and alternate-format packets deliberately expose baseline
@@ -341,6 +341,21 @@ See the [evaluation scoring contract](backend/app/evaluation/README.md),
 [dataset annotation rules](backend/app/evaluation/data/README.md), and
 [committed baseline](backend/reports/extraction-baseline-v1/report.md).
 The curated dataset is a challenge set, not an estimate of clinical performance.
+
+Gemini structured extraction is available through the evaluator. Set
+`GEMINI_API_KEY` and `GEMINI_MODEL` in `backend/.env`, then run from `backend/`:
+
+```sh
+.venv/bin/python -m app.evaluation --extractor gemini --output evaluation-results/gemini-run-1
+```
+
+This sends synthetic text to Gemini, makes one request per packet, and can incur
+API charges. The output directory must be new. Reports include quality, latency,
+model/prompt versions, usage and optional explicit pricing; original responses
+are retained in separate artifacts. Failures stop the run without publishing
+aggregate quality metrics. See the evaluation README for configuration, cost
+flags, source checks and their limits. Browser/API extraction still uses rules/1.
+
 
 ## Project layout
 

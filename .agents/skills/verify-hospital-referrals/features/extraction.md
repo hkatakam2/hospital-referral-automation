@@ -20,4 +20,5 @@ Assessment checks exercise empty and incomplete extractor outputs, all five requ
 
 ## Gotchas
 
-Rules recognize labeled lines, ISO dates, and cardiology aliases only. Manual referral data never fills extraction gaps. Missing/disputed values remain unselected; invalid candidates take finding precedence and stay visible. All five found plus readable-page coverage is the prototype checklist, not clinical or administrative approval. New attachments do not mutate old runs. Every POST creates a new run. No LLM or configurable institutional policy engine is present.
+Rules recognize labeled lines, ISO dates, and cardiology aliases only. Manual referral data never fills extraction gaps. Missing/disputed values remain unselected; invalid candidates take finding precedence and stay visible. All five found plus readable-page coverage is the prototype checklist, not clinical or administrative approval. New attachments do not mutate old runs. Every POST creates a new run. The browser/API still selects rules/1. Evaluator-only Gemini extraction is mapped
+in [evaluation.md](evaluation.md); no configurable institutional policy engine is present.
