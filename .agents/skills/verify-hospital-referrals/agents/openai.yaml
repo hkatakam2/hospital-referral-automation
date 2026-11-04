@@ -1,0 +1,4 @@
+interface:
+  display_name: "Verify Hospital Referrals"
+  short_description: "Verify intake, documents, extraction, and review"
+  default_prompt: "Use $verify-hospital-referrals to verify the implemented referral workflow and report evidence and unverified checks."
