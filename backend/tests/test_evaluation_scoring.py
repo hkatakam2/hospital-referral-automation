@@ -9,6 +9,7 @@ from app.evaluation.__main__ import evaluate, markdown
 from app.evaluation.dataset import DEFAULT_DATASET, load_dataset
 from app.evaluation.scoring import score_packet, summarize
 from app.extraction.assessment import ExtractionAssessment
+from app.extraction.base import ExtractionOutput
 from app.schemas.extraction import Candidate, FieldResult, Finding
 
 
@@ -151,7 +152,7 @@ def test_evaluator_accepts_another_adapter_and_does_not_drop_failed_packets():
         version = "abstain/test"
 
         def extract(self, sources):
-            return {}
+            return ExtractionOutput(fields={})
 
     report = evaluate(DEFAULT_DATASET, AbstainingExtractor())
     assert report["extractor_version"] == "abstain/test"

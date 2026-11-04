@@ -1,9 +1,9 @@
 from collections.abc import Sequence
 from typing import get_args
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
-from app.extraction.base import Extractor
+from app.extraction.base import ExecutionMetadata, Extractor
 from app.schemas.extraction import FieldName, FieldResult, Finding, SourceDocument
 
 CHECKLIST_VERSION = "five-required-fields/2"
@@ -11,6 +11,7 @@ REQUIRED_FIELDS: tuple[FieldName, ...] = get_args(FieldName)
 
 
 class ExtractionAssessment(BaseModel):
+    execution: ExecutionMetadata = Field(default_factory=ExecutionMetadata, exclude=True)
     extractor_version: str
     checklist_version: str
     fields: dict[FieldName, FieldResult]
@@ -21,7 +22,8 @@ class ExtractionAssessment(BaseModel):
 
 def assess_sources(extractor: Extractor, sources: Sequence[SourceDocument]) -> ExtractionAssessment:
     """Assess candidates and source coverage together, without persistence or approval."""
-    extracted = extractor.extract(sources)
+    output = extractor.extract(sources)
+    extracted = output.fields
     if set(extracted) - set(REQUIRED_FIELDS):
         raise ValueError("Extractor returned unknown referral fields")
     fields = {}
@@ -51,7 +53,8 @@ def assess_sources(extractor: Extractor, sources: Sequence[SourceDocument]) -> E
         for source in sources if source.parse_status == "partial"
     ]
     return ExtractionAssessment(
-        extractor_version=extractor.version, checklist_version=CHECKLIST_VERSION,
+        execution=output.execution, extractor_version=extractor.version,
+        checklist_version=CHECKLIST_VERSION,
         fields=fields, findings=findings, warnings=warnings,
         complete=bool(sources) and not warnings and all(f.status == "found" for f in findings),
     )

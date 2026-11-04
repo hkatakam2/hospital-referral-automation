@@ -7,6 +7,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.extraction.assessment import REQUIRED_FIELDS, assess_sources
+from app.extraction.base import ExtractionOutput
 from app.extraction.rule_based import RuleBasedExtractor
 from app.main import app
 from app.models.extraction import ExtractionRunDocumentRecord, ExtractionRunRecord
@@ -42,7 +43,7 @@ def test_assessment_fills_missing_fields_and_derives_selection(output):
         version = "incomplete/test"
 
         def extract(self, sources):
-            return output
+            return ExtractionOutput(fields=output)
 
     source = SourceDocument(document_id=uuid4(), parse_status="parsed", pages=[])
     assessment = assess_sources(IncompleteExtractor(), [source])
@@ -72,7 +73,9 @@ def test_assessment_keeps_findings_and_selected_values_consistent(candidates, st
         version = "candidates/test"
 
         def extract(self, sources):
-            return {"patient_name": FieldResult(value="Stale value", candidates=candidates)}
+            return ExtractionOutput(fields={
+                "patient_name": FieldResult(value="Stale value", candidates=candidates),
+            })
 
     source = SourceDocument(document_id=uuid4(), parse_status="parsed", pages=[])
     assessment = assess_sources(CandidateExtractor(), [source])
@@ -90,7 +93,7 @@ def test_assessment_rejects_unknown_fields():
         version = "unknown/test"
 
         def extract(self, sources):
-            return {"unknown_field": FieldResult()}
+            return ExtractionOutput(fields={"unknown_field": FieldResult()})
 
     with pytest.raises(ValueError, match="unknown referral fields"):
         assess_sources(UnknownFieldExtractor(), [])
@@ -154,7 +157,7 @@ def test_incomplete_extractor_persists_a_complete_shape_with_missing_findings(
         version = "empty/test"
 
         def extract(self, sources):
-            return {}
+            return ExtractionOutput(fields={})
 
     referral = client.post("/api/referrals", json=DATA).json()
     base = f"/api/referrals/{referral['id']}"
