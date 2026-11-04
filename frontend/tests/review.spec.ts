@@ -38,6 +38,8 @@ test('real API: upload, extract, inspect evidence, correct, and recover history 
   await expect(page.getByText('Uploaded complete.pdf.', { exact: false })).toBeVisible()
   await page.getByRole('button', { name: 'Run extraction', exact: true }).click()
   await expect(page.getByText('Extraction checklist: all five fields found', { exact: false })).toBeVisible()
+  await page.getByText('Run provenance', { exact: true }).click()
+  await expect(page.getByText('Source checks: 5 candidates checked; 0 rejected by shared checks.')).toBeVisible()
   await page.getByRole('button', { name: 'View evidence: complete.pdf, page 1' }).first().click()
   await expect(page.getByRole('heading', { name: 'Source: complete.pdf, page 1' })).toBeFocused()
   await expect(page.locator('.source-viewer blockquote')).toContainText('Patient: Avery Morgan')
@@ -54,6 +56,8 @@ test('real API: upload, extract, inspect evidence, correct, and recover history 
   await page.reload()
   await expect(page.getByLabel('Patient name', { exact: true })).toHaveValue('Manual correction')
   await expect(page.getByText('Extraction checklist: all five fields found', { exact: false })).toBeVisible()
+  await page.getByText('Run provenance', { exact: true }).click()
+  await expect(page.getByText('Source checks: 5 candidates checked; 0 rejected by shared checks.')).toBeVisible()
   // Adding contradictory evidence must not silently replace the historical run.
   await page.getByLabel('Attach a synthetic PDF').setInputFiles({ name: 'conflict.pdf', mimeType: 'application/pdf', buffer: pdf([['DOB: 1974-03-21']]) })
   await page.getByRole('button', { name: 'Upload PDF', exact: true }).click()
@@ -90,6 +94,48 @@ test('real API: rejects corrupt upload, retains missing findings, and displays p
   await expect(page.getByText('source coverage is incomplete', { exact: false })).toBeVisible()
   await page.getByLabel('Page', { exact: true }).selectOption('2')
   await expect(page.getByText('This page has no usable text.', { exact: false })).toBeVisible()
+})
+
+test('mocked detail: shows Gemini provenance, rejection reasons, and legacy history', async ({ page, request }) => {
+  const referral = await (await request.post('/api/referrals', { data })).json()
+  const base = `/api/referrals/${referral.id}`
+  await request.post(`${base}/documents`, { multipart: { file: {
+    name: 'complete.pdf', mimeType: 'application/pdf', buffer: pdf([complete]),
+  } } })
+  const saved = await (await request.post(`${base}/extractions`)).json()
+  const rejected = {
+    ...saved, complete: false,
+    provenance: { ...saved.provenance, candidates_rejected: 1, provider: 'gemini',
+      model: 'test-model', model_version: 'test-revision', prompt_version: 'referral-claims/1' },
+    fields: { ...saved.fields, patient_name: { value: null, candidates: [{
+      raw_value: 'Invented Person', value: null, issue: 'Missing evidence', evidence: [],
+    }] } },
+    findings: saved.findings.map((finding: { field: string; status: string }) =>
+      finding.field === 'patient_name' ? { ...finding, status: 'invalid' } : finding),
+  }
+  let historical = false
+  await page.route(`**${base}/extractions/${saved.id}`, route => {
+    if (!historical) return route.fulfill({ json: rejected })
+    const legacy = { ...saved }
+    delete legacy.provenance
+    return route.fulfill({ json: legacy })
+  })
+  await page.goto(`/referrals/${referral.id}`)
+  await expect(page.getByText('Cannot use this candidate: Missing evidence')).toBeVisible()
+  await expect(page.getByText('No source citation supplied.')).toBeVisible()
+  await expect(page.getByRole('button', { name: /^Use patient name:/ })).toHaveCount(0)
+  await expect(page.getByRole('button', { name: 'Use date of birth: 1974-03-12 in correction' })).toBeVisible()
+  await page.getByText('Run provenance', { exact: true }).click()
+  await expect(page.getByText('Source checks: 5 candidates checked; 1 rejected by shared checks.')).toBeVisible()
+  await expect(page.getByText('Provider: gemini', { exact: true })).toBeVisible()
+  await expect(page.getByText('Model: test-model', { exact: true })).toBeVisible()
+  await expect(page.getByText('Model version: test-revision', { exact: true })).toBeVisible()
+  await expect(page.getByText('Prompt version: referral-claims/1', { exact: true })).toBeVisible()
+  historical = true
+  await page.reload()
+  await expect(page.getByText('Provenance was not recorded for this historical run.')).toBeVisible()
+  await expect(page.getByText('Run provenance', { exact: true })).toHaveCount(0)
+  expect(await (await request.get(`${base}/extractions/${saved.id}`)).json()).toEqual(saved)
 })
 
 test('history errors do not block correction or document inspection', async ({ page, request }) => {

@@ -22,3 +22,9 @@ Assessment checks exercise empty and incomplete extractor outputs, all five requ
 
 Rules recognize labeled lines, ISO dates, and cardiology aliases only. Manual referral data never fills extraction gaps. Missing/disputed values remain unselected; invalid candidates take finding precedence and stay visible. All five found plus readable-page coverage is the prototype checklist, not clinical or administrative approval. New attachments do not mutate old runs. Every POST creates a new run. The browser/API still selects rules/1. Evaluator-only Gemini extraction is mapped
 in [evaluation.md](evaluation.md); no configurable institutional policy engine is present.
+
+## Shared evidence boundary and provenance
+
+`extraction/assessment.py` validates all adapters against exact source document/page/quote and raw-value support, and checks selected-value normalization before selection. `test_evidence_verification.py` injects faulty adapters to reject missing citations, wrong document/pages, fabricated/blank quotes, invented values and unrelated instruction-like text. The rule-baseline aggregate counts must remain identical. Literal checks do not establish semantic entailment or prompt-injection resistance.
+
+`test_extraction_provenance.py` injects the actual Gemini adapter with mocked HTTP transport into the persistence service. It verifies original structured claims, pre-assessment candidates, raw response and execution metadata are saved separately from the public snapshot. Detail responses expose an allowlisted provenance summary; history omits it. This is local adapter/persistence proof, not live provider or browser Gemini support.

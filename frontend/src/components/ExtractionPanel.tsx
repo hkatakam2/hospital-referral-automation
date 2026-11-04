@@ -23,6 +23,15 @@ export function ExtractionPanel({ workspace: w, onUse, saving }: {
     {result && <>
       <p className={result.complete ? 'success' : 'warning'}>Extraction checklist: {result.complete ? 'all five fields found' : 'attention needed'}. This is a source-text assessment, not administrative approval.</p>
       <p className="muted">{result.extractor_version} · {result.checklist_version} · {new Date(result.created_at).toLocaleString()}</p>
+      {result.provenance ? <details className="run-provenance">
+        <summary>Run provenance</summary>
+        <p>Source checks: {result.provenance.candidates_checked} candidates checked; {result.provenance.candidates_rejected} rejected by shared checks.</p>
+        <p>Quotes and source values are checked against cited page text, and selected values follow field format rules. These checks do not prove that a field was interpreted correctly.</p>
+        {result.provenance.provider && <p>Provider: {result.provenance.provider}</p>}
+        {result.provenance.model && <p>Model: {result.provenance.model}</p>}
+        {result.provenance.model_version && <p>Model version: {result.provenance.model_version}</p>}
+        {result.provenance.prompt_version && <p>Prompt version: {result.provenance.prompt_version}</p>}
+      </details> : <p className="muted">Provenance was not recorded for this historical run.</p>}
       {w.sourcesChanged && <p className="warning" role="status">Documents changed since this extraction. Run extraction again to assess the current packet.</p>}
       {result.warnings.map((warning, index) => <p key={index} className="warning">{warning}</p>)}
       {fieldNames.map(field => <div className="field-result" key={field}>
@@ -30,7 +39,8 @@ export function ExtractionPanel({ workspace: w, onUse, saving }: {
         <p>Extracted value: <strong>{result.fields[field].value ?? 'No selected value'}</strong></p>
         {result.fields[field].candidates.map((candidate, index) => <div className="candidate" key={index}>
           <p>{candidate.raw_value || '(empty value)'}</p>
-          {candidate.issue && <p className="error">{candidate.issue}</p>}
+          {candidate.issue && <p className="error">Cannot use this candidate: {candidate.issue}</p>}
+          {candidate.evidence.length === 0 && <p>No source citation supplied.</p>}
           {candidate.value !== null && candidate.issue === null && <button disabled={saving} onClick={() => onUse(field, candidate.value!)}>Use {fieldLabels[field].toLowerCase()}: {candidate.value} in correction</button>}
           <ul className="evidence-list">{candidate.evidence.map((evidence, evidenceIndex) => <li key={evidenceIndex}>
             <button className="text-button" onClick={() => w.openEvidence(evidence)}>

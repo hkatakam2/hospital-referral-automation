@@ -55,4 +55,6 @@ blockquote { margin: 12px 0; padding: 8px 14px; border-left: 3px solid #0f766e; 
 dt { color: #61756e; font-size: 13px; } dd { margin: 0; overflow-wrap: anywhere; font-size: 14px; }
 .field-result { border-top: 1px solid #dce6e0; margin-top: 22px; padding-top: 4px; }
 .candidate { padding: 12px; margin: 12px 0; background: #f8faf9; border-radius: 6px; overflow-wrap: anywhere; }
+.run-provenance { margin: 16px 0; overflow-wrap: anywhere; }
+.run-provenance summary { cursor: pointer; color: #185c50; }
 @media (max-width: 500px) { .section-toolbar { flex-wrap: wrap; } .saved-values div { grid-template-columns: 1fr; gap: 4px; } }

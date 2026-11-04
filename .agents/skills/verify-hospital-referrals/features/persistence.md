@@ -19,3 +19,7 @@ Run `verify.py run --feature persistence`. Real browser journeys prove reload re
 ## Gotchas
 
 PostgreSQL metadata/text and filesystem originals must both be retained. There is no backup or crash reconciliation service. Test databases are randomly named and owned by each harness; never downgrade/truncate the configured development database to verify migrations. The process-restart test explicitly reads back documents and extraction; referral correction persistence is separately checked across fresh connections and browser reload. Do not claim a dedicated corrected-referral process-restart assertion unless one is added and run.
+
+## Original extraction artifacts
+
+Migration 0004 adds extraction_artifacts, keyed to the saved run with a cascading foreign key. The service writes original output, available structured Gemini claims/raw response and execution metadata in the same transaction as the assessed snapshot and document links. Artifacts have no public endpoint. `test_extraction_provenance.py` verifies fresh-connection retention, immutability after corrections/new runs, exclusion of raw artifacts from API payloads, and downgrade/upgrade preservation of legacy snapshots without backfilling artifacts. `test_extractions.py` checks commit failure leaves no run, links or artifact. Migration schema drift and actual backend restart remain covered by the standard suites.

@@ -77,6 +77,21 @@ An extraction checklist with all five fields found is not approval. New document
 produce a **Documents changed since this extraction** warning until a new run
 includes them. The warning is derived from saved source IDs and survives reload.
 
+Open **Run provenance** to inspect shared check counts and any recorded provider,
+model and prompt identity. Every extractor's candidates pass source document/page,
+exact quote, source-value and selected-value format checks before assessment.
+Unsupported candidates remain visible with a rejection reason and cannot be copied
+into corrections or make the checklist complete. These checks establish literal
+source support, not semantic correctness or prompt-injection resistance.
+
+New runs retain original extractor candidates and available structured model claims,
+raw provider responses and execution metadata in a separate backend-only database
+artifact, saved atomically with the assessed snapshot. Detail responses expose an
+allowlisted `provenance` summary; history lists omit artifacts and provenance.
+Older runs remain readable with `provenance: null`; original output is not backfilled.
+Run `alembic upgrade head` in `backend/` to apply migration 0004 before starting
+the updated API. The application still uses rules/1; Gemini remains evaluator-only.
+
 Reads have independent loading/error states and refresh controls. Uploads and
 extractions are explicit synchronous actions, with repeat submissions disabled
 while pending; they are never automatically retried. If the connection fails,

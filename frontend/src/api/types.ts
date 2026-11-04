@@ -27,6 +27,11 @@ export interface ExtractionSummary {
   checklist_version: string; source_document_ids: string[]; complete: boolean
 }
 export interface ExtractionDetail extends ExtractionSummary {
+  provenance?: {
+    evidence_version: string; candidates_checked: number; candidates_rejected: number
+    provider: string | null; model: string | null; model_version: string | null
+    prompt_version: string | null; request_ms: number | null
+  } | null
   fields: Record<FieldName, { value: string | null; candidates: Candidate[] }>
   findings: { field: FieldName; status: 'found' | 'missing' | 'conflicting' | 'invalid' }[]
   warnings: string[]
