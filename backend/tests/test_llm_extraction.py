@@ -180,7 +180,7 @@ def test_transport_timeout_is_explicit_and_has_no_retry(packet):
         calls.append(request)
         raise httpx.ReadTimeout("sensitive provider detail", request=request)
 
-    with pytest.raises(LLMExtractionError, match="transport failure") as caught:
+    with pytest.raises(LLMExtractionError, match="request timed out") as caught:
         adapter({}, handler=fail).extract(packet.sources)
     assert "sensitive" not in str(caught.value)
     assert len(calls) == 1

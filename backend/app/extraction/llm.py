@@ -66,9 +66,10 @@ class GeminiSettings(BaseSettings):
 class LLMExtractionError(RuntimeError):
     """Safe message for callers; raw provider content stays in explicit artifacts."""
 
-    def __init__(self, message: str, execution: ExecutionMetadata):
+    def __init__(self, message: str, execution: ExecutionMetadata, *, status_code: int = 502):
         super().__init__(message)
         self.execution = execution
+        self.status_code = status_code
 
 
 class LLMExtractor:
@@ -92,7 +93,7 @@ class LLMExtractor:
         packet = json.dumps([source.model_dump(mode="json") for source in sources])
         if not sources or len(packet) > self.settings.max_input_chars:
             raise LLMExtractionError(
-                "Empty packet or Gemini input character limit exceeded", execution
+                "Empty packet or Gemini input character limit exceeded", execution, status_code=422
             )
         body = {
             "systemInstruction": {"parts": [{"text": SYSTEM_PROMPT}]},
@@ -138,6 +139,11 @@ class LLMExtractor:
             parts = choices[0]["content"]["parts"]
             text = "".join(part["text"] for part in parts if not part.get("thought", False))
             claims = LLMClaims.model_validate_json(text)
+        except httpx.TimeoutException:
+            execution.request_ms = (perf_counter() - started) * 1000
+            raise LLMExtractionError(
+                "Gemini request timed out; no retry", execution, status_code=504
+            ) from None
         except httpx.HTTPError:
             execution.request_ms = (perf_counter() - started) * 1000
             raise LLMExtractionError("Gemini transport failure; no retry", execution) from None

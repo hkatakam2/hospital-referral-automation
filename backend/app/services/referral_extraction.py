@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from datetime import datetime, timezone
 from uuid import UUID, uuid4
 
@@ -20,16 +21,18 @@ class ExtractionInputError(Exception):
 
 
 class ReferralExtractionService:
-    def __init__(self, session: Session, extractor: Extractor):
-        self.session = session
+    def __init__(self, session_factory: Callable[[], Session], extractor: Extractor):
+        self.session_factory = session_factory
         self.extractor = extractor
 
     def run(self, referral_id: UUID) -> ExtractionDetail:
-        if self.session.get(ReferralRecord, referral_id) is None:
-            raise ExtractionInputError("Referral not found", 404)
-        sources = DocumentRepository(self.session).load_extraction_sources(referral_id)
-        if not sources:
-            raise ExtractionInputError("Attach at least one document before extraction", 422)
+        # Copy plain source data, then release the read transaction/connection before IO.
+        with self.session_factory() as session:
+            if session.get(ReferralRecord, referral_id) is None:
+                raise ExtractionInputError("Referral not found", 404)
+            sources = DocumentRepository(session).load_extraction_sources(referral_id)
+            if not sources:
+                raise ExtractionInputError("Attach at least one document before extraction", 422)
         assessment = assess_sources(self.extractor, sources)
         execution = assessment.execution
         result = ExtractionDetail(
@@ -54,10 +57,11 @@ class ReferralExtractionService:
             "execution": execution.model_dump(mode="json"),
             "raw_response": execution.raw_response,
         }
-        try:
-            ExtractionRepository(self.session).add(result, artifact)
-            self.session.commit()
-        except Exception:
-            self.session.rollback()
-            raise
+        with self.session_factory() as session:
+            try:
+                ExtractionRepository(session).add(result, artifact)
+                session.commit()
+            except Exception:
+                session.rollback()
+                raise
         return result

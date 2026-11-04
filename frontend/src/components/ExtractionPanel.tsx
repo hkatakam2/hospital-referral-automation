@@ -1,5 +1,5 @@
 import { fieldLabels, fieldNames } from '../api/types'
-import type { FieldName } from '../api/types'
+import type { ExtractorChoice, FieldName } from '../api/types'
 import type { ReferralWorkspace } from '../hooks/useReferralWorkspace'
 
 export function ExtractionPanel({ workspace: w, onUse, saving }: {
@@ -7,8 +7,23 @@ export function ExtractionPanel({ workspace: w, onUse, saving }: {
 }) {
   const { pending, error } = w.runExtraction
   const result = w.selectedExtraction
+  const gemini = w.methods.data?.find(method => method.extractor === 'gemini')
+  const methodAvailable = w.extractor === 'rules' || gemini?.available === true
   return <section className="card" aria-labelledby="extraction-title">
-    <div className="section-toolbar"><h2 id="extraction-title">Extraction review</h2><button className="primary" onClick={() => w.runExtraction.execute()} disabled={pending || !w.documents.data?.length}>{pending ? 'Extracting…' : 'Run extraction'}</button></div>
+    <h2 id="extraction-title">Extraction review</h2>
+    <div className="section-toolbar">
+      <label>Extraction method<select value={w.extractor} disabled={pending} onChange={event => w.setExtractor(event.target.value as ExtractorChoice)}>
+        <option value="rules">Rules</option>
+        <option value="gemini" disabled={!gemini?.available}>Gemini</option>
+      </select></label>
+      <button className="primary" onClick={() => w.runExtraction.execute()} disabled={pending || !w.documents.data?.length || !methodAvailable}>
+        {pending ? (w.extractor === 'gemini' ? 'Extracting with Gemini…' : 'Extracting…') : 'Run extraction'}
+      </button>
+    </div>
+    {w.methods.loading && <p role="status">Checking extraction methods…</p>}
+    {w.methods.error && <p role="alert">Could not check Gemini availability. <button onClick={w.methods.refresh}>Refresh methods</button></p>}
+    {gemini && !gemini.available && <p className="muted">{gemini.reason}</p>}
+    {w.extractor === 'gemini' && <p role="status">Gemini sends this packet’s synthetic document text to Google and may incur usage charges. Processing continues if you leave this page; refresh history before retrying an interrupted request.</p>}
     <p>Each run preserves the source findings. Review candidates before copying them into your correction draft.</p>
     {error && <p role="alert" className="error">{error}</p>}
     <div className="section-toolbar"><h3>Saved run history</h3><button disabled={w.runs.loading} onClick={w.runs.refresh}>Refresh history</button></div>
@@ -16,7 +31,7 @@ export function ExtractionPanel({ workspace: w, onUse, saving }: {
     {w.runs.error && <p role="alert" className="error">{w.runs.error}</p>}
     {w.runs.data?.length === 0 && <p>No extraction runs yet.</p>}
     {!!w.runs.data?.length && <label>Extraction run<select value={w.selectedRunId ?? ''} onChange={event => w.selectRun(event.target.value)}>
-      {w.runs.data.map((run, index) => <option key={run.id} value={run.id}>{index === 0 ? 'Latest · ' : ''}{new Date(run.created_at).toLocaleString()} · {run.id.slice(0, 8)}</option>)}
+      {w.runs.data.map((run, index) => <option key={run.id} value={run.id}>{index === 0 ? 'Latest · ' : ''}{new Date(run.created_at).toLocaleString()} · {run.extractor_version} · {run.id.slice(0, 8)}</option>)}
     </select></label>}
     {w.extraction.loading && <p role="status">Loading extraction…</p>}
     {w.extraction.error && <div role="alert"><p className="error">{w.extraction.error}</p><button onClick={w.extraction.refresh}>Retry extraction</button></div>}

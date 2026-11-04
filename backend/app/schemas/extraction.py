@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 FieldName = Literal[
     "patient_name", "date_of_birth", "referring_organization",
@@ -77,3 +77,17 @@ class ExtractionSummary(BaseModel):
     created_at: datetime
     source_document_ids: list[UUID]
     complete: bool
+
+
+ExtractorChoice = Literal["rules", "gemini"]
+
+
+class ExtractionRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    extractor: ExtractorChoice = "rules"
+
+
+class ExtractionMethod(BaseModel):
+    extractor: ExtractorChoice
+    available: bool
+    reason: str | None = None

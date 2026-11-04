@@ -4,7 +4,7 @@ from uuid import uuid4
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import func, select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, sessionmaker
 
 from app.extraction.assessment import REQUIRED_FIELDS, assess_sources
 from app.extraction.base import ExtractionOutput
@@ -171,8 +171,9 @@ def test_incomplete_extractor_persists_a_complete_shape_with_missing_findings(
     referral = client.post("/api/referrals", json=DATA).json()
     base = f"/api/referrals/{referral['id']}"
     source = attach(client, base, pdf_factory, ("Patient: Avery Morgan",))
-    with Session(db_engine) as session:
-        result = ReferralExtractionService(session, EmptyExtractor()).run(referral["id"])
+    result = ReferralExtractionService(sessionmaker(db_engine), EmptyExtractor()).run(
+        referral["id"],
+    )
     saved = client.get(f"{base}/extractions/{result.id}").json()
     assert set(saved["fields"]) == set(REQUIRED_FIELDS)
     assert len(saved["findings"]) == 5
@@ -232,11 +233,11 @@ def test_commit_failure_rolls_back_run_and_links(client, pdf_factory, db_engine,
     referral = client.post("/api/referrals", json=DATA).json()
     attach(client, f"/api/referrals/{referral['id']}", pdf_factory, ("Patient: Avery Morgan",))
     with Session(db_engine) as session:
-        service = ReferralExtractionService(session, RuleBasedExtractor())
+        service = ReferralExtractionService(sessionmaker(db_engine), RuleBasedExtractor())
         def fail():
             raise RuntimeError("commit failed")
         with monkeypatch.context() as patch:
-            patch.setattr(session, "commit", fail)
+            patch.setattr(Session, "commit", lambda self: fail())
             with pytest.raises(RuntimeError, match="commit failed"):
                 service.run(referral["id"])
         assert session.scalar(select(func.count()).select_from(ExtractionRunRecord)) == 0

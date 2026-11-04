@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { errorMessage } from '../api/client'
 import { getDocument, listDocuments, uploadDocument } from '../api/documents'
-import { createExtraction, getExtraction, listExtractions } from '../api/extractions'
+import { createExtraction, listExtractionMethods, getExtraction, listExtractions } from '../api/extractions'
 import { getReferral } from '../api/referrals'
-import type { Evidence } from '../api/types'
+import type { ExtractorChoice, Evidence } from '../api/types'
 
 // Each resource owns its error/loading state. A failed panel does not hide its siblings.
 function useResource<T>(load: (signal: AbortSignal) => Promise<T>) {
@@ -28,6 +28,8 @@ function useResource<T>(load: (signal: AbortSignal) => Promise<T>) {
 }
 
 export function useReferralWorkspace(id: string) {
+  const methods = useResource(useCallback(signal => listExtractionMethods(signal), []))
+  const [extractor, setExtractor] = useState<ExtractorChoice>('rules')
   const referral = useResource(useCallback(signal => getReferral(id, signal), [id]))
   const documents = useResource(useCallback(signal => listDocuments(id, signal), [id]))
   const runs = useResource(useCallback(signal => listExtractions(id, signal), [id]))
@@ -45,10 +47,11 @@ export function useReferralWorkspace(id: string) {
     } }
   }, 'refresh documents')
   const runExtraction = useWorkspaceWrite(async () => {
-    const result = await createExtraction(id)
+    const result = await createExtraction(id, extractor)
     return { result, publish: () => {
       setSelectedRunId(result.id)
       runs.refresh()
+      documents.refresh()
     } }
   }, 'refresh history')
   // Stale data may remain during a refresh, but must never render as another selection.
@@ -62,7 +65,7 @@ export function useReferralWorkspace(id: string) {
     documents.data.some(doc => !selectedExtraction.source_document_ids.includes(doc.id))
   )
   return {
-    referral, documents, runs, extraction, document, selection, selectedDocument,
+    methods, extractor, setExtractor, referral, documents, runs, extraction, document, selection, selectedDocument,
     selectedExtraction, selectedRunId: runId, selectRun: setSelectedRunId,
     selectDocument: (documentId: string) => setSelection({ documentId, page: 1 }),
     selectPage: (page: number) => {

@@ -23,3 +23,13 @@ PostgreSQL metadata/text and filesystem originals must both be retained. There i
 ## Original extraction artifacts
 
 Migration 0004 adds extraction_artifacts, keyed to the saved run with a cascading foreign key. The service writes original output, available structured Gemini claims/raw response and execution metadata in the same transaction as the assessed snapshot and document links. Artifacts have no public endpoint. `test_extraction_provenance.py` verifies fresh-connection retention, immutability after corrections/new runs, exclusion of raw artifacts from API payloads, and downgrade/upgrade preservation of legacy snapshots without backfilling artifacts. `test_extractions.py` checks commit failure leaves no run, links or artifact. Migration schema drift and actual backend restart remain covered by the standard suites.
+
+## Provider waiting and fixed run inputs
+
+Extraction now owns separate short read and write sessions. The read scope copies
+numbered source text and closes before provider IO; the final scope atomically
+saves snapshot, artifact, and original document links. `test_extraction_methods.py`
+asserts the pool has no checked-out connection inside mocked provider transport,
+adds a real attachment during that call, and proves it is absent from the saved
+run. Failure cases retain only the earlier successful run/artifact/links. These
+are real PostgreSQL checks with mocked provider HTTP, not live Google evidence.

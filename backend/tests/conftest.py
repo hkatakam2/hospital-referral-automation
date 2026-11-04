@@ -53,6 +53,7 @@ def db_engine(postgres_engine, monkeypatch):
             "document_pages, documents, referrals"
         ))
     monkeypatch.setattr(database, "engine", postgres_engine)
+    monkeypatch.setattr(settings, "gemini_enabled", False)
     yield postgres_engine
     with postgres_engine.begin() as connection:
         connection.execute(text(

@@ -2,7 +2,7 @@
 
 Surface: `python -m app.evaluation` from `backend/`. Rules are the offline default;
 `--extractor gemini` explicitly selects a live provider. No browser or database
-is used by this command. Browser/API extraction remains rules/1.
+is used by this command. Browser/API extraction defaults to rules/1 and supports opt-in Gemini separately.
 
 Sources: `app/evaluation/__main__.py`, `execution.py`, `scoring.py`,
 `app/extraction/base.py`, `llm.py`, `llm_schema.py`, `grounding.py`,
@@ -29,5 +29,6 @@ on failure. Missing prices/usage mean unknown cost. Source checks are literal
 location checks, not semantic entailment or administrative approval.
 
 The verification helper's backend suite includes these mocked tests. Its browser
-journeys verify the unchanged rule-based application, not Gemini. No live Gemini
-request is made by pytest or the helper.
+journeys verify Rules and opt-in Gemini using deterministic provider HTTP in the
+isolated server. No live Gemini request is made by default; explicitly selecting
+REFERRAL_TEST_GEMINI_MODE=live changes the browser provider to Google.

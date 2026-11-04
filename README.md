@@ -90,7 +90,7 @@ artifact, saved atomically with the assessed snapshot. Detail responses expose a
 allowlisted `provenance` summary; history lists omit artifacts and provenance.
 Older runs remain readable with `provenance: null`; original output is not backfilled.
 Run `alembic upgrade head` in `backend/` to apply migration 0004 before starting
-the updated API. The application still uses rules/1; Gemini remains evaluator-only.
+the updated API. Rules remain the default; Gemini is an explicit opt-in method.
 
 Reads have independent loading/error states and refresh controls. Uploads and
 extractions are explicit synchronous actions, with repeat submissions disabled
@@ -298,7 +298,7 @@ attempt to extract before attaching documents returns `422`.
 
 Each run processes all currently attached documents in stable document/page
 order using persisted text, records its source document IDs, extractor version
-(`rules/1`) and checklist version (`five-required-fields/2`), and survives backend
+(`rules/1` or `gemini-claims/1`) and checklist version (`five-required-fields/2`), and survives backend
 restarts. Later uploads do not change old runs. Repeating extraction creates a
 new run. Results and source associations are committed in one database transaction.
 
@@ -309,7 +309,7 @@ An incomplete extractor result cannot mark a packet complete. Previously saved
 run snapshots retain their original versions and findings.
 
 The five fields are patient name, date of birth, referring organization,
-requested specialty, and referral reason. Recognized labels include `Patient`
+requested specialty, and referral reason. For Rules, recognized labels include `Patient`
 / `Patient Name`, `DOB` / `Date of Birth`, `Referring Organization` /
 `Referring Clinic`, `Requested Specialty` / `Specialty` / `Requested Service`,
 and `Reason` / `Referral Reason`. Labels must occupy individual `Label: value`
@@ -331,10 +331,71 @@ The checklist is an illustrative prototype requirement, not institutional policy
 
 Manual referral values never fill extraction gaps and extraction does not update
 them. Creating a referral still requires the five manually entered fields; draft
-or document-first intake, OCR, and LLM extraction are later increments. The
+or document-first intake and OCR are later increments. The
 browser review panel can copy suggestions into an explicit correction draft.
 The synthetic fixture expectations also cover automated extraction in
 `tests/test_extractions.py`.
+
+
+### Opt-in Gemini extraction
+
+Rules are available without provider credentials. To enable Gemini in the browser
+and API, configure `backend/.env`, then restart the backend:
+
+```sh
+GEMINI_ENABLED=true
+GEMINI_API_KEY=your-private-key
+GEMINI_MODEL=your-available-structured-output-model
+```
+
+Keep the key private. Existing Gemini key precedence and request limits apply; see
+[the evaluation guide](backend/app/evaluation/README.md). `GEMINI_ENABLED` defaults
+to false and does not affect the separate evaluation command. Availability checks
+validate local configuration only; they make no provider request and cannot prove
+that credentials or a model will be accepted by Google.
+
+In Extraction review, choose **Extraction method → Gemini**, review the external
+processing notice, then select **Run extraction**. Synthetic document text goes to
+Google and may incur charges. Rules remain the default each time the workspace
+opens. History identifies each run's extractor; evidence review, correction drafts,
+and explicit correction saves work the same way for both methods.
+
+`GET /api/extraction-methods` returns method availability and a safe unavailability
+reason. `POST /api/referrals/{id}/extractions` accepts `{"extractor":"gemini"}`
+or `{"extractor":"rules"}`. An omitted body or `{}` keeps the Rules default.
+Unknown methods and extra settings are rejected with 422; clients cannot choose
+arbitrary models or send provider credentials. Disabled/misconfigured Gemini
+returns 503. Oversized input returns 422, provider/response failures return 502,
+and provider timeouts return 504 without exposing raw provider content.
+
+The service captures numbered page text in a short read session, releases its
+connection before extraction, and atomically saves the snapshot, private artifact,
+and input-document links in a new write session. Attachments added during a run
+are excluded from its fixed inputs; the browser refreshes attachments afterward
+and warns when they differ. Failed attempts create no snapshot or artifact and
+leave previous runs and saved referral values intact.
+
+Requests remain synchronous, with no automatic retries, fallback, durable jobs,
+or retry deduplication. Leaving the page does not cancel processing. Refresh
+history before retrying after a connection interruption: the run may already be
+saved, and another submission can incur another charge. `GEMINI_TIMEOUT_SECONDS`
+bounds individual HTTP phases, not total elapsed processing time.
+
+The normal verification suite uses a deterministic provider stub with the real
+Gemini adapter, API, PDF ingestion, and database. It does not call Google. To run
+just the synthetic Gemini browser journey against the live provider, explicitly
+select live mode (this makes a billable external request and uses an isolated DB):
+
+```sh
+cd frontend
+REFERRAL_TEST_GEMINI_MODE=live npx playwright test tests/review.spec.ts \
+  --grep 'Gemini workflow' --trace on
+```
+
+Live mode reads the existing Gemini settings and overrides enablement only inside
+the isolated test server. Other browser runs default to the stub and never use a
+developer's live key. This single journey proves integration, not model quality;
+use the versioned evaluator for quality comparisons.
 
 ## Extraction quality evaluation
 

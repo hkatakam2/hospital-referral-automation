@@ -7,7 +7,7 @@ import pytest
 from alembic import command
 from alembic.config import Config
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, sessionmaker
 
 from app.extraction.base import ExtractionOutput
 from app.extraction.llm import GeminiSettings, LLMExtractor
@@ -56,8 +56,9 @@ def test_gemini_claims_response_and_provenance_survive_without_public_raw_output
         GeminiSettings(api_key="test-credential", model="test-model", _env_file=None),
         transport=httpx.MockTransport(lambda request: httpx.Response(200, json=raw)),
     )
-    with Session(db_engine) as session:
-        result = ReferralExtractionService(session, extractor).run(referral["id"])
+    result = ReferralExtractionService(sessionmaker(db_engine), extractor).run(
+        referral["id"],
+    )
     db_engine.dispose()
     saved = client.get(f"{base}/extractions/{result.id}").json()
     assert saved == result.model_dump(mode="json")
@@ -101,8 +102,9 @@ def test_preassessment_output_retains_rejected_claims(client, pdf_factory, db_en
                 Candidate(raw_value="Invented", value="Invented"),
             ])})
 
-    with Session(db_engine) as session:
-        result = ReferralExtractionService(session, FaultyExtractor()).run(referral["id"])
+    result = ReferralExtractionService(sessionmaker(db_engine), FaultyExtractor()).run(
+        referral["id"],
+    )
     saved = client.get(f"{base}/extractions/{result.id}").json()
     assert saved["fields"]["patient_name"]["candidates"][0]["issue"] == "Missing evidence"
     with Session(db_engine) as session:
@@ -132,5 +134,7 @@ def test_artifact_migration_preserves_legacy_snapshots(client, pdf_factory, db_e
     with Session(db_engine) as session:
         assert session.get(ExtractionArtifactRecord, UUID(saved["id"])) is None
         assert session.scalar(select(ExtractionRunRecord)).result_json == legacy
-        new = ReferralExtractionService(session, RuleBasedExtractor()).run(saved["referral_id"])
+        new = ReferralExtractionService(sessionmaker(db_engine), RuleBasedExtractor()).run(
+            saved["referral_id"],
+        )
         assert session.get(ExtractionArtifactRecord, new.id) is not None

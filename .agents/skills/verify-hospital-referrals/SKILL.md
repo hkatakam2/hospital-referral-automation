@@ -5,7 +5,7 @@ description: Verify the hospital-referral-automation application's implemented i
 
 # Verify Hospital Referrals
 
-Verify observable behavior, retain proof, and distinguish product failures from unavailable checks. Scope is the implemented application through roadmap Level 6. OCR, browser/API LLM extraction, policy configuration, audit history, approval, authentication, and document-first drafts are not implemented and must not become passing claims. Evaluator-only Gemini extraction has separate mocked tests and requires a live credentialed run for provider compatibility and quality claims.
+Verify observable behavior, retain proof, and distinguish product failures from unavailable checks. Scope is the implemented application through roadmap Level 6. OCR, policy configuration, audit history, approval, authentication, and document-first drafts are not implemented and must not become passing claims. Opt-in browser/API Gemini uses the production adapter with deterministic provider HTTP in the default browser harness. Live mode is explicit and billable; only a live credentialed run proves provider compatibility, and quality claims require the separate evaluator.
 
 Use this skill from the repository root. Read [features/README.md](features/README.md) and the files relevant to the requested change before choosing checks. The feature map records user routes, source entry points, assertions, and coverage limits. Do not assume historical test counts remain current.
 

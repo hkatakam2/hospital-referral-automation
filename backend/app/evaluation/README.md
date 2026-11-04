@@ -171,9 +171,9 @@ other than the patient. Instruction-like source text is treated as untrusted dat
 in the prompt, but prompting does not prove resistance to all prompt injection.
 
 Raw responses remain separate from assessed fields and are excluded from public
-API models. Browser/API extraction continues to use rules/1. Full evidence
-verification, live browser integration, and transaction changes for long-running
-network calls are later increments; this CLI requires no database or server.
+API models. Browser/API extraction defaults to rules/1 and supports explicitly enabled Gemini;
+see the root README for method selection and short database transaction scopes.
+This CLI requires no database or server and ignores GEMINI_ENABLED.
 
 Provider contract references: [Gemini structured outputs](https://ai.google.dev/gemini-api/docs/structured-output)
 and [generateContent API and usage metadata](https://ai.google.dev/api/generate-content).

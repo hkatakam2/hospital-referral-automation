@@ -13,6 +13,11 @@ class Base(DeclarativeBase):
 engine = create_engine(settings.database_url, pool_pre_ping=True)
 
 
+def session_factory() -> Session:
+    """Open an independent session for a service-owned transaction scope."""
+    return Session(engine)
+
+
 def get_session() -> Iterator[Session]:
     # Writes commit in their owning repository or service before a successful response is returned.
     with Session(engine) as session:

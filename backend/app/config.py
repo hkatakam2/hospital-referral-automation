@@ -11,6 +11,8 @@ class Settings(BaseSettings):
         "postgresql+psycopg://referral:referral_local@127.0.0.1:5432/referrals"
     )
 
+    gemini_enabled: bool = False
+
     app_name: str = "Hospital Referral API"
     cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
     document_storage_dir: Path = Path(__file__).resolve().parents[1] / "var" / "documents"

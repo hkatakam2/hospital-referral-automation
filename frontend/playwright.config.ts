@@ -8,6 +8,7 @@ export default defineConfig({
   webServer: [
     {
       command: '../backend/.venv/bin/python ../backend/tests/browser_server.py',
+      env: { REFERRAL_TEST_GEMINI_MODE: process.env.REFERRAL_TEST_GEMINI_MODE || 'stub' },
       url: 'http://127.0.0.1:8001/api/health',
       reuseExistingServer: false,
       gracefulShutdown: { signal: 'SIGTERM', timeout: 5000 },

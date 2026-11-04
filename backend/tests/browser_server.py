@@ -23,6 +23,14 @@ with admin.connect() as connection:
     connection.execute(text(f'CREATE DATABASE "{name}"'))
 try:
     with TemporaryDirectory(prefix="referral-browser-") as storage:
+        # Default to no Gemini. Playwright explicitly selects stub or live mode.
+        mode = os.environ.get("REFERRAL_TEST_GEMINI_MODE", "disabled")
+        if mode not in {"disabled", "stub", "live"}:
+            raise ValueError("Unknown browser Gemini test mode")
+        settings.gemini_enabled = mode == "live"
+        if mode == "stub":
+            from gemini_browser_stub import enable
+            enable()
         settings.database_url = url.set(database=name).render_as_string(hide_password=False)
         settings.document_storage_dir = Path(storage)
         command.upgrade(Config(str(backend / "alembic.ini")), "head")

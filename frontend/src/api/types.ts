@@ -36,3 +36,8 @@ export interface ExtractionDetail extends ExtractionSummary {
   findings: { field: FieldName; status: 'found' | 'missing' | 'conflicting' | 'invalid' }[]
   warnings: string[]
 }
+
+export type ExtractorChoice = 'rules' | 'gemini'
+export interface ExtractionMethod {
+  extractor: ExtractorChoice; available: boolean; reason: string | null
+}

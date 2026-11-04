@@ -1,4 +1,4 @@
-# Rule-based extraction and history
+# Rules, opt-in Gemini extraction, and history
 
 ## Sub-features
 
@@ -20,11 +20,35 @@ Assessment checks exercise empty and incomplete extractor outputs, all five requ
 
 ## Gotchas
 
-Rules recognize labeled lines, ISO dates, and cardiology aliases only. Manual referral data never fills extraction gaps. Missing/disputed values remain unselected; invalid candidates take finding precedence and stay visible. All five found plus readable-page coverage is the prototype checklist, not clinical or administrative approval. New attachments do not mutate old runs. Every POST creates a new run. The browser/API still selects rules/1. Evaluator-only Gemini extraction is mapped
-in [evaluation.md](evaluation.md); no configurable institutional policy engine is present.
+Rules recognize labeled lines, ISO dates, and cardiology aliases only. Manual referral data never fills extraction gaps. Missing/disputed values remain unselected; invalid candidates take finding precedence and stay visible. All five found plus readable-page coverage is the prototype checklist, not clinical or administrative approval. New attachments do not mutate old runs. Every POST creates a new run. The browser/API defaults to rules/1; explicitly enabled Gemini is selected per run.
+Offline quality evaluation is mapped in [evaluation.md](evaluation.md); no configurable institutional policy engine is present.
 
 ## Shared evidence boundary and provenance
 
 `extraction/assessment.py` validates all adapters against exact source document/page/quote and raw-value support, and checks selected-value normalization before selection. `test_evidence_verification.py` injects faulty adapters to reject missing citations, wrong document/pages, fabricated/blank quotes, invented values and unrelated instruction-like text. The rule-baseline aggregate counts must remain identical. Literal checks do not establish semantic entailment or prompt-injection resistance.
 
-`test_extraction_provenance.py` injects the actual Gemini adapter with mocked HTTP transport into the persistence service. It verifies original structured claims, pre-assessment candidates, raw response and execution metadata are saved separately from the public snapshot. Detail responses expose an allowlisted provenance summary; history omits it. This is local adapter/persistence proof, not live provider or browser Gemini support.
+`test_extraction_provenance.py` injects the actual Gemini adapter with mocked HTTP transport into the persistence service. It verifies original structured claims, pre-assessment candidates, raw response and execution metadata are saved separately from the public snapshot. Detail responses expose an allowlisted provenance summary; history omits it. This is local adapter/persistence proof, not live provider compatibility.
+
+## Opt-in Gemini workflow
+
+`GET /api/extraction-methods` reports local configuration availability without
+provider IO. POST accepts rules/gemini, preserves the empty-body Rules default,
+and enforces GEMINI_ENABLED in the backend. `test_extraction_methods.py` uses the
+production Gemini adapter with MockTransport through real API/database operations:
+availability, invalid settings, unsupported claims, timeout/transport/HTTP/blocked/
+malformed/oversized failures, one request/no retry, prior-run retention, private
+content exclusion, zero checked-out connections during provider IO, and a document
+attached during processing excluded from the saved fixed input set.
+
+The Gemini workflow browser journey uses real PDF upload, method selection, API,
+assessment, storage, evidence navigation, correction save, and reload/API readback.
+Default Playwright mode installs `tests/gemini_browser_stub.py` only in the isolated
+test server, supplying deterministic provider HTTP to the real adapter. It makes
+no Google requests and is not model-quality evidence. A separate mocked POST
+failure within that journey checks prior-result/draft retention without retry.
+Availability probes mock discovery failure/disabled responses. Screenshots cover
+the Gemini controls at desktop/mobile widths and need visual inspection.
+
+Live mode is explicitly selected with REFERRAL_TEST_GEMINI_MODE=live; see the
+README command. Record its result separately. Requests remain synchronous and
+failed attempts are not persisted; no worker, idempotency, or automatic fallback.

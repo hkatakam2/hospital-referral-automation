@@ -274,3 +274,88 @@ test('a write finishing after navigation cannot select a run in another workspac
   expect(await (await request.get(`${base}/extractions`)).json()).toHaveLength(1)
   expect(await (await request.get(`/api/referrals/${other.id}/extractions`)).json()).toHaveLength(0)
 })
+
+test('Gemini workflow: production API and persistence with explicit stub or live provider', async ({ page, request }, testInfo) => {
+  test.setTimeout(120_000)
+  const referral = await (await request.post('/api/referrals', { data })).json()
+  const base = `/api/referrals/${referral.id}`
+  await page.goto(`/referrals/${referral.id}`)
+  await expect(page.getByLabel('Extraction method')).toHaveValue('rules')
+  const narrative = ['Avery Morgan, born 1974-03-12, was referred by Lakeside for cardiology.',
+    'The reason for referral is Palpitations.']
+  await page.getByLabel('Attach a synthetic PDF').setInputFiles({
+    name: 'narrative.pdf', mimeType: 'application/pdf', buffer: pdf([narrative]),
+  })
+  await page.getByRole('button', { name: 'Upload PDF', exact: true }).click()
+  await expect(page.getByText('Uploaded narrative.pdf.', { exact: false })).toBeVisible()
+  await page.getByLabel('Extraction method').selectOption('gemini')
+  await expect(page.getByText('Gemini sends this packet’s synthetic document text', { exact: false })).toBeVisible()
+  // Keep unrelated draft edits through extraction and a failed subsequent run.
+  await page.getByLabel('Patient name', { exact: true }).fill('Manual correction')
+  const completed = page.waitForResponse(response => response.url().endsWith(`${base}/extractions`) && response.request().method() === 'POST')
+  await page.getByRole('button', { name: 'Run extraction', exact: true }).click()
+  const response = await completed
+  expect(response.status()).toBe(201)
+  const saved = await response.json()
+  expect(saved.extractor_version).toBe('gemini-claims/1')
+  await testInfo.attach('saved-gemini-run', { contentType: 'application/json', body: JSON.stringify({
+    providerMode: process.env.REFERRAL_TEST_GEMINI_MODE || 'stub', saved,
+  }, null, 2) })
+  await expect(page.getByText('Extraction checklist: all five fields found', { exact: false })).toBeVisible()
+  await page.getByText('Run provenance', { exact: true }).click()
+  await expect(page.getByText('Provider: gemini', { exact: true })).toBeVisible()
+  await page.getByRole('button', { name: 'View evidence: narrative.pdf, page 1' }).first().click()
+  await expect(page.getByRole('heading', { name: 'Source: narrative.pdf, page 1' })).toBeFocused()
+  await page.getByRole('button', { name: 'Use date of birth: 1974-03-12 in correction' }).click()
+  await expect(page.getByLabel('Patient name', { exact: true })).toHaveValue('Manual correction')
+  expect((await (await request.get(base)).json()).patient_name).toBe('Avery Morgan')
+
+  // This failure is a frontend-only probe, separate from the provider/persistence run above.
+  let failedWrites = 0
+  await page.route(`**${base}/extractions`, route => {
+    if (route.request().method() !== 'POST') return route.continue()
+    failedWrites++
+    return route.fulfill({ status: 504, json: { detail: 'Gemini request timed out; no retry' } })
+  })
+  await page.getByRole('button', { name: 'Run extraction', exact: true }).click()
+  await expect(page.getByRole('alert').filter({ hasText: 'Gemini request timed out' })).toBeVisible()
+  await expect(page.getByLabel('Patient name', { exact: true })).toHaveValue('Manual correction')
+  await expect(page.getByText('Provider: gemini', { exact: true })).toBeVisible()
+  expect(failedWrites).toBe(1)
+  await page.unroute(`**${base}/extractions`)
+  await page.getByRole('button', { name: 'Save corrections' }).click()
+  await expect(page.getByText('Corrections saved.')).toBeVisible()
+  await page.reload()
+  await expect(page.getByLabel('Patient name', { exact: true })).toHaveValue('Manual correction')
+  await expect(page.getByLabel('Extraction run')).toContainText('gemini-claims/1')
+  expect(await (await request.get(`${base}/extractions/${saved.id}`)).json()).toEqual(saved)
+  expect(await (await request.get(`${base}/extractions`)).json()).toHaveLength(1)
+  await page.getByText('Run provenance', { exact: true }).click()
+  await page.screenshot({ path: testInfo.outputPath('gemini-desktop.png'), fullPage: true })
+  await page.setViewportSize({ width: 390, height: 844 })
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+  await page.screenshot({ path: testInfo.outputPath('gemini-mobile.png'), fullPage: true })
+})
+
+test('mocked availability: Gemini disabled and discovery failure leave Rules usable', async ({ page, request }) => {
+  const referral = await (await request.post('/api/referrals', { data })).json()
+  await page.route('**/api/extraction-methods', route => route.fulfill({ json: [
+    { extractor: 'rules', available: true, reason: null },
+    { extractor: 'gemini', available: false, reason: 'Gemini extraction is disabled on this server' },
+  ] }))
+  await page.goto(`/referrals/${referral.id}`)
+  await expect(page.getByText('Gemini extraction is disabled on this server')).toBeVisible()
+  await expect(page.getByLabel('Extraction method').locator('option[value="gemini"]')).toHaveJSProperty('disabled', true)
+  await page.unroute('**/api/extraction-methods')
+  await page.route('**/api/extraction-methods', route => route.fulfill({ status: 503 }))
+  await page.reload()
+  await expect(page.getByText('Could not check Gemini availability.', { exact: false })).toBeVisible()
+  await expect(page.getByLabel('Extraction method')).toHaveValue('rules')
+  await expect(page.getByLabel('Extraction method').locator('option[value="gemini"]')).toHaveJSProperty('disabled', true)
+  await request.post(`/api/referrals/${referral.id}/documents`, { multipart: { file: {
+    name: 'rules.pdf', mimeType: 'application/pdf', buffer: pdf([complete]),
+  } } })
+  await page.getByRole('button', { name: 'Refresh documents', exact: true }).click()
+  await page.getByRole('button', { name: 'Run extraction', exact: true }).click()
+  await expect(page.getByText('Extraction checklist: all five fields found', { exact: false })).toBeVisible()
+})
