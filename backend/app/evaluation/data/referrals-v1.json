@@ -1,0 +1,2316 @@
+{
+  "version": "synthetic-referrals/1",
+  "description": "Thirty fictional source-text packets with manually specified administrative annotations; not institutional policy or a PDF/OCR benchmark.",
+  "packets": [
+    {
+      "id": "standard-labels",
+      "document_type": "labeled",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-000000000064",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000064",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000064",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000064",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000064",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000064",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": true
+    },
+    {
+      "id": "long-labels",
+      "document_type": "labeled",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-0000000000c8",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient Name: Avery Morgan\nDate of Birth: 1974-03-12\nReferring Organization: Lakeside Primary Care\nRequested Specialty: Cardiology\nReferral Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000000c8",
+              "page_number": 1,
+              "quote": "Patient Name: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000000c8",
+              "page_number": 1,
+              "quote": "Date of Birth: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000000c8",
+              "page_number": 1,
+              "quote": "Referring Organization: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000000c8",
+              "page_number": 1,
+              "quote": "Requested Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000000c8",
+              "page_number": 1,
+              "quote": "Referral Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": true
+    },
+    {
+      "id": "lowercase-labels",
+      "document_type": "labeled",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-00000000012c",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "patient: Avery Morgan\ndob: 1974-03-12\nreferring clinic: Lakeside Primary Care\nspecialty: cardiology\nreason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-00000000012c",
+              "page_number": 1,
+              "quote": "patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-00000000012c",
+              "page_number": 1,
+              "quote": "dob: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-00000000012c",
+              "page_number": 1,
+              "quote": "referring clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-00000000012c",
+              "page_number": 1,
+              "quote": "specialty: cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-00000000012c",
+              "page_number": 1,
+              "quote": "reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": true
+    },
+    {
+      "id": "extra-whitespace",
+      "document_type": "labeled",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-000000000190",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "  Patient :   Avery Morgan  \n  DOB :   1974-03-12  \n  Referring Clinic :   Lakeside Primary Care  \n  Specialty :   Cardiology  \n  Reason :   Recurrent palpitations  "
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000190",
+              "page_number": 1,
+              "quote": "  Patient :   Avery Morgan  "
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000190",
+              "page_number": 1,
+              "quote": "  DOB :   1974-03-12  "
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000190",
+              "page_number": 1,
+              "quote": "  Referring Clinic :   Lakeside Primary Care  "
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000190",
+              "page_number": 1,
+              "quote": "  Specialty :   Cardiology  "
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000190",
+              "page_number": 1,
+              "quote": "  Reason :   Recurrent palpitations  "
+            }
+          ]
+        }
+      },
+      "complete": true
+    },
+    {
+      "id": "requested-service",
+      "document_type": "labeled",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-0000000001f4",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\nReferring Clinic: Lakeside Primary Care\nRequested Service: Cardiology consultation\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000001f4",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000001f4",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000001f4",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000001f4",
+              "page_number": 1,
+              "quote": "Requested Service: Cardiology consultation"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000001f4",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": true
+    },
+    {
+      "id": "two-page-form",
+      "document_type": "multipage",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-000000000258",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12"
+            },
+            {
+              "page_number": 2,
+              "text": "Referring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000258",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000258",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000258",
+              "page_number": 2,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000258",
+              "page_number": 2,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000258",
+              "page_number": 2,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": true
+    },
+    {
+      "id": "split-documents",
+      "document_type": "multiple_documents",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-0000000002bc",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12"
+            }
+          ]
+        },
+        {
+          "document_id": "00000000-0000-0000-0000-0000000002bd",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Referring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000002bc",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000002bc",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000002bd",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000002bd",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000002bd",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": true
+    },
+    {
+      "id": "duplicate-documents",
+      "document_type": "multiple_documents",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-000000000320",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        },
+        {
+          "document_id": "00000000-0000-0000-0000-000000000321",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000320",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            },
+            {
+              "document_id": "00000000-0000-0000-0000-000000000321",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000320",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            },
+            {
+              "document_id": "00000000-0000-0000-0000-000000000321",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000320",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            },
+            {
+              "document_id": "00000000-0000-0000-0000-000000000321",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000320",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            },
+            {
+              "document_id": "00000000-0000-0000-0000-000000000321",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000320",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            },
+            {
+              "document_id": "00000000-0000-0000-0000-000000000321",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": true
+    },
+    {
+      "id": "repeated-equivalent-specialty",
+      "document_type": "multipage",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-000000000384",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            },
+            {
+              "page_number": 2,
+              "text": "Requested Service: Cardiology consultation"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000384",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000384",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000384",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000384",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            },
+            {
+              "document_id": "00000000-0000-0000-0000-000000000384",
+              "page_number": 2,
+              "quote": "Requested Service: Cardiology consultation"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000384",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": true
+    },
+    {
+      "id": "missing-patient_name",
+      "document_type": "missing",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-0000000003e8",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "\nDOB: 1974-03-12\nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000003e8",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000003e8",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000003e8",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000003e8",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "missing-date_of_birth",
+      "document_type": "missing",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-00000000044c",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\n\nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-00000000044c",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-00000000044c",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-00000000044c",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-00000000044c",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "missing-referring_organization",
+      "document_type": "missing",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-0000000004b0",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\n\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000004b0",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000004b0",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000004b0",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000004b0",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "missing-requested_specialty",
+      "document_type": "missing",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-000000000514",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\nReferring Clinic: Lakeside Primary Care\n\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000514",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000514",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000514",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000514",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "missing-referral_reason",
+      "document_type": "missing",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-000000000578",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\n"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000578",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000578",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000578",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000578",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "missing",
+          "value": null,
+          "evidence": []
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "empty-dob",
+      "document_type": "invalid",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-0000000005dc",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: \nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000005dc",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "invalid",
+          "value": null,
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000005dc",
+              "page_number": 1,
+              "quote": "DOB: "
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000005dc",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000005dc",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000005dc",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "impossible-dob",
+      "document_type": "invalid",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-000000000640",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-02-30\nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000640",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "invalid",
+          "value": null,
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000640",
+              "page_number": 1,
+              "quote": "DOB: 1974-02-30"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000640",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000640",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000640",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "unsupported-specialty",
+      "document_type": "invalid",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-0000000006a4",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\nReferring Clinic: Lakeside Primary Care\nSpecialty: Neurology\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000006a4",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000006a4",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000006a4",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "invalid",
+          "value": null,
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000006a4",
+              "page_number": 1,
+              "quote": "Specialty: Neurology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000006a4",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "conflicting-date_of_birth",
+      "document_type": "conflicting",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-000000000708",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        },
+        {
+          "document_id": "00000000-0000-0000-0000-000000000709",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "DOB: 1974-03-13"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000708",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "conflicting",
+          "value": null,
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000708",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            },
+            {
+              "document_id": "00000000-0000-0000-0000-000000000709",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-13"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000708",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000708",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000708",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "conflicting-patient_name",
+      "document_type": "conflicting",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-00000000076c",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        },
+        {
+          "document_id": "00000000-0000-0000-0000-00000000076d",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Jordan Lee"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "conflicting",
+          "value": null,
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-00000000076c",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            },
+            {
+              "document_id": "00000000-0000-0000-0000-00000000076d",
+              "page_number": 1,
+              "quote": "Patient: Jordan Lee"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-00000000076c",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-00000000076c",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-00000000076c",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-00000000076c",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "conflicting-referral_reason",
+      "document_type": "conflicting",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-0000000007d0",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        },
+        {
+          "document_id": "00000000-0000-0000-0000-0000000007d1",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Reason: Exertional dyspnea"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000007d0",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000007d0",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000007d0",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000007d0",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "conflicting",
+          "value": null,
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000007d0",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            },
+            {
+              "document_id": "00000000-0000-0000-0000-0000000007d1",
+              "page_number": 1,
+              "quote": "Reason: Exertional dyspnea"
+            }
+          ]
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "valid-and-invalid-dob",
+      "document_type": "conflicting",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-000000000834",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        },
+        {
+          "document_id": "00000000-0000-0000-0000-000000000835",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "DOB: unknown"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000834",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "invalid",
+          "value": null,
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000834",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            },
+            {
+              "document_id": "00000000-0000-0000-0000-000000000835",
+              "page_number": 1,
+              "quote": "DOB: unknown"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000834",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000834",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000834",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "blank-second-page",
+      "document_type": "partial",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-000000000898",
+          "parse_status": "partial",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            },
+            {
+              "page_number": 2,
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000898",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000898",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000898",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000898",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000898",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "blank-first-page",
+      "document_type": "partial",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-0000000008fc",
+          "parse_status": "partial",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": ""
+            },
+            {
+              "page_number": 2,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000008fc",
+              "page_number": 2,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000008fc",
+              "page_number": 2,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000008fc",
+              "page_number": 2,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000008fc",
+              "page_number": 2,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000008fc",
+              "page_number": 2,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "abbreviated-patient",
+      "document_type": "alternate_format",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-000000000960",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Pt: Avery Morgan\nDOB: 1974-03-12\nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000960",
+              "page_number": 1,
+              "quote": "Pt: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000960",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000960",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000960",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000960",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": true
+    },
+    {
+      "id": "abbreviated-organization",
+      "document_type": "alternate_format",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-0000000009c4",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\nReferrer: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000009c4",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000009c4",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000009c4",
+              "page_number": 1,
+              "quote": "Referrer: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000009c4",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-0000000009c4",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": true
+    },
+    {
+      "id": "us-format-dob",
+      "document_type": "alternate_format",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-000000000a28",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 03/12/1974\nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000a28",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000a28",
+              "page_number": 1,
+              "quote": "DOB: 03/12/1974"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000a28",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000a28",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000a28",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": true
+    },
+    {
+      "id": "unfamiliar-service-label",
+      "document_type": "alternate_format",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-000000000a8c",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\nReferring Clinic: Lakeside Primary Care\nConsult service: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000a8c",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000a8c",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000a8c",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000a8c",
+              "page_number": 1,
+              "quote": "Consult service: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000a8c",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": true
+    },
+    {
+      "id": "narrative-letter",
+      "document_type": "narrative",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-000000000af0",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Avery Morgan was born on March 12, 1974.\nLakeside Primary Care requests a cardiology consultation for recurrent palpitations."
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000af0",
+              "page_number": 1,
+              "quote": "Avery Morgan was born on March 12, 1974."
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000af0",
+              "page_number": 1,
+              "quote": "Avery Morgan was born on March 12, 1974."
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000af0",
+              "page_number": 1,
+              "quote": "Lakeside Primary Care requests a cardiology consultation for recurrent palpitations."
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000af0",
+              "page_number": 1,
+              "quote": "Lakeside Primary Care requests a cardiology consultation for recurrent palpitations."
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000af0",
+              "page_number": 1,
+              "quote": "Lakeside Primary Care requests a cardiology consultation for recurrent palpitations."
+            }
+          ]
+        }
+      },
+      "complete": true
+    },
+    {
+      "id": "inline-fields",
+      "document_type": "alternate_format",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-000000000b54",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan; DOB: 1974-03-12\n\nReferring Clinic: Lakeside Primary Care\nSpecialty: Cardiology\nReason: Recurrent palpitations"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000b54",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan; DOB: 1974-03-12"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000b54",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan; DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "found",
+          "value": "Lakeside Primary Care",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000b54",
+              "page_number": 1,
+              "quote": "Referring Clinic: Lakeside Primary Care"
+            }
+          ]
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000b54",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000b54",
+              "page_number": 1,
+              "quote": "Reason: Recurrent palpitations"
+            }
+          ]
+        }
+      },
+      "complete": true
+    },
+    {
+      "id": "narrative-missing-organization",
+      "document_type": "narrative",
+      "sources": [
+        {
+          "document_id": "00000000-0000-0000-0000-000000000bb8",
+          "parse_status": "parsed",
+          "pages": [
+            {
+              "page_number": 1,
+              "text": "Patient: Avery Morgan\nDOB: 1974-03-12\n\nSpecialty: Cardiology\nThe reason for referral is recurrent palpitations."
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "patient_name": {
+          "status": "found",
+          "value": "Avery Morgan",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000bb8",
+              "page_number": 1,
+              "quote": "Patient: Avery Morgan"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "status": "found",
+          "value": "1974-03-12",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000bb8",
+              "page_number": 1,
+              "quote": "DOB: 1974-03-12"
+            }
+          ]
+        },
+        "referring_organization": {
+          "status": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "requested_specialty": {
+          "status": "found",
+          "value": "cardiology",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000bb8",
+              "page_number": 1,
+              "quote": "Specialty: Cardiology"
+            }
+          ]
+        },
+        "referral_reason": {
+          "status": "found",
+          "value": "Recurrent palpitations",
+          "evidence": [
+            {
+              "document_id": "00000000-0000-0000-0000-000000000bb8",
+              "page_number": 1,
+              "quote": "The reason for referral is recurrent palpitations."
+            }
+          ]
+        }
+      },
+      "complete": false
+    }
+  ]
+}
