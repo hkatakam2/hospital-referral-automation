@@ -16,6 +16,8 @@ Run `verify.py run --feature review`. The real review journey in `frontend/tests
 
 The skill live journey independently proves browser form writes and reload/API readback. Existing mocked probes cover field-validation errors retaining a draft, isolated history failure/recovery, late referral responses, and late document responses. These mocks establish frontend behavior; they do not simulate a database outage.
 
+Workspace write coordination lives in `useReferralWorkspace.ts`; document and extraction panels render its state and invoke explicit actions. Review probes also cover late extraction reads and recovery from failed refreshes after committed writes, with request counts and backend readback checking that refreshes never repeat writes.
+
 ## Gotchas
 
 Correcting the referral does not resolve contradictory source documents or rewrite historical checklists. Invalid candidates have no apply action. Candidate copying is disabled while a correction save is pending. There is no review audit trail, approval action, clinical decision, or automatic save. Unsaved edits are local and are lost on leaving/reloading; the current UI shows a warning but has no navigation blocker. Screenshots need visual inspection before layout can be described as visually verified.

@@ -4,7 +4,7 @@
 
 Explicit extraction across current documents; five fields with candidates and exact document/page evidence; missing/invalid/conflicting findings; completeness and partial-source warnings; immutable saved runs and lightweight history listing.
 
-Sources: `frontend/src/components/ExtractionPanel.tsx`, `hooks/useReferralWorkspace.ts`, `backend/app/api/extractions.py`, `services/referral_extraction.py`, `services/completeness.py`, `extraction/rule_based.py`, `repositories/extractions.py`.
+Sources: `frontend/src/components/ExtractionPanel.tsx`, `hooks/useReferralWorkspace.ts`, `backend/app/api/extractions.py`, `services/referral_extraction.py`, `extraction/assessment.py`, `extraction/rule_based.py`, `repositories/extractions.py`.
 
 ## How to get to it (user POV)
 
@@ -15,6 +15,8 @@ Open a referral, upload a readable PDF, select Run extraction, and inspect Extra
 Run `verify.py run --feature extraction`. `frontend/tests/review.spec.ts` uses a real complete packet, sees all five fields found, then uploads a conflicting DOB document. The old run reports changed documents across reload; a new run shows conflicting candidates. Selecting the previous run restores its original findings. A partial packet shows missing fields and coverage warnings.
 
 `backend/tests/test_extractions.py` covers the three ground-truth text fixtures, aliases/normalization, repeated evidence, invalid dates/specialties, unknown/missing values, cross-document conflicts, scope isolation, snapshot immutability, failed commits, history ordering/ties, empty history and 404/422.
+
+Assessment checks exercise empty and incomplete extractor outputs, all five required fields, selected-value/finding consistency, invalid precedence, and rejection of unknown fields. An integration check persists an empty extractor result and reads back five missing findings with `complete=false`. Browser checks cover explicit retry after a mocked write failure, successful writes followed by failed list/history refreshes without duplicate writes, and late extraction responses. These failure probes mock only the indicated frontend requests; successful writes and their readback use the real backend.
 
 ## Gotchas
 
