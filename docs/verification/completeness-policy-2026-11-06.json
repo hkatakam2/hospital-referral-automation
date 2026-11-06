@@ -1,0 +1,78 @@
+{
+  "implementation_commit": "706794b",
+  "tested_base_commit": "17b9b7e2daf5a100f208728a7639f8d18834c599",
+  "qualification": "Combined implementation worktree including pre-existing documentation edits; not a clean checkout claim.",
+  "status": "passed",
+  "started_at": "2026-11-06T16:45:27.648404+00:00",
+  "finished_at": "2026-11-06T16:46:02.092677+00:00",
+  "source_fingerprint_before": "eddd911ed786899c7dc1bdeb9d3e7961d5efacce421ad212a4706d489e6048e1",
+  "source_fingerprint_after": "eddd911ed786899c7dc1bdeb9d3e7961d5efacce421ad212a4706d489e6048e1",
+  "backend_tests": 217,
+  "browser_tests": {
+    "startTime": "2026-11-06T16:45:41.353Z",
+    "duration": 15422.579,
+    "expected": 15,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "independent_intake_tests": {
+    "startTime": "2026-11-06T16:45:57.210Z",
+    "duration": 4759.207,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "commands": [
+    {
+      "name": "backend",
+      "exitCode": 0,
+      "durationSeconds": 7.73
+    },
+    {
+      "name": "ruff",
+      "exitCode": 0,
+      "durationSeconds": 0.07
+    },
+    {
+      "name": "eslint",
+      "exitCode": 0,
+      "durationSeconds": 2.39
+    },
+    {
+      "name": "build",
+      "exitCode": 0,
+      "durationSeconds": 2.44
+    },
+    {
+      "name": "diff",
+      "exitCode": 0,
+      "durationSeconds": 0.04
+    },
+    {
+      "name": "browser",
+      "exitCode": 0,
+      "durationSeconds": 15.84
+    },
+    {
+      "name": "live",
+      "exitCode": 0,
+      "durationSeconds": 5.22
+    }
+  ],
+  "evidence_directory": "/private/var/folders/rl/b87sjmhd2hlbw2l8xc1gnstw0000gn/T/referral-verification-9ncpiy3k",
+  "visually_inspected": [
+    "browser/review-real-API-upload-ext-5a69e-ecover-history-after-reload/review-desktop.png",
+    "browser/review-real-API-upload-ext-5a69e-ecover-history-after-reload/review-mobile.png",
+    "browser/review-mocked-detail-optio-3984e-adict-a-satisfied-checklist/policy-desktop.png",
+    "browser/review-mocked-detail-optio-3984e-adict-a-satisfied-checklist/policy-mobile.png"
+  ],
+  "limitations": [
+    "Custom policy persistence is checked through real API/PostgreSQL across application lifespans, not a custom-policy browser process restart.",
+    "Optional-policy browser detail is mocked; default-policy browser integration uses real storage.",
+    "Gemini HTTP transport is deterministic in the default suite; no live Google request.",
+    "Temporary screenshots and traces are local evidence paths, not portable artifacts.",
+    "No OCR, institutional validation, specialty selection, document-type policy, or administrative approval."
+  ]
+}

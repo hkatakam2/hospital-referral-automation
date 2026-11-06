@@ -120,3 +120,6 @@ that behavior. For proof that the workflow works, use the repository's
 [feature coverage map](../.agents/skills/verify-hospital-referrals/features/README.md).
 The [retained Gemini workflow check](verification/gemini-workflow-2026-11-04.md)
 distinguishes the default stubbed suite from the live synthetic provider journey.
+
+The [retained completeness-policy check](verification/completeness-policy-2026-11-06.md)
+records configuration retention, real API persistence and the optional-field UI probe.
