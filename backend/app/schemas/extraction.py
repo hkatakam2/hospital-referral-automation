@@ -2,12 +2,47 @@ from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 FieldName = Literal[
     "patient_name", "date_of_birth", "referring_organization",
     "requested_specialty", "referral_reason",
 ]
+
+
+class ReferralPolicy(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    id: str = Field(strict=True, min_length=1, pattern=r"^[a-z0-9][a-z0-9-]*$")
+    version: str = Field(strict=True, min_length=1, pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+    name: str = Field(strict=True, min_length=1)
+    required_fields: tuple[FieldName, ...] = Field(min_length=1)
+
+    @field_validator("required_fields")
+    @classmethod
+    def unique_fields(cls, fields):
+        if len(set(fields)) != len(fields):
+            raise ValueError("Policy requirements must be unique")
+        return fields
+
+    @field_validator("name")
+    @classmethod
+    def nonblank_name(cls, name):
+        if not name.strip():
+            raise ValueError("Policy name must not be blank")
+        return name
+
+
+class PolicyRequirementResult(BaseModel):
+    field: FieldName
+    satisfied: bool
+    finding: Literal["found", "missing", "conflicting", "invalid"]
+
+
+class PolicyAssessment(BaseModel):
+    policy: ReferralPolicy
+    requirements: list[PolicyRequirementResult]
+    source_coverage_satisfied: bool
 
 
 class SourcePage(BaseModel):
@@ -67,6 +102,7 @@ class ExtractionDetail(BaseModel):
     warnings: list[str]
     complete: bool
     provenance: ExtractionProvenance | None = None
+    policy_assessment: PolicyAssessment | None = None
 
 
 class ExtractionSummary(BaseModel):

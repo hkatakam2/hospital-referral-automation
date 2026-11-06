@@ -27,6 +27,11 @@ export interface ExtractionSummary {
   checklist_version: string; source_document_ids: string[]; complete: boolean
 }
 export interface ExtractionDetail extends ExtractionSummary {
+  policy_assessment?: {
+    policy: { id: string; version: string; name: string; required_fields: FieldName[] }
+    requirements: { field: FieldName; satisfied: boolean; finding: string }[]
+    source_coverage_satisfied: boolean
+  } | null
   provenance?: {
     evidence_version: string; candidates_checked: number; candidates_rejected: number
     provider: string | null; model: string | null; model_version: string | null

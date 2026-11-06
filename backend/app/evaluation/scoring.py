@@ -4,7 +4,7 @@ from collections import Counter
 from typing import Any
 
 from app.evaluation.dataset import Packet
-from app.extraction.assessment import REQUIRED_FIELDS, ExtractionAssessment
+from app.extraction.assessment import EXTRACTION_FIELDS, ExtractionAssessment
 
 
 def evidence_keys(evidence):
@@ -15,7 +15,7 @@ def score_packet(packet: Packet, actual: ExtractionAssessment) -> dict[str, Any]
     statuses = {finding.field: finding.status for finding in actual.findings}
     fields = {}
     failures = []
-    for name in REQUIRED_FIELDS:
+    for name in EXTRACTION_FIELDS:
         expected = packet.expected[name]
         result = actual.fields[name]
         selected = result.value is not None

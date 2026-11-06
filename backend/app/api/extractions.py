@@ -1,7 +1,7 @@
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 
 from app.database import get_session, session_factory
@@ -35,11 +35,13 @@ DatabaseSession = Annotated[Session, Depends(get_session)]
 
 @router.post("", response_model=ExtractionDetail, status_code=201)
 def create_extraction(
-    referral_id: UUID, request: ExtractionRequest | None = None,
+    referral_id: UUID, http_request: Request, request: ExtractionRequest | None = None,
 ) -> ExtractionDetail:
     try:
         extractor = select_extractor((request or ExtractionRequest()).extractor)
-        return ReferralExtractionService(session_factory, extractor).run(referral_id)
+        return ReferralExtractionService(
+            session_factory, extractor, http_request.app.state.referral_policy,
+        ).run(referral_id)
     except ExtractionUnavailableError as error:
         raise HTTPException(503, detail=str(error)) from error
     except LLMExtractionError as error:

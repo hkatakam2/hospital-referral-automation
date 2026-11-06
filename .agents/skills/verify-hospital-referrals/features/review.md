@@ -25,3 +25,11 @@ Correcting the referral does not resolve contradictory source documents or rewri
 ## Provenance and rejected candidates
 
 Open Run provenance in Extraction review for shared check counts and any recorded provider/model/prompt identity. Rejected candidates show Cannot use this candidate and their reason; missing citations are explicit. Historical runs without provenance show an unavailable message. The real review journey asserts persisted rule provenance after extraction and reload, with desktop/mobile screenshots of the expanded panel. A separate mocked-detail browser probe verifies Gemini identity, rejection without a copy action, and absent historical metadata; it does not claim provider execution. The separate Gemini workflow journey drives the actual method selection and persisted review path with stub provider HTTP by default; explicit live mode uses Google. A mocked subsequent failure verifies that the previous result and unsaved correction draft remain visible.
+
+## Policy review
+
+Extraction review shows saved policy identity, mandatory source coverage, and
+required/optional field labels. Missing historical definitions are explicit. The
+real review journey covers default metadata and reload; the optional-field layout
+probe mocks detail only (see extraction coverage) and needs screenshot inspection.
+A satisfied checklist may still show optional invalid/conflicting/missing findings.

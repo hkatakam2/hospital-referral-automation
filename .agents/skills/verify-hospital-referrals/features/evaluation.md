@@ -32,3 +32,7 @@ The verification helper's backend suite includes these mocked tests. Its browser
 journeys verify Rules and opt-in Gemini using deterministic provider HTTP in the
 isolated server. No live Gemini request is made by default; explicitly selecting
 REFERRAL_TEST_GEMINI_MODE=live changes the browser provider to Google.
+
+The evaluator explicitly pins the original five-field policy independently of
+application policy configuration; supported-field scoring and expected completeness
+remain unchanged. Custom-policy ground-truth evaluation is not implemented.

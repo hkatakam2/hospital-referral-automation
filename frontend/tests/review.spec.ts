@@ -37,7 +37,9 @@ test('real API: upload, extract, inspect evidence, correct, and recover history 
   await page.getByRole('button', { name: 'Upload PDF', exact: true }).click()
   await expect(page.getByText('Uploaded complete.pdf.', { exact: false })).toBeVisible()
   await page.getByRole('button', { name: 'Run extraction', exact: true }).click()
-  await expect(page.getByText('Extraction checklist: all five fields found', { exact: false })).toBeVisible()
+  await expect(page.getByText('Extraction checklist: configured checklist satisfied', { exact: false })).toBeVisible()
+  await expect(page.getByText('Policy: Demo referral intake · five-required-fields/2')).toBeVisible()
+  await expect(page.getByText('Required by this policy', { exact: true })).toHaveCount(5)
   await page.getByText('Run provenance', { exact: true }).click()
   await expect(page.getByText('Source checks: 5 candidates checked; 0 rejected by shared checks.')).toBeVisible()
   await page.getByRole('button', { name: 'View evidence: complete.pdf, page 1' }).first().click()
@@ -55,7 +57,9 @@ test('real API: upload, extract, inspect evidence, correct, and recover history 
   await expect(page.getByText('Corrections saved.')).toBeVisible()
   await page.reload()
   await expect(page.getByLabel('Patient name', { exact: true })).toHaveValue('Manual correction')
-  await expect(page.getByText('Extraction checklist: all five fields found', { exact: false })).toBeVisible()
+  await expect(page.getByText('Extraction checklist: configured checklist satisfied', { exact: false })).toBeVisible()
+  await expect(page.getByText('Policy: Demo referral intake · five-required-fields/2')).toBeVisible()
+  await expect(page.getByText('Required by this policy', { exact: true })).toHaveCount(5)
   await page.getByText('Run provenance', { exact: true }).click()
   await expect(page.getByText('Source checks: 5 candidates checked; 0 rejected by shared checks.')).toBeVisible()
   // Adding contradictory evidence must not silently replace the historical run.
@@ -76,7 +80,7 @@ test('real API: upload, extract, inspect evidence, correct, and recover history 
   await expect(page.getByText('conflicting', { exact: true })).toBeVisible()
   const options = await page.getByLabel('Extraction run').locator('option').evaluateAll(elements => elements.map(el => (el as HTMLOptionElement).value))
   await page.getByLabel('Extraction run').selectOption(options[1])
-  await expect(page.getByText('Extraction checklist: all five fields found', { exact: false })).toBeVisible()
+  await expect(page.getByText('Extraction checklist: configured checklist satisfied', { exact: false })).toBeVisible()
   await expect(page.getByText('Documents changed since this extraction.', { exact: false })).toBeVisible()
 })
 
@@ -118,6 +122,7 @@ test('mocked detail: shows Gemini provenance, rejection reasons, and legacy hist
     if (!historical) return route.fulfill({ json: rejected })
     const legacy = { ...saved }
     delete legacy.provenance
+    delete legacy.policy_assessment
     return route.fulfill({ json: legacy })
   })
   await page.goto(`/referrals/${referral.id}`)
@@ -134,6 +139,7 @@ test('mocked detail: shows Gemini provenance, rejection reasons, and legacy hist
   historical = true
   await page.reload()
   await expect(page.getByText('Provenance was not recorded for this historical run.')).toBeVisible()
+  await expect(page.getByText('Policy definition was not recorded for this historical run.')).toBeVisible()
   await expect(page.getByText('Run provenance', { exact: true })).toHaveCount(0)
   expect(await (await request.get(`${base}/extractions/${saved.id}`)).json()).toEqual(saved)
 })
@@ -203,7 +209,7 @@ test('extraction retries are explicit and a failed history refresh does not repe
   await expect(page.getByRole('alert')).toContainText('Extraction unavailable')
   expect(writes).toBe(1)
   await run.click()
-  await expect(page.getByText('Extraction checklist: all five fields found', { exact: false })).toBeVisible()
+  await expect(page.getByText('Extraction checklist: configured checklist satisfied', { exact: false })).toBeVisible()
   await expect(page.getByText('History refresh failed')).toBeVisible()
   await expect(page.getByText('Extraction unavailable', { exact: false })).toHaveCount(0)
   failHistory = false
@@ -239,7 +245,7 @@ test('late extraction reads cannot replace the selected run', async ({ page, req
   await expect(page.getByText('conflicting', { exact: true })).toBeVisible()
   release()
   await expect(page.getByLabel('Extraction run')).toHaveValue(latest.id)
-  await expect(page.getByText('Extraction checklist: all five fields found', { exact: false })).toHaveCount(0)
+  await expect(page.getByText('Extraction checklist: configured checklist satisfied', { exact: false })).toHaveCount(0)
 })
 
 test('a write finishing after navigation cannot select a run in another workspace', async ({ page, request }) => {
@@ -301,7 +307,7 @@ test('Gemini workflow: production API and persistence with explicit stub or live
   await testInfo.attach('saved-gemini-run', { contentType: 'application/json', body: JSON.stringify({
     providerMode: process.env.REFERRAL_TEST_GEMINI_MODE || 'stub', saved,
   }, null, 2) })
-  await expect(page.getByText('Extraction checklist: all five fields found', { exact: false })).toBeVisible()
+  await expect(page.getByText('Extraction checklist: configured checklist satisfied', { exact: false })).toBeVisible()
   await page.getByText('Run provenance', { exact: true }).click()
   await expect(page.getByText('Provider: gemini', { exact: true })).toBeVisible()
   await page.getByRole('button', { name: 'View evidence: narrative.pdf, page 1' }).first().click()
@@ -357,5 +363,35 @@ test('mocked availability: Gemini disabled and discovery failure leave Rules usa
   } } })
   await page.getByRole('button', { name: 'Refresh documents', exact: true }).click()
   await page.getByRole('button', { name: 'Run extraction', exact: true }).click()
-  await expect(page.getByText('Extraction checklist: all five fields found', { exact: false })).toBeVisible()
+  await expect(page.getByText('Extraction checklist: configured checklist satisfied', { exact: false })).toBeVisible()
+})
+
+
+test('mocked detail: optional missing fields do not contradict a satisfied checklist', async ({ page, request }, testInfo) => {
+  const referral = await (await request.post('/api/referrals', { data })).json()
+  const base = `/api/referrals/${referral.id}`
+  await request.post(`${base}/documents`, { multipart: { file: {
+    name: 'name-only.pdf', mimeType: 'application/pdf', buffer: pdf([['Patient: Avery Morgan']]),
+  } } })
+  const saved = await (await request.post(`${base}/extractions`)).json()
+  await page.route(`**${base}/extractions/${saved.id}`, route => route.fulfill({ json: {
+    ...saved, complete: true, checklist_version: 'demo-name-only/1',
+    policy_assessment: {
+      policy: { id: 'demo-name-only', version: '1', name: 'Demo name-only intake', required_fields: ['patient_name'] },
+      requirements: [{ field: 'patient_name', satisfied: true, finding: 'found' }],
+      source_coverage_satisfied: true,
+    },
+  } }))
+  await page.goto(`/referrals/${referral.id}`)
+  await expect(page.getByText('Extraction checklist: configured checklist satisfied', { exact: false })).toBeVisible()
+  await expect(page.getByText('Required by this policy', { exact: true })).toHaveCount(1)
+  await expect(page.getByText('Optional for this policy', { exact: true })).toHaveCount(4)
+  await expect(page.getByText('missing', { exact: true })).toHaveCount(4)
+  await expect(page.getByRole('button', { name: /^Use patient name:/ })).toBeVisible()
+  await page.screenshot({ path: testInfo.outputPath('policy-desktop.png'), fullPage: true })
+  await page.setViewportSize({ width: 390, height: 844 })
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+  await page.screenshot({ path: testInfo.outputPath('policy-mobile.png'), fullPage: true })
+  // This is only a rendering probe; the real stored result is still incomplete.
+  expect((await (await request.get(`${base}/extractions/${saved.id}`)).json()).complete).toBe(false)
 })

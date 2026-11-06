@@ -6,7 +6,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, model_validator
 
-from app.extraction.assessment import REQUIRED_FIELDS
+from app.extraction.assessment import EXTRACTION_FIELDS
 from app.schemas.extraction import Evidence, FieldName, SourceDocument
 
 DEFAULT_DATASET = Path(__file__).parent / "data" / "referrals-v1.json"
@@ -39,7 +39,7 @@ class Packet(BaseModel):
 
     @model_validator(mode="after")
     def validate_annotations(self):
-        if set(self.expected) != set(REQUIRED_FIELDS):
+        if set(self.expected) != set(EXTRACTION_FIELDS):
             raise ValueError("Every packet must annotate all five fields")
         ids = [source.document_id for source in self.sources]
         if not ids or len(ids) != len(set(ids)):

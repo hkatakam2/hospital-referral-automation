@@ -10,6 +10,7 @@ from app.evaluation.dataset import DEFAULT_DATASET, load_dataset
 from app.evaluation.scoring import score_packet, summarize
 from app.extraction.assessment import ExtractionAssessment
 from app.extraction.base import ExtractionOutput
+from app.extraction.policy import BASELINE_POLICY, evaluate_policy
 from app.schemas.extraction import Candidate, FieldResult, Finding
 
 
@@ -21,6 +22,10 @@ def perfect_assessment(packet):
     # A hand-built prediction isolates scorer behavior from production extraction.
     return ExtractionAssessment(
         extractor_version="test", checklist_version="test", warnings=[], complete=packet.complete,
+        policy_assessment=evaluate_policy(BASELINE_POLICY, [
+            Finding(field=name, status=annotation.status)
+            for name, annotation in packet.expected.items()
+        ], packet.sources),
         fields={name: FieldResult(value=annotation.value, candidates=[Candidate(
             raw_value=annotation.value or "conflicting/invalid", value=annotation.value,
             evidence=annotation.evidence,

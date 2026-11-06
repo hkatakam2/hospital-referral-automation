@@ -6,7 +6,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, sessionmaker
 
-from app.extraction.assessment import REQUIRED_FIELDS, assess_sources
+from app.extraction.assessment import EXTRACTION_FIELDS, assess_sources
 from app.extraction.base import ExtractionOutput
 from app.extraction.rule_based import RuleBasedExtractor
 from app.main import app
@@ -51,7 +51,7 @@ def test_assessment_fills_missing_fields_and_derives_selection(output):
 
     source = SourceDocument(document_id=uuid4(), parse_status="parsed", pages=[])
     assessment = assess_sources(IncompleteExtractor(), [source])
-    assert set(assessment.fields) == set(REQUIRED_FIELDS)
+    assert set(assessment.fields) == set(EXTRACTION_FIELDS)
     assert len(assessment.findings) == 5
     assert not assessment.complete
     assert assessment.extractor_version == "incomplete/test"
@@ -175,7 +175,7 @@ def test_incomplete_extractor_persists_a_complete_shape_with_missing_findings(
         referral["id"],
     )
     saved = client.get(f"{base}/extractions/{result.id}").json()
-    assert set(saved["fields"]) == set(REQUIRED_FIELDS)
+    assert set(saved["fields"]) == set(EXTRACTION_FIELDS)
     assert len(saved["findings"]) == 5
     assert all(finding["status"] == "missing" for finding in saved["findings"])
     assert saved["complete"] is False

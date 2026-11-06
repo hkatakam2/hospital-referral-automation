@@ -20,8 +20,8 @@ Assessment checks exercise empty and incomplete extractor outputs, all five requ
 
 ## Gotchas
 
-Rules recognize labeled lines, ISO dates, and cardiology aliases only. Manual referral data never fills extraction gaps. Missing/disputed values remain unselected; invalid candidates take finding precedence and stay visible. All five found plus readable-page coverage is the prototype checklist, not clinical or administrative approval. New attachments do not mutate old runs. Every POST creates a new run. The browser/API defaults to rules/1; explicitly enabled Gemini is selected per run.
-Offline quality evaluation is mapped in [evaluation.md](evaluation.md); no configurable institutional policy engine is present.
+Rules recognize labeled lines, ISO dates, and cardiology aliases only. Manual referral data never fills extraction gaps. Missing/disputed values remain unselected; invalid candidates take finding precedence and stay visible. The configured required fields found plus readable-page coverage is the prototype checklist (all five by default), not clinical or administrative approval. New attachments do not mutate old runs. Every POST creates a new run. The browser/API defaults to rules/1; explicitly enabled Gemini is selected per run.
+Offline quality evaluation is mapped in [evaluation.md](evaluation.md); only fictitious field requirements are configurable, not institutional or document-type rules.
 
 ## Shared evidence boundary and provenance
 
@@ -52,3 +52,23 @@ the Gemini controls at desktop/mobile widths and need visual inspection.
 Live mode is explicitly selected with REFERRAL_TEST_GEMINI_MODE=live; see the
 README command. Record its result separately. Requests remain synchronous and
 failed attempts are not persisted; no worker, idempotency, or automatic fallback.
+
+## Configurable field completeness
+
+One validated JSON policy is captured at server startup. All five fields still get
+source checks and findings; required fields must be found and readable source
+coverage is mandatory. `backend/tests/test_policy.py` exercises actual startup,
+PDF upload, production API and PostgreSQL: a config edit has no effect until a new
+lifespan starts, then new runs use changed requirements while earlier runs and
+field findings stay unchanged. Corrections do not rewrite either snapshot. Tests
+cover malformed/missing configuration, unknown/duplicate/empty requirements,
+immutable configuration, invalid optional fields, partial/no sources, and legacy
+JSON without policy metadata. This startup-lifespan check is not a dedicated OS
+process-restart check with changing policy files.
+
+The real browser review journey asserts saved default policy identity and five
+required labels before/after reload. A separate mocked-detail browser probe shows
+one required and four optional/missing fields with a satisfied checklist, captures
+desktop/mobile screenshots and checks overflow. That probe proves rendering only;
+custom-policy persistence is proven by the real backend/API check above. There is
+no browser policy selector, rule language, document-type requirement, or approval.

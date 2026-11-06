@@ -73,7 +73,7 @@ Use synthetic data only. From the inbox:
 
 Saved referral values, unsaved corrections, and extraction snapshots are separate.
 Corrections do not rewrite historical candidates or resolve source-text findings.
-An extraction checklist with all five fields found is not approval. New documents
+A satisfied configured extraction checklist is not approval. New documents
 produce a **Documents changed since this extraction** warning until a new run
 includes them. The warning is derived from saved source IDs and survives reload.
 
@@ -81,7 +81,8 @@ Open **Run provenance** to inspect shared check counts and any recorded provider
 model and prompt identity. Every extractor's candidates pass source document/page,
 exact quote, source-value and selected-value format checks before assessment.
 Unsupported candidates remain visible with a rejection reason and cannot be copied
-into corrections or make the checklist complete. These checks establish literal
+into corrections. A rejected required field prevents checklist completeness; optional
+field issues remain visible without blocking it. These checks establish literal
 source support, not semantic correctness or prompt-injection resistance.
 
 New runs retain original extractor candidates and available structured model claims,
@@ -298,15 +299,49 @@ attempt to extract before attaching documents returns `422`.
 
 Each run processes all currently attached documents in stable document/page
 order using persisted text, records its source document IDs, extractor version
-(`rules/1` or `gemini-claims/1`) and checklist version (`five-required-fields/2`), and survives backend
+(`rules/1` or `gemini-claims/1`) and policy checklist version (default `five-required-fields/2`), and survives backend
 restarts. Later uploads do not change old runs. Repeating extraction creates a
 new run. Results and source associations are committed in one database transaction.
 
 Source-text assessment owns selected values, findings, and coverage warnings as
-one result. Checklist version 2 always includes all five fields, treating omitted
-extractor fields as missing and candidates without normalized values as invalid.
-An incomplete extractor result cannot mark a packet complete. Previously saved
-run snapshots retain their original versions and findings.
+one result. Every run includes all five supported fields, treating omitted extractor
+fields as missing and candidates without normalized values as invalid. Configured
+requirements determine which findings block completeness; readable page coverage
+is always required. Previously saved snapshots retain their versions and findings.
+
+### Configurable completeness checklist
+
+The bundled `backend/app/extraction/policies/default.json` requires all five fields
+and preserves the original checklist behavior. To try a different fictitious policy,
+copy that file, change its `id`, `version`, `name`, and nonempty `required_fields`
+array, and set an absolute path in `backend/.env`:
+
+```dotenv
+REFERRAL_POLICY_PATH=/absolute/path/to/demo-policy.json
+```
+
+Restart the backend after configuration edits. Bump the version whenever requirements
+change. Startup rejects missing/malformed files, unknown properties or fields,
+duplicate/empty requirements, and invalid identities. There is one server-selected
+policy, no browser override, specialty routing, policy editor, or document-type rule.
+Policy files ship with the Python package; no database migration is needed.
+
+The backend applies required-field checks after every candidate has passed through
+the existing evidence/format assessment. Optional missing, invalid, or conflicting
+fields remain visible but do not block completeness. Source coverage cannot be
+disabled. This assesses document findings: saved referral values and unsaved drafts
+do not fill source gaps or grant approval.
+
+New detail responses include `policy_assessment`: the full policy definition,
+per-required-field `satisfied`/`finding` results, and `source_coverage_satisfied`.
+The existing `complete` flag is their overall result. These values are retained in
+the immutable run JSON alongside the existing atomic artifact/source-link writes.
+History summaries remain lightweight. Older runs return `policy_assessment: null`;
+the UI shows their saved checklist version without inventing a policy definition.
+
+Review shows the saved policy identity, source coverage, and required/optional labels.
+The offline evaluator explicitly uses the original five-field policy, independent of
+this setting; its existing ground truth and baseline remain comparable.
 
 The five fields are patient name, date of birth, referring organization,
 requested specialty, and referral reason. For Rules, recognized labels include `Patient`

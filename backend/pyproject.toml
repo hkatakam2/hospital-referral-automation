@@ -26,6 +26,7 @@ dev = ["pytest>=8,<10", "ruff>=0.9,<1.0"]
 include = ["app*"]
 
 [tool.setuptools.package-data]
+"app.extraction" = ["policies/*.json"]
 "app.evaluation" = ["README.md", "data/*.json", "data/*.md"]
 
 [tool.pytest.ini_options]

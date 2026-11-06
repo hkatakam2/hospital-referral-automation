@@ -193,3 +193,12 @@ configuration still works. An empty file key fails validation instead of silentl
 using another key. The file path is anchored to `backend/`, regardless of working
 directory. Other Gemini settings retain environment-over-file precedence.
 No process environment is modified, and no key is printed.
+
+## Policy configuration boundary
+
+The evaluator explicitly passes the immutable original five-field policy to shared
+assessment. Application `REFERRAL_POLICY_PATH` configuration does not change the
+existing corpus's completeness labels or evaluation scores. All five fields are
+still scored, including fields optional under an application's policy. Comparing
+other policy definitions requires matching expected completeness annotations; it
+is not implemented by changing the application setting.

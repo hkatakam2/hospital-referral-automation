@@ -1,7 +1,7 @@
 # Implemented feature map
 
 Scope: the browser referral workflow through Level 6, offline quality evaluation,
-and opt-in browser/API Gemini extraction. Paths below are relative to the repository root. Every feature distinguishes real integration evidence from mocked probes. For all current functionality, run the skill helper with its default `--feature all`.
+opt-in browser/API Gemini extraction, and file-configured field completeness policies. Paths below are relative to the repository root. Every feature distinguishes real integration evidence from mocked probes. For all current functionality, run the skill helper with its default `--feature all`.
 
 | Feature | User surface | Verification map |
 | --- | --- | --- |

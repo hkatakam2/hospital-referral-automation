@@ -7,10 +7,11 @@ from sqlalchemy.orm import Session
 from app.extraction.assessment import assess_sources
 from app.extraction.base import Extractor
 from app.extraction.grounding import EVIDENCE_VERSION
+from app.extraction.policy import BASELINE_POLICY
 from app.models.referral import ReferralRecord
 from app.repositories.documents import DocumentRepository
 from app.repositories.extractions import ExtractionRepository
-from app.schemas.extraction import ExtractionDetail, ExtractionProvenance
+from app.schemas.extraction import ExtractionDetail, ExtractionProvenance, ReferralPolicy
 
 
 class ExtractionInputError(Exception):
@@ -21,9 +22,13 @@ class ExtractionInputError(Exception):
 
 
 class ReferralExtractionService:
-    def __init__(self, session_factory: Callable[[], Session], extractor: Extractor):
+    def __init__(
+        self, session_factory: Callable[[], Session], extractor: Extractor,
+        policy: ReferralPolicy = BASELINE_POLICY,
+    ):
         self.session_factory = session_factory
         self.extractor = extractor
+        self.policy = policy
 
     def run(self, referral_id: UUID) -> ExtractionDetail:
         # Copy plain source data, then release the read transaction/connection before IO.
@@ -33,7 +38,7 @@ class ReferralExtractionService:
             sources = DocumentRepository(session).load_extraction_sources(referral_id)
             if not sources:
                 raise ExtractionInputError("Attach at least one document before extraction", 422)
-        assessment = assess_sources(self.extractor, sources)
+        assessment = assess_sources(self.extractor, sources, self.policy)
         execution = assessment.execution
         result = ExtractionDetail(
             id=uuid4(), referral_id=referral_id, created_at=datetime.now(timezone.utc),

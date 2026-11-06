@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -7,8 +9,16 @@ from app.api.extractions import router as extractions_router
 from app.api.health import router as health_router
 from app.api.referrals import router as referrals_router
 from app.config import settings
+from app.extraction.policy import load_policy
 
-app = FastAPI(title=settings.app_name, version="0.1.0")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    app.state.referral_policy = load_policy(settings.referral_policy_path)
+    yield
+
+
+app = FastAPI(title=settings.app_name, version="0.1.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

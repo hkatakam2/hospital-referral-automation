@@ -12,9 +12,10 @@ from time import perf_counter
 from app.evaluation.dataset import DEFAULT_DATASET, load_dataset
 from app.evaluation.execution import Pricing, execution_record, write_artifact
 from app.evaluation.scoring import score_packet, summarize
-from app.extraction.assessment import REQUIRED_FIELDS, assess_sources
+from app.extraction.assessment import EXTRACTION_FIELDS, assess_sources
 from app.extraction.base import Extractor
 from app.extraction.llm import GeminiSettings, LLMExtractionError, LLMExtractor
+from app.extraction.policy import BASELINE_POLICY
 from app.extraction.rule_based import RuleBasedExtractor
 
 
@@ -35,7 +36,7 @@ def evaluate(
     for index, packet in enumerate(dataset.packets):
         start = perf_counter()
         try:
-            assessment = assess_sources(extractor, packet.sources)
+            assessment = assess_sources(extractor, packet.sources, BASELINE_POLICY)
         except LLMExtractionError as error:
             write_artifact(artifact_dir, index, packet.id, error.execution, error=str(error))
             raise
@@ -54,7 +55,7 @@ def evaluate(
         "python_version": platform.python_version(),
         "packet_count": len(rows),
         "overall": summarize(rows),
-        "by_field": {field: summarize(rows, field) for field in REQUIRED_FIELDS},
+        "by_field": {field: summarize(rows, field) for field in EXTRACTION_FIELDS},
         "by_document_type": {
             kind: summarize([row for row in rows if row["document_type"] == kind])
             for kind in sorted({row["document_type"] for row in rows})

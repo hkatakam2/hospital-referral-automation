@@ -16,6 +16,8 @@ features. Commits explain why the implementation changed.
 4. **Assess and save the result.** Check the suggestions against source text and
    field format rules. Identify missing, invalid, or conflicting fields, check
    page coverage, and save a new extraction run with its original output.
+   The server applies its startup-loaded policy to those findings and retains the
+   policy definition and requirement outcomes with each new snapshot.
 5. **Review and correct.** Inspect evidence in the page-text viewer. Copy a usable
    candidate or type a correction into the draft, then explicitly save corrections.
 
@@ -46,8 +48,8 @@ For **Run extraction**, follow these responsibilities in order:
 | API route | Validate the requested method and enforce server enablement | [Extraction routes](../backend/app/api/extractions.py) |
 | Service | Capture page text, release the read session, request an assessment, and save in a new write session | [Extraction service](../backend/app/services/referral_extraction.py) |
 | Extractor | Produce candidates from source text using Rules or opt-in Gemini | [Rule extractor](../backend/app/extraction/rule_based.py) |
-| Assessment | Check evidence and normalization; derive selected values, findings, coverage warnings, and completeness | [Shared assessment](../backend/app/extraction/assessment.py) |
-| Repository | Store the assessed snapshot, document links, and a separate original-output artifact in one transaction | [Extraction repository](../backend/app/repositories/extractions.py) |
+| Assessment | Check evidence and normalization; derive field findings, then apply configured requirements and mandatory source coverage | [Shared assessment](../backend/app/extraction/assessment.py) |
+| Repository | Store the assessed snapshot including its policy definition/outcomes, document links, and a separate original-output artifact in one transaction | [Extraction repository](../backend/app/repositories/extractions.py) |
 | Review panel | Show the saved findings, evidence, provenance, and usable candidates | [Extraction panel](../frontend/src/components/ExtractionPanel.tsx) |
 
 You do not need to learn every helper function first. Start with the service to see
@@ -90,8 +92,19 @@ For **Save corrections**, start with the [referral routes](../backend/app/api/re
   They do not prove semantic correctness or resistance to document instructions.
 - Review shows extracted page text. OCR, original-PDF viewing, approvals, audit
   history, authentication, and document-first intake are not implemented.
-- The five-field completeness checklist is a prototype, not institutional policy
-  or approval. All data used in this project is synthetic.
+- Completeness uses one server-configured, versioned JSON policy over the five
+  supported extraction fields. The default requires all five. Every field still
+  receives evidence checks and a finding; optional field issues remain visible
+  without blocking completeness. Readable source coverage is always mandatory.
+- Policy configuration is validated at startup; edits take effect after restart.
+  New runs retain the exact definition and requirement results in their JSON
+  snapshot. Older runs retain their checklist version without invented definitions.
+  No policy tables or database migration are needed. Saved referral values and
+  correction drafts never satisfy source requirements. The evaluator explicitly
+  retains its original five-field policy regardless of application configuration.
+- Policies are fictitious prototype checklists, not institutional policy or
+  approval. Specialty selection, document-type requirements, policy editing, and
+  human confirmation are future work. All data used in this project is synthetic.
 
 ## Keep this map useful
 

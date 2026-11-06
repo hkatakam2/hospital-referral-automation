@@ -33,3 +33,11 @@ asserts the pool has no checked-out connection inside mocked provider transport,
 adds a real attachment during that call, and proves it is absent from the saved
 run. Failure cases retain only the earlier successful run/artifact/links. These
 are real PostgreSQL checks with mocked provider HTTP, not live Google evidence.
+
+## Policy retention
+
+New extraction JSON snapshots retain the full policy and requirement outcomes in
+existing JSONB storage; no schema migration or policy table was added. Policy
+configuration changes do not recalculate historical runs. `test_policy.py` checks
+fresh API readback across application lifespans and legacy JSON without a policy;
+existing restart/rollback checks also cover the extended default snapshot.

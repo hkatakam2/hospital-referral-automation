@@ -1,0 +1,12 @@
+{
+  "id": "five-required-fields",
+  "version": "2",
+  "name": "Demo referral intake",
+  "required_fields": [
+    "patient_name",
+    "date_of_birth",
+    "referring_organization",
+    "requested_specialty",
+    "referral_reason"
+  ]
+}

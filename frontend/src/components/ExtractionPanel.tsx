@@ -36,8 +36,13 @@ export function ExtractionPanel({ workspace: w, onUse, saving }: {
     {w.extraction.loading && <p role="status">Loading extraction…</p>}
     {w.extraction.error && <div role="alert"><p className="error">{w.extraction.error}</p><button onClick={w.extraction.refresh}>Retry extraction</button></div>}
     {result && <>
-      <p className={result.complete ? 'success' : 'warning'}>Extraction checklist: {result.complete ? 'all five fields found' : 'attention needed'}. This is a source-text assessment, not administrative approval.</p>
+      <p className={result.complete ? 'success' : 'warning'}>Extraction checklist: {result.complete ? 'configured checklist satisfied' : 'attention needed'}. This is a source-text assessment, not administrative approval.</p>
       <p className="muted">{result.extractor_version} · {result.checklist_version} · {new Date(result.created_at).toLocaleString()}</p>
+      {result.policy_assessment ? <div>
+        <p>Policy: {result.policy_assessment.policy.name} · {result.policy_assessment.policy.id}/{result.policy_assessment.policy.version}</p>
+        <p>Readable source coverage: {result.policy_assessment.source_coverage_satisfied ? 'satisfied' : 'incomplete'}.</p>
+        <p>Optional field issues remain visible but do not block this checklist.</p>
+      </div> : <p>Policy definition was not recorded for this historical run.</p>}
       {result.provenance ? <details className="run-provenance">
         <summary>Run provenance</summary>
         <p>Source checks: {result.provenance.candidates_checked} candidates checked; {result.provenance.candidates_rejected} rejected by shared checks.</p>
@@ -51,6 +56,7 @@ export function ExtractionPanel({ workspace: w, onUse, saving }: {
       {result.warnings.map((warning, index) => <p key={index} className="warning">{warning}</p>)}
       {fieldNames.map(field => <div className="field-result" key={field}>
         <div className="section-toolbar"><h3>{fieldLabels[field]}</h3><span className="badge">{result.findings.find(finding => finding.field === field)?.status ?? 'unknown'}</span></div>
+        {result.policy_assessment && <p>{result.policy_assessment.policy.required_fields.includes(field) ? 'Required by this policy' : 'Optional for this policy'}</p>}
         <p>Extracted value: <strong>{result.fields[field].value ?? 'No selected value'}</strong></p>
         {result.fields[field].candidates.map((candidate, index) => <div className="candidate" key={index}>
           <p>{candidate.raw_value || '(empty value)'}</p>
