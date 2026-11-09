@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { errorMessage } from '../api/client'
 import { createReferral, listReferrals } from '../api/referrals'
-import { emptyReferral } from '../api/types'
+import { emptyReferral, workflowLabels } from '../api/types'
 import type { Referral } from '../api/types'
 import { ReferralForm } from '../components/ReferralForm'
 
@@ -32,7 +32,7 @@ export function ReferralInboxPage() {
         {!loading && !error && referrals.length === 0 && <p>No referrals yet. Create your first synthetic case.</p>}
         <ul className="referral-list">{[...referrals].reverse().map(referral => <li key={referral.id}>
           <Link to={`/referrals/${referral.id}`}>{referral.patient_name}</Link>
-          <span>Cardiology · {new Date(referral.created_at).toLocaleString()}</span>
+          <span>Cardiology · {workflowLabels[referral.status ?? 'received']} · {new Date(referral.created_at).toLocaleString()}</span>
         </li>)}</ul>
       </section>
       <section className="card" aria-labelledby="create-title"><h2 id="create-title">Create referral</h2><p>Enter the five required fields, then attach the referral packet.</p>

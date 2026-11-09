@@ -18,4 +18,4 @@ Run `verify.py run --feature intake`. The skill's `scripts/live.spec.cjs` fills 
 
 ## Gotchas
 
-All five fields are required before attaching a document. Creation is registration, not approval. There is no pagination, audit history, or document-first draft. Mocked browser tests alone do not establish that creation or correction reached PostgreSQL. Native browser validation can stop a submission before FastAPI responds; API tests cover the backend boundary independently.
+All five fields are required before attaching a document. Creation is registration, not approval. There is no pagination, field-correction audit history, or document-first draft. The inbox displays persisted workflow status; workflow actions have separate history (see [workflow.md](workflow.md)). Mocked browser tests alone do not establish that creation or correction reached PostgreSQL. Native browser validation can stop a submission before FastAPI responds; API tests cover the backend boundary independently.

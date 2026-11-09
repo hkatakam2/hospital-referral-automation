@@ -20,7 +20,7 @@ Workspace write coordination lives in `useReferralWorkspace.ts`; document and ex
 
 ## Gotchas
 
-Correcting the referral does not resolve contradictory source documents or rewrite historical checklists. Invalid candidates have no apply action. Candidate copying is disabled while a correction save is pending. There is no review audit trail, approval action, clinical decision, or automatic save. Unsaved edits are local and are lost on leaving/reloading; the current UI shows a warning but has no navigation blocker. Screenshots need visual inspection before layout can be described as visually verified.
+Correcting the referral does not resolve contradictory source documents or rewrite historical checklists. Invalid candidates have no apply action. Candidate copying is disabled while a correction save is pending. Workflow action history is separate (see [workflow.md](workflow.md)); there is no field-correction audit trail, approval action, clinical decision, or automatic save. Unsaved edits are local and are lost on leaving/reloading; the current UI shows a warning but has no navigation blocker. Screenshots need visual inspection before layout can be described as visually verified.
 
 ## Provenance and rejected candidates
 

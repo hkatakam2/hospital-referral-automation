@@ -3,7 +3,8 @@ import { errorMessage } from '../api/client'
 import { getDocument, listDocuments, uploadDocument } from '../api/documents'
 import { createExtraction, listExtractionMethods, getExtraction, listExtractions } from '../api/extractions'
 import { getReferral } from '../api/referrals'
-import type { ExtractorChoice, Evidence } from '../api/types'
+import { listReviewEvents, requestInformation, resumeReview } from '../api/workflow'
+import type { ExtractorChoice, Evidence, InformationRequest, WorkflowCommand } from '../api/types'
 
 // Each resource owns its error/loading state. A failed panel does not hide its siblings.
 function useResource<T>(load: (signal: AbortSignal) => Promise<T>) {
@@ -24,13 +25,24 @@ function useResource<T>(load: (signal: AbortSignal) => Promise<T>) {
     })
     return () => controller.abort()
   }, [load, revision])
-  return { ...state, refresh }
+  const setData = useCallback((data: T) => setState({ data, loading: false, error: '' }), [])
+  return { ...state, refresh, setData }
 }
 
 export function useReferralWorkspace(id: string) {
   const methods = useResource(useCallback(signal => listExtractionMethods(signal), []))
   const [extractor, setExtractor] = useState<ExtractorChoice>('rules')
   const referral = useResource(useCallback(signal => getReferral(id, signal), [id]))
+  const reviewEvents = useResource(useCallback(signal => listReviewEvents(id, signal), [id]))
+  const workflow = useWorkspaceWrite(async (action: 'request' | 'resume', command: InformationRequest | WorkflowCommand) => {
+    const result = action === 'request'
+      ? await requestInformation(id, command as InformationRequest)
+      : await resumeReview(id, command)
+    return { result, publish: () => {
+      referral.setData(result)
+      reviewEvents.refresh()
+    } }
+  }, 'refresh referral and workflow history')
   const documents = useResource(useCallback(signal => listDocuments(id, signal), [id]))
   const runs = useResource(useCallback(signal => listExtractions(id, signal), [id]))
   const [selection, setSelection] = useState<{ documentId: string; page: number; quote?: string } | null>(null)
@@ -71,7 +83,7 @@ export function useReferralWorkspace(id: string) {
     selectPage: (page: number) => {
       if (documentId) setSelection({ documentId, page })
     },
-    openEvidence, sourcesChanged, upload, runExtraction,
+    openEvidence, sourcesChanged, upload, runExtraction, reviewEvents, workflow,
   }
 }
 export type ReferralWorkspace = ReturnType<typeof useReferralWorkspace>

@@ -21,6 +21,9 @@ features. Commits explain why the implementation changed.
 5. **Review and correct.** Inspect evidence in the page-text viewer. Copy a usable
    candidate or type a correction into the draft, then explicitly save corrections.
 
+6. **Coordinate follow-up.** Record missing information and a reason, inspect workflow
+   history, then explicitly resume review. The inbox displays the saved workflow status.
+
 ## Keep three kinds of information separate
 
 | Information | Example | What changes it? |
@@ -126,7 +129,7 @@ records configuration retention, real API persistence and the optional-field UI 
 
 ## Coordinator workflow history
 
-The workflow API records a missing-information request and explicitly resumes review.
+The Coordinator workflow panel records a missing-information request and explicitly resumes review.
 New and migrated referrals start at **received**, with no invented historical events.
 Requests move received/review-required referrals to **missing information**; Resume
 review moves them to **review required**. Each action records the supplied demo reviewer,
@@ -146,3 +149,11 @@ Reviewer names are supplied demo identities, not authenticated identities. This 
 covers workflow actions only; correction auditing and administrative approval remain
 future work. An interrupted action should be checked through referral/history reads
 before retrying; stale workflow versions and invalid transitions return a conflict.
+
+The [workspace hook](../frontend/src/hooks/useReferralWorkspace.ts) owns workflow writes
+and history loading. The [workflow panel](../frontend/src/components/WorkflowPanel.tsx)
+keeps request text locally until submission, shows history and lets the coordinator
+open a referenced extraction. A successful action updates displayed status and refreshes
+history without resetting the correction draft. Failed history refreshes remain read
+failures and do not repeat the committed action. Refresh workflow recovers referral
+status and history after a conflict or interrupted response; unsaved corrections stay.

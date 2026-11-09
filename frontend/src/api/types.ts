@@ -12,7 +12,23 @@ export const emptyReferral: ReferralInput = {
   patient_name: '', date_of_birth: '', referring_organization: '',
   requested_specialty: 'cardiology', referral_reason: '',
 }
-export interface Referral extends ReferralInput { id: string; created_at: string }
+export type WorkflowStatus = 'received' | 'missing_information' | 'review_required'
+export const workflowLabels: Record<WorkflowStatus, string> = {
+  received: 'Received', missing_information: 'Missing information', review_required: 'Review required',
+}
+export interface Referral extends ReferralInput {
+  id: string; created_at: string; status: WorkflowStatus; workflow_version: number
+}
+export interface WorkflowCommand { reviewer: string; reason: string; expected_workflow_version: number }
+export interface InformationRequest extends WorkflowCommand {
+  requested_information: string; extraction_id?: string
+}
+export interface ReviewEvent {
+  id: string; referral_id: string; action: 'request_missing_information' | 'resume_review'
+  previous_status: WorkflowStatus; new_status: WorkflowStatus; workflow_version: number
+  reviewer: string; reason: string; requested_information: string | null
+  extraction_id: string | null; created_at: string
+}
 export interface DocumentSummary {
   id: string; referral_id: string; original_filename: string; sha256: string
   size_bytes: number; page_count: number; parse_status: 'parsed' | 'partial'

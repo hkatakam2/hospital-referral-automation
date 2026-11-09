@@ -4,6 +4,7 @@ import { updateReferral } from '../api/referrals'
 import { fieldLabels, fieldNames } from '../api/types'
 import type { FieldName, Referral, ReferralInput } from '../api/types'
 import { ReferralForm } from '../components/ReferralForm'
+import { WorkflowPanel } from '../components/WorkflowPanel'
 import { DocumentPanel } from '../components/DocumentPanel'
 import { ExtractionPanel } from '../components/ExtractionPanel'
 import { useReferralWorkspace } from '../hooks/useReferralWorkspace'
@@ -19,9 +20,9 @@ function ReferralDetail({ id }: { id: string }) {
   const { referral } = workspace
   return <>
     <Link className="back-link" to="/referrals">← Referral inbox</Link>
-    {referral.error ? <div role="alert"><p className="error">{referral.error}</p><button onClick={referral.refresh}>Retry referral</button></div>
-      : !referral.data ? <p role="status">Loading referral…</p>
-        : <ReviewWorkspace key={referral.data.id} referral={referral.data} workspace={workspace} />}
+    {referral.error && <div role="alert"><p className="error">{referral.error}</p><button onClick={referral.refresh}>Retry referral</button></div>}
+    {!referral.data ? <p role="status">Loading referral…</p>
+      : <ReviewWorkspace key={referral.data.id} referral={referral.data} workspace={workspace} />}
   </>
 }
 
@@ -57,6 +58,7 @@ function ReviewWorkspace({ referral, workspace }: { referral: Referral; workspac
           {notice && <p role="status" className="success">{notice}</p>}
           <ReferralForm value={draft} onChange={value => { setDraft(value); setNotice('') }} onSave={save} submitLabel="Save corrections" />
         </section>
+        <WorkflowPanel workspace={workspace} />
         <ExtractionPanel workspace={workspace} onUse={useCandidate} saving={saving} />
       </div>
     </div>

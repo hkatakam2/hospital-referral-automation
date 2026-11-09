@@ -58,3 +58,11 @@ dt { color: #61756e; font-size: 13px; } dd { margin: 0; overflow-wrap: anywhere;
 .run-provenance { margin: 16px 0; overflow-wrap: anywhere; }
 .run-provenance summary { cursor: pointer; color: #185c50; }
 @media (max-width: 500px) { .section-toolbar { flex-wrap: wrap; } .saved-values div { grid-template-columns: 1fr; gap: 4px; } }
+
+.workflow-panel fieldset { border: 0; padding: 0; margin: 1rem 0; display: grid; gap: .6rem; min-width: 0; }
+.workflow-panel legend { font-weight: 700; margin-bottom: .8rem; }
+.workflow-panel input:not([type="checkbox"]), .workflow-panel textarea { width: 100%; box-sizing: border-box; }
+.workflow-checkbox { display: flex; align-items: center; gap: .5rem; }
+.workflow-events { padding-left: 1.3rem; overflow-wrap: anywhere; }
+.workflow-events li { margin-bottom: 1rem; }
+.workflow-events p { margin: .4rem 0; white-space: pre-wrap; }

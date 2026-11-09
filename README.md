@@ -600,3 +600,13 @@ Requests are local records, not sent messages. Supplied reviewer names are demo
 identities without authentication. Uploads, extraction, and saved corrections do not
 close requests or change workflow status. This increment does not add approval or
 correction audit history; checklist completeness remains separate from workflow status.
+
+
+In the referral detail screen, **Coordinator workflow** shows saved status and history.
+Enter Reviewer name (demo identity), Information needed, and Reason for workflow action,
+then select **Record missing-information request**. You may link the selected extraction
+run, including a historical run, as the context for your request. After follow-up,
+enter a reviewer and reason and select **Resume review**. The inbox shows the saved status.
+**Refresh workflow** reloads status/history after conflicts or interrupted requests.
+Workflow actions and refreshes preserve unsaved corrections; reload/navigation still
+loses local drafts. A committed action remains successful if only its history refresh fails.
