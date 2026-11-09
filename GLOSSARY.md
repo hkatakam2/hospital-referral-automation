@@ -11,3 +11,13 @@
 | Extractor / adapter | The component that produces suggestions. Rules use labeled text patterns; Gemini uses a model. Both follow the same input/output contract, with Rules as the browser/API default and Gemini available when explicitly enabled. |
 | Completeness checklist | A saved assessment of configured required fields and readable source coverage. The default requires all five fields found. Optional field issues stay visible but do not block the checklist. “Complete” is not administrative or clinical approval. |
 | Referral policy | A versioned, fictitious checklist configuration naming which supported extraction fields must be found. The server loads one policy at startup; new extraction snapshots save its exact definition and requirement outcomes. It assesses document findings, not saved referral values or correction drafts. |
+
+
+## Coordinator workflow
+
+| Term | Plain meaning |
+| --- | --- |
+| Workflow status | The saved administrative stage: received, missing information, or review required. It is separate from extraction checklist completeness and does not grant approval. |
+| Missing-information request | A coordinator's saved description of information needed and why. It changes workflow status and stays in history after review resumes; the application does not send it externally. |
+| Review event | An append-only application record of a workflow action, including supplied demo reviewer, server time, reason, previous/new status and version. It does not record field correction history. |
+| Workflow version | A counter advanced by each saved workflow action. A stale expected version prevents a browser from applying a decision against an older workflow state. |

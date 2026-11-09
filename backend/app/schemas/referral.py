@@ -4,6 +4,8 @@ from uuid import UUID
 
 from pydantic import AfterValidator, BaseModel, ConfigDict, Field, StringConstraints
 
+from app.schemas.workflow import WorkflowStatus
+
 RequiredText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
 
 
@@ -44,3 +46,5 @@ class Referral(ReferralCreate):
 
     id: UUID
     created_at: datetime
+    status: WorkflowStatus
+    workflow_version: int

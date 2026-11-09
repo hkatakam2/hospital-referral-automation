@@ -10,6 +10,7 @@ opt-in browser/API Gemini extraction, and file-configured field completeness pol
 | Extraction | Run action, checklist, saved history | [extraction.md](extraction.md) |
 | Review | Candidate evidence, correction draft, saved values | [review.md](review.md) |
 | Evaluation | Rule baseline and Gemini command-line comparison | [evaluation.md](evaluation.md) |
+| Workflow | Saved missing-information requests and resume-review actions | [workflow.md](workflow.md) |
 | Persistence | Reload/restart recovery, storage, transactions | [persistence.md](persistence.md) |
 
-Source of truth: current code and executable assertions, with the roadmap as context. Current exclusions include original-PDF rendering/download, OCR, approvals, audit events, authentication, and document-first drafts. Inbox processing status is not a persisted lifecycle model.
+Source of truth: current code and executable assertions, with the roadmap as context. Current exclusions include original-PDF rendering/download, OCR, approvals, correction audit events, authentication, and document-first drafts. Workflow status is persisted separately from extraction completeness; it is not a complete approval lifecycle.

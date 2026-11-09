@@ -6,6 +6,7 @@ from app.database import Base
 from app.models.document import DocumentPageRecord, DocumentRecord  # noqa: F401
 from app.models.extraction import ExtractionRunDocumentRecord, ExtractionRunRecord  # noqa: F401
 from app.models.referral import ReferralRecord  # noqa: F401
+from app.models.review_event import ReviewEventRecord  # noqa: F401
 
 config = context.config
 target_metadata = Base.metadata

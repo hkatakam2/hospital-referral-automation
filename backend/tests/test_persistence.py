@@ -58,14 +58,24 @@ def test_document_migration_preserves_existing_referrals(db_engine):
     with db_engine.begin() as connection:
         config.attributes["connection"] = connection
         command.downgrade(config, "0001")
-    with Session(db_engine) as session:
-        referral = ReferralRepository(session).create(ReferralCreate(**DATA))
+    identifier = uuid4()
+    # Use the historical schema directly; today's ORM also includes workflow columns.
+    with db_engine.begin() as connection:
+        connection.execute(text(
+            "INSERT INTO referrals (id, patient_name, date_of_birth, referring_organization, "
+            "requested_specialty, referral_reason, created_at) VALUES "
+            "(:id, :patient_name, :date_of_birth, :referring_organization, "
+            ":requested_specialty, :referral_reason, :created_at)"
+        ), {**DATA, "id": identifier, "created_at": datetime.now(timezone.utc)})
     with db_engine.begin() as connection:
         config.attributes["connection"] = connection
         command.upgrade(config, "head")
         command.check(config)
     with Session(db_engine) as session:
-        assert ReferralRepository(session).get(referral.id) == referral
+        referral = ReferralRepository(session).get(identifier)
+        assert referral is not None
+        assert referral.patient_name == DATA["patient_name"]
+        assert referral.status == "received" and referral.workflow_version == 0
 
 
 def test_database_rejects_invalid_write_and_request_session_rolls_back(db_engine):

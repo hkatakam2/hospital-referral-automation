@@ -562,3 +562,41 @@ and approval workflows
 are not.
 
 Framework references: [Vite guide](https://vite.dev/guide/) and [FastAPI CORS](https://fastapi.tiangolo.com/tutorial/cors/).
+
+
+### Missing-information workflow API
+
+Apply Alembic revision `0005` with `cd backend` followed by
+`uv run alembic upgrade head` before using this increment. It adds referral `status`,
+`workflow_version`, and a `review_events` table. Existing referrals start at
+`received` / version `0` without fabricated history. Downgrading to `0004` removes
+workflow history and status while retaining referral values and extraction snapshots.
+
+`POST /api/referrals/{id}/information-requests` returns `201` and the updated referral:
+
+```json
+{
+  "reviewer": "Demo coordinator",
+  "reason": "The source documents have conflicting dates",
+  "requested_information": "A document confirming date of birth",
+  "expected_workflow_version": 0
+}
+```
+
+An optional `extraction_id` links the request to a run belonging to that referral.
+A request moves `received` or `review_required` to `missing_information`.
+`POST /api/referrals/{id}/resume-review` accepts `reviewer`, `reason`, and the current
+`expected_workflow_version`; it returns `200` and moves `missing_information` to
+`review_required`. Both actions require nonblank text (at most 2,000 characters),
+reject unknown properties, and record server-generated times and event IDs.
+
+`GET /api/referrals/{id}/review-events` returns newest-first action history.
+Unknown referrals return `404`; invalid input or a foreign/missing extraction returns
+`422`; stale versions or invalid transitions return `409`. Status and its history
+event commit atomically. Clients cannot set workflow fields through referral creation
+or correction PATCH. Read referral/history after an interrupted request before retrying.
+
+Requests are local records, not sent messages. Supplied reviewer names are demo
+identities without authentication. Uploads, extraction, and saved corrections do not
+close requests or change workflow status. This increment does not add approval or
+correction audit history; checklist completeness remains separate from workflow status.

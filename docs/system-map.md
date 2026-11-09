@@ -90,7 +90,7 @@ For **Save corrections**, start with the [referral routes](../backend/app/api/re
   deterministic provider stub unless live mode is explicitly selected.
 - Evidence checks establish literal source support and controlled formatting.
   They do not prove semantic correctness or resistance to document instructions.
-- Review shows extracted page text. OCR, original-PDF viewing, approvals, audit
+- Review shows extracted page text. OCR, original-PDF viewing, approvals, correction audit
   history, authentication, and document-first intake are not implemented.
 - Completeness uses one server-configured, versioned JSON policy over the five
   supported extraction fields. The default requires all five. Every field still
@@ -123,3 +123,26 @@ distinguishes the default stubbed suite from the live synthetic provider journey
 
 The [retained completeness-policy check](verification/completeness-policy-2026-11-06.md)
 records configuration retention, real API persistence and the optional-field UI probe.
+
+## Coordinator workflow history
+
+The workflow API records a missing-information request and explicitly resumes review.
+New and migrated referrals start at **received**, with no invented historical events.
+Requests move received/review-required referrals to **missing information**; Resume
+review moves them to **review required**. Each action records the supplied demo reviewer,
+server time, reason, previous/new status and workflow version. Requests also retain
+what information is needed and an optional reference to a saved extraction run.
+
+Workflow routes delegate to the [workflow service](../backend/app/services/referral_workflow.py).
+The service locks the referral, checks the caller's expected workflow version and allowed
+transition, verifies any extraction belongs to the referral, and commits status plus an
+append-only review event together. The repository does not commit separately. History
+is scoped to the referral and ordered by workflow version, newest first. Review events
+live in PostgreSQL; they are separate from immutable extraction snapshots and artifacts.
+
+Uploads, extraction and corrections do not change workflow status or close requests.
+The application records requests locally; it sends no email or other notification.
+Reviewer names are supplied demo identities, not authenticated identities. This history
+covers workflow actions only; correction auditing and administrative approval remain
+future work. An interrupted action should be checked through referral/history reads
+before retrying; stale workflow versions and invalid transitions return a conflict.
