@@ -99,7 +99,7 @@ while pending; they are never automatically retried. If the connection fails,
 refresh documents/history before retrying because the server may have committed
 the first request. Each repeated upload or extraction creates a separate record.
 
-Creation still requires manual values before upload. Approval, audit history,
+Creation still requires manual values before upload. Approval, authentication,
 document-first drafts, OCR, and original-PDF viewing remain later increments.
 
 ## Manual referral intake
@@ -133,11 +133,15 @@ It returns `200` with a JSON array, or `[]` when no referrals exist. The list is
 not paginated in this prototype.
 
 To correct a saved record, use `PATCH /api/referrals/{referral_id}` in `/docs`.
-For example, submit just the corrected date of birth:
+For example, submit the corrected date of birth with audit metadata and the
+`values_version` from the referral you edited:
 
 ```json
 {
-  "date_of_birth": "1974-03-21"
+  "date_of_birth": "1974-03-21",
+  "reviewer": "Demo coordinator",
+  "reason": "Confirmed against attached source",
+  "expected_values_version": 0
 }
 ```
 
@@ -146,9 +150,17 @@ their values; the ID and creation timestamp remain unchanged. Supplied fields
 follow the creation validation rules: required fields cannot be cleared with
 `null` or blank text, and unknown or server-managed fields are rejected. Invalid
 updates return `422` and leave the record unchanged. An unknown UUID returns
-`404`; a malformed ID returns `422`. An empty object is a no-op returning the
-existing record. Corrections overwrite the current values; there is no audit
-history yet.
+`404`; a malformed ID returns `422`. Reviewer and reason must be nonblank and at
+most 2,000 characters. Missing metadata is rejected, including for an empty update.
+A command with no actual changes is a no-op: no event or version increment.
+A stale `expected_values_version` returns `409` without changing values or history.
+
+Each changed save atomically increments `values_version` and records one correction
+event containing actual previous/new field values, reviewer, reason, and server time.
+`GET /api/referrals/{id}/correction-events` returns newest-first correction history.
+Earlier changes are not reconstructed. Workflow status/version and extraction
+snapshots remain unchanged. Supplied reviewer names are unauthenticated demo identities.
+Apply migration 0006 with `alembic upgrade head` before using the updated API.
 
 To verify the manual workflow, create two synthetic referrals, list them, correct
 one referral, and retrieve both to confirm only the intended record changed.
@@ -598,8 +610,8 @@ or correction PATCH. Read referral/history after an interrupted request before r
 
 Requests are local records, not sent messages. Supplied reviewer names are demo
 identities without authentication. Uploads, extraction, and saved corrections do not
-close requests or change workflow status. This increment does not add approval or
-correction audit history; checklist completeness remains separate from workflow status.
+close requests or change workflow status. Correction events have their own history and saved-values version. Approval remains
+future work; checklist completeness remains separate from workflow status.
 
 
 In the referral detail screen, **Coordinator workflow** shows saved status and history.
@@ -610,3 +622,5 @@ enter a reviewer and reason and select **Resume review**. The inbox shows the sa
 **Refresh workflow** reloads status/history after conflicts or interrupted requests.
 Workflow actions and refreshes preserve unsaved corrections; reload/navigation still
 loses local drafts. A committed action remains successful if only its history refresh fails.
+
+Correction history is currently available through the API; browser audit controls follow in the next increment.

@@ -20,7 +20,7 @@ Workspace write coordination lives in `useReferralWorkspace.ts`; document and ex
 
 ## Gotchas
 
-Correcting the referral does not resolve contradictory source documents or rewrite historical checklists. Invalid candidates have no apply action. Candidate copying is disabled while a correction save is pending. Workflow action history is separate (see [workflow.md](workflow.md)); there is no field-correction audit trail, approval action, clinical decision, or automatic save. Unsaved edits are local and are lost on leaving/reloading; the current UI shows a warning but has no navigation blocker. Screenshots need visual inspection before layout can be described as visually verified.
+Correcting the referral does not resolve contradictory source documents or rewrite historical checklists. Invalid candidates have no apply action. Candidate copying is disabled while a correction save is pending. Workflow action history is separate (see [workflow.md](workflow.md)); API correction history is available; browser audit controls follow in the next increment. There is no approval action, clinical decision, or automatic save. Unsaved edits are local and are lost on leaving/reloading; the current UI shows a warning but has no navigation blocker. Screenshots need visual inspection before layout can be described as visually verified.
 
 ## Provenance and rejected candidates
 
@@ -33,3 +33,11 @@ required/optional field labels. Missing historical definitions are explicit. The
 real review journey covers default metadata and reload; the optional-field layout
 probe mocks detail only (see extraction coverage) and needs screenshot inspection.
 A satisfied checklist may still show optional invalid/conflicting/missing findings.
+
+## Correction API persistence
+
+`test_corrections.py` exercises real PostgreSQL changes/history, normalization, no-op
+saves, required audit metadata, fresh connections, scoped reads, concurrent commands,
+stale retry, injected commit failure rollback, and legacy migration/schema drift.
+Corrections use a saved-values version separate from workflow version. Source snapshots
+and workflow status remain unchanged. Reviewer names are supplied demo identities.

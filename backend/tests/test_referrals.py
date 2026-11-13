@@ -3,6 +3,9 @@ from uuid import UUID, uuid4
 
 import pytest
 
+AUDIT = {"reviewer": "Test coordinator", "reason": "Confirmed source",
+         "expected_values_version": 0}
+
 
 @pytest.fixture
 def referral_data():
@@ -136,8 +139,8 @@ def test_correct_referral_preserves_other_fields_and_records(client, referral_da
     second = client.post("/api/referrals", json=referral_data).json()
     changes = {"date_of_birth": "1974-03-21"}
 
-    response = client.patch(f"/api/referrals/{first['id']}", json=changes)
-    expected = {**first, **changes}
+    response = client.patch(f"/api/referrals/{first['id']}", json={**AUDIT, **changes})
+    expected = {**first, **changes, "values_version": 1}
     assert response.status_code == 200
     assert response.json() == expected
     assert client.get(f"/api/referrals/{first['id']}").json() == expected
@@ -154,8 +157,10 @@ def test_correct_all_fields_trims_text_and_preserves_server_fields(client, refer
         "requested_specialty": "cardiology",
         "referral_reason": "  Follow-up consultation  ",
     }
-    expected = {**created, **{key: value.strip() for key, value in changes.items()}}
-    response = client.patch(f"/api/referrals/{created['id']}", json=changes)
+    expected = {
+        **created, **{key: value.strip() for key, value in changes.items()}, "values_version": 1,
+    }
+    response = client.patch(f"/api/referrals/{created['id']}", json={**AUDIT, **changes})
     assert response.status_code == 200
     assert response.json() == expected
     assert client.get(f"/api/referrals/{created['id']}").json() == expected
@@ -163,7 +168,7 @@ def test_correct_all_fields_trims_text_and_preserves_server_fields(client, refer
 
 def test_empty_correction_is_a_no_op(client, referral_data):
     created = client.post("/api/referrals", json=referral_data).json()
-    response = client.patch(f"/api/referrals/{created['id']}", json={})
+    response = client.patch(f"/api/referrals/{created['id']}", json=AUDIT)
     assert response.status_code == 200
     assert response.json() == created
     assert client.get(f"/api/referrals/{created['id']}").json() == created
@@ -175,7 +180,7 @@ def test_empty_correction_is_a_no_op(client, referral_data):
 ])
 def test_correction_cannot_clear_required_fields(client, referral_data, field):
     created = client.post("/api/referrals", json=referral_data).json()
-    response = client.patch(f"/api/referrals/{created['id']}", json={field: None})
+    response = client.patch(f"/api/referrals/{created['id']}", json={**AUDIT, field: None})
     assert response.status_code == 422
     assert client.get(f"/api/referrals/{created['id']}").json() == created
 
@@ -200,7 +205,8 @@ def test_invalid_correction_leaves_record_unchanged(client, referral_data, chang
     created = client.post("/api/referrals", json=referral_data).json()
     # Include a valid change to prove that mixed updates never apply partially.
     response = client.patch(
-        f"/api/referrals/{created['id']}", json={"patient_name": "Jordan Ellis", **changes},
+        f"/api/referrals/{created['id']}",
+        json={**AUDIT, "patient_name": "Jordan Ellis", **changes},
     )
     assert response.status_code == 422
     assert client.get(f"/api/referrals/{created['id']}").json() == created
@@ -209,7 +215,7 @@ def test_invalid_correction_leaves_record_unchanged(client, referral_data, chang
 
 def test_correct_unknown_referral_returns_not_found(client):
     response = client.patch(
-        f"/api/referrals/{uuid4()}", json={"patient_name": "Jordan Ellis"},
+        f"/api/referrals/{uuid4()}", json={**AUDIT, "patient_name": "Jordan Ellis"},
     )
     assert response.status_code == 404
     assert response.json() == {"detail": "Referral not found"}
@@ -218,6 +224,6 @@ def test_correct_unknown_referral_returns_not_found(client):
 
 def test_correct_malformed_id_is_rejected(client):
     response = client.patch(
-        "/api/referrals/not-a-uuid", json={"patient_name": "Jordan Ellis"},
+        "/api/referrals/not-a-uuid", json={**AUDIT, "patient_name": "Jordan Ellis"},
     )
     assert response.status_code == 422

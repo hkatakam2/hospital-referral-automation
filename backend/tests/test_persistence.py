@@ -25,11 +25,15 @@ DATA = {
 }
 
 
+AUDIT = {"reviewer": "Test coordinator", "reason": "Confirmed source",
+         "expected_values_version": 0}
+
+
 def test_records_and_corrections_survive_new_connections(client, db_engine):
     first = client.post("/api/referrals", json=DATA).json()
     second = client.post("/api/referrals", json={**DATA, "patient_name": "Jordan Ellis"}).json()
     corrected = client.patch(
-        f"/api/referrals/{first['id']}", json={"date_of_birth": "1974-03-21"},
+        f"/api/referrals/{first['id']}", json={**AUDIT, "date_of_birth": "1974-03-21"},
     ).json()
     # Discard pooled connections and use a new client and new sessions.
     db_engine.dispose()

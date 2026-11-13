@@ -23,6 +23,10 @@ DATA = {
 }
 
 
+AUDIT = {"reviewer": "Test coordinator", "reason": "Confirmed source",
+         "expected_values_version": 0}
+
+
 def intake(client, pdf_factory):
     referral = client.post("/api/referrals", json=DATA).json()
     base = f"/api/referrals/{referral['id']}"
@@ -84,7 +88,7 @@ def test_gemini_claims_response_and_provenance_survive_without_public_raw_output
         assert "test-credential" not in json.dumps(artifact)
         assert "raw_response" not in artifact["execution"]
         before = json.loads(json.dumps(artifact))
-    client.patch(base, json={"patient_name": "Human correction"})
+    client.patch(base, json={**AUDIT, "patient_name": "Human correction"})
     client.post(base + "/extractions")
     assert client.get(f"{base}/extractions/{result.id}").json() == saved
     with Session(db_engine) as session:

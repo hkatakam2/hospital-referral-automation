@@ -25,6 +25,10 @@ REQUEST = {
 }
 
 
+AUDIT = {"reviewer": "Test coordinator", "reason": "Confirmed source",
+         "expected_values_version": 0}
+
+
 def create(client):
     return client.post("/api/referrals", json=DATA).json()
 
@@ -104,7 +108,7 @@ def test_scope_checks_and_server_managed_status(client, pdf_factory):
             **REQUEST, 'extraction_id': extraction_id,
         }).status_code == 422
     for field, value in [('status', 'missing_information'), ('workflow_version', 5)]:
-        assert client.patch(base, json={field: value}).status_code == 422
+        assert client.patch(base, json={**AUDIT, field: value}).status_code == 422
         assert client.post('/api/referrals', json={**DATA, field: value}).status_code == 422
     for route in ['/review-events', '/information-requests', '/resume-review']:
         missing = f'/api/referrals/{uuid4()}' + route
@@ -129,7 +133,7 @@ def test_upload_extraction_and_corrections_preserve_request_and_snapshots(client
     assert event['extraction_id'] == run['id']
     client.post(base + '/documents', files={'file': ('second.pdf', pdf_factory())})
     client.post(base + '/extractions')
-    client.patch(base, json={'patient_name': 'Corrected name'})
+    client.patch(base, json={**AUDIT, 'patient_name': 'Corrected name'})
     current = client.get(base).json()
     assert current['status'] == 'missing_information' and current['workflow_version'] == 1
     assert client.get(base + '/review-events').json() == [event]

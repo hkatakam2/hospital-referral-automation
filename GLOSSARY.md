@@ -21,3 +21,10 @@
 | Missing-information request | A coordinator's saved description of information needed and why. It changes workflow status and stays in history after review resumes; the application does not send it externally. |
 | Review event | An append-only application record of a workflow action, including supplied demo reviewer, server time, reason, previous/new status and version. It does not record field correction history. |
 | Workflow version | A counter advanced by each saved workflow action. A stale expected version prevents a browser from applying a decision against an older workflow state. |
+
+## Saved correction history
+
+| Term | Plain meaning |
+| --- | --- |
+| Correction event | An append-only record of one changed correction save: actual previous/new field values, supplied demo reviewer, reason, and server time. Separate from workflow events, source text, and extraction snapshots. Earlier corrections are not reconstructed. |
+| Saved-values version | A counter advanced by each correction save that changes values. A stale expected version rejects a save; workflow actions do not advance this counter. |

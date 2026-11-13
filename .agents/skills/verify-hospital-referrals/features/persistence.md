@@ -41,3 +41,12 @@ existing JSONB storage; no schema migration or policy table was added. Policy
 configuration changes do not recalculate historical runs. `test_policy.py` checks
 fresh API readback across application lifespans and legacy JSON without a policy;
 existing restart/rollback checks also cover the extended default snapshot.
+
+## Correction persistence
+
+Migration 0006 adds saved-values versions and separate correction events. The correction
+service owns their atomic transaction; the repository no longer offers an unaudited
+update path. `test_corrections.py` verifies fresh connections, concurrent commands,
+failed-commit rollback of values/version/event, migration from 0005 without invented
+history, and schema drift. Browser history survives reload. A dedicated corrected-referral
+process restart remains outside this coverage.

@@ -2,7 +2,7 @@
 
 ## Sub-features
 
-List registered referrals; create a cardiology referral with five required fields; open it directly; correct supplied fields without overwriting unrelated values. API supports POST/GET `/api/referrals`, GET/PATCH `/api/referrals/{id}`.
+List registered referrals; create a cardiology referral with five required fields; open it directly; correct supplied fields without overwriting unrelated values. API supports POST/GET `/api/referrals`, GET/PATCH `/api/referrals/{id}`. Corrections require reviewer, reason and expected saved-values version; see review coverage.
 
 Sources: `frontend/src/pages/ReferralInboxPage.tsx`, `components/ReferralForm.tsx`, `pages/ReferralDetailPage.tsx`, `backend/app/api/referrals.py`, `schemas/referral.py`, `repositories/referrals.py`.
 
@@ -18,4 +18,4 @@ Run `verify.py run --feature intake`. The skill's `scripts/live.spec.cjs` fills 
 
 ## Gotchas
 
-All five fields are required before attaching a document. Creation is registration, not approval. There is no pagination, field-correction audit history, or document-first draft. The inbox displays persisted workflow status; workflow actions have separate history (see [workflow.md](workflow.md)). Mocked browser tests alone do not establish that creation or correction reached PostgreSQL. Native browser validation can stop a submission before FastAPI responds; API tests cover the backend boundary independently.
+All five fields are required before attaching a document. Creation is registration, not approval. There is no pagination, document-first draft. The inbox displays persisted workflow status; workflow actions have separate history (see [workflow.md](workflow.md)). Mocked browser tests alone do not establish that creation or correction reached PostgreSQL. Native browser validation can stop a submission before FastAPI responds; API tests cover the backend boundary independently.

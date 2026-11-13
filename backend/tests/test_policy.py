@@ -21,6 +21,10 @@ DATA = {
 }
 
 
+AUDIT = {"reviewer": "Test coordinator", "reason": "Confirmed source",
+         "expected_values_version": 0}
+
+
 def policy_data(**changes):
     return {**BASELINE_POLICY.model_dump(mode="json"), **changes}
 
@@ -85,7 +89,9 @@ def test_config_changes_new_runs_but_not_saved_findings_or_historical_policy(
         assert client.get(f"{base}/extractions/{old['id']}").json() == old
         assert client.get(f"{base}/extractions/{new['id']}").json() == new
         # Saving coordinator values cannot rewrite either source assessment.
-        assert client.patch(base, json={"patient_name": "Saved correction"}).status_code == 200
+        assert client.patch(
+            base, json={**AUDIT, "patient_name": "Saved correction"},
+        ).status_code == 200
         assert client.get(f"{base}/extractions/{old['id']}").json() == old
         assert client.get(f"{base}/extractions/{new['id']}").json() == new
         # Real legacy JSON remains readable, without inventing a current policy definition.

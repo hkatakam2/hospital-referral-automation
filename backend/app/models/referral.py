@@ -13,6 +13,7 @@ class ReferralRecord(Base):
         CheckConstraint("status IN ('received', 'missing_information', 'review_required')",
                         name="workflow_status"),
         CheckConstraint("workflow_version >= 0", name="workflow_version_nonnegative"),
+        CheckConstraint("values_version >= 0", name="values_version_nonnegative"),
         CheckConstraint("btrim(patient_name) <> ''", name="patient_name_not_blank"),
         CheckConstraint("btrim(referring_organization) <> ''", name="organization_not_blank"),
         CheckConstraint("btrim(referral_reason) <> ''", name="reason_not_blank"),
@@ -27,4 +28,5 @@ class ReferralRecord(Base):
     referral_reason: Mapped[str] = mapped_column(Text)
     status: Mapped[str] = mapped_column(Text, server_default="received")
     workflow_version: Mapped[int] = mapped_column(Integer, server_default="0")
+    values_version: Mapped[int] = mapped_column(Integer, server_default="0")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))

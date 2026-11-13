@@ -13,4 +13,4 @@ opt-in browser/API Gemini extraction, and file-configured field completeness pol
 | Workflow | Saved missing-information requests and resume-review actions | [workflow.md](workflow.md) |
 | Persistence | Reload/restart recovery, storage, transactions | [persistence.md](persistence.md) |
 
-Source of truth: current code and executable assertions, with the roadmap as context. Current exclusions include original-PDF rendering/download, OCR, approvals, correction audit events, authentication, and document-first drafts. Workflow status is persisted separately from extraction completeness; it is not a complete approval lifecycle.
+Source of truth: current code and executable assertions, with the roadmap as context. Current exclusions include original-PDF rendering/download, OCR, approvals, authentication, and document-first drafts. Workflow status is persisted separately from extraction completeness; it is not a complete approval lifecycle.

@@ -20,7 +20,7 @@ FEATURES = {
     "documents": ["tests/test_documents.py", "tests/test_pdf_reader.py"],
     "extraction": ["tests/test_extractions.py", "tests/test_extraction_methods.py",
                    "tests/test_extraction_provenance.py"],
-    "review": ["tests/test_referrals.py", "tests/test_extractions.py"],
+    "review": ["tests/test_referrals.py", "tests/test_corrections.py", "tests/test_extractions.py"],
     "persistence": ["tests/test_persistence.py", "tests/test_document_restart.py"],
 }
 PORTS = (8001, 5174)

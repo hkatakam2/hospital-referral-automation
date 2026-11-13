@@ -5,7 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models.referral import ReferralRecord
-from app.schemas.referral import Referral, ReferralCreate, ReferralUpdate
+from app.schemas.referral import Referral, ReferralCreate
 
 
 class ReferralRepository:
@@ -33,13 +33,3 @@ class ReferralRepository:
             select(ReferralRecord).order_by(ReferralRecord.created_at, ReferralRecord.id),
         )
         return [self._response(record) for record in records]
-
-    def update(self, referral_id: UUID, changes: ReferralUpdate) -> Referral | None:
-        record = self.session.get(ReferralRecord, referral_id)
-        if record is None:
-            return None
-        # Only supplied columns are written, preserving unrelated concurrent corrections.
-        for field, value in changes.model_dump(exclude_unset=True).items():
-            setattr(record, field, value)
-        self.session.commit()
-        return self._response(record)

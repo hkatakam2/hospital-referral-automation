@@ -58,11 +58,12 @@ For **Run extraction**, follow these responsibilities in order:
 You do not need to learn every helper function first. Start with the service to see
 the task's sequence, then open the component responsible for the part you want to
 understand. Routes receive requests; services coordinate tasks; repositories store
-records; schemas define the information passed between them. Manual referral
-operations are simpler and use a repository directly from their routes.
+records; schemas define the information passed between them. Referral creation and
+reads use a repository directly from their routes; corrections use a service-owned
+transaction for the values and their audit event.
 
 For **Upload PDF**, start with the [document ingestion service](../backend/app/services/document_ingestion.py).
-For **Save corrections**, start with the [referral routes](../backend/app/api/referrals.py).
+For **Save corrections**, start with the [correction service](../backend/app/services/referral_correction.py).
 
 ## Know what is saved where
 
@@ -73,6 +74,7 @@ For **Save corrections**, start with the [referral routes](../backend/app/api/re
 | Document metadata and numbered page text | PostgreSQL | Document list and page-text viewer |
 | Assessed extraction snapshots and input document links | PostgreSQL | Run history, candidates, findings, warnings, and recorded provenance |
 | Original extraction output and available model claims/raw response | Separate PostgreSQL artifact table | An allowlisted provenance summary is shown; raw artifacts have no public endpoint |
+| Correction events and saved-values versions | PostgreSQL | API history of actual previous/new field values, demo reviewer, reason and server time |
 | Unsaved correction draft | Browser memory | Editable values; unsaved edits are lost on reload/navigation |
 | Evaluation reports | Files written by the evaluator; selected reports are retained in Git | Developer comparison reports, separate from referral history |
 
@@ -93,8 +95,8 @@ For **Save corrections**, start with the [referral routes](../backend/app/api/re
   deterministic provider stub unless live mode is explicitly selected.
 - Evidence checks establish literal source support and controlled formatting.
   They do not prove semantic correctness or resistance to document instructions.
-- Review shows extracted page text. OCR, original-PDF viewing, approvals, correction audit
-  history, authentication, and document-first intake are not implemented.
+- Review shows extracted page text. OCR, original-PDF viewing, approvals,
+  authentication, and document-first intake are not implemented.
 - Completeness uses one server-configured, versioned JSON policy over the five
   supported extraction fields. The default requires all five. Every field still
   receives evidence checks and a finding; optional field issues remain visible
@@ -146,8 +148,8 @@ live in PostgreSQL; they are separate from immutable extraction snapshots and ar
 Uploads, extraction and corrections do not change workflow status or close requests.
 The application records requests locally; it sends no email or other notification.
 Reviewer names are supplied demo identities, not authenticated identities. This history
-covers workflow actions only; correction auditing and administrative approval remain
-future work. An interrupted action should be checked through referral/history reads
+covers workflow actions only; corrections have separate history. Administrative approval
+remains future work. An interrupted action should be checked through referral/history reads
 before retrying; stale workflow versions and invalid transitions return a conflict.
 
 The [workspace hook](../frontend/src/hooks/useReferralWorkspace.ts) owns workflow writes
@@ -157,3 +159,23 @@ open a referenced extraction. A successful action updates displayed status and r
 history without resetting the correction draft. Failed history refreshes remain read
 failures and do not repeat the committed action. Refresh workflow recovers referral
 status and history after a conflict or interrupted response; unsaved corrections stay.
+
+## Saved corrections and their history
+
+Save corrections sends only edited fields with reviewer, reason, and the expected
+saved-values version. The correction service locks the referral, rejects a stale
+version, computes actual changes after validation, and commits updated values,
+an incremented version, and one correction event together. No-op saves produce
+neither an event nor a version increment. The correction repository handles storage
+without committing independently; the old unaudited repository update path is removed.
+
+Migration 0006 adds `referrals.values_version` and `correction_events` in PostgreSQL.
+Existing referrals start at version zero without invented correction history. Events
+retain actual previous/new field values, supplied demo reviewer, reason, and server
+time; history is scoped to the referral and ordered newest saved-values version first.
+There are no public event-edit/deletion operations. This is application audit history,
+not protection against privileged database modification or authenticated attribution.
+
+Correction events and saved-values versions are separate from workflow events and
+versions. Corrections never alter source text, extraction snapshots, or workflow status.
+API correction history is available; browser audit controls follow in the next increment.

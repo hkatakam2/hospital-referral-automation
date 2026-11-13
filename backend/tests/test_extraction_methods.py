@@ -17,6 +17,9 @@ from app.models.extraction import (
     ExtractionRunRecord,
 )
 
+AUDIT = {"reviewer": "Test coordinator", "reason": "Confirmed source",
+         "expected_values_version": 0}
+
 
 def enable(monkeypatch, handler):
     monkeypatch.setattr(settings, "gemini_enabled", True)
@@ -92,7 +95,7 @@ def test_gemini_api_releases_connection_and_captures_fixed_sources(
     assert saved["fields"]["referral_reason"]["value"] is None
     assert saved["provenance"]["provider"] == "gemini"
     assert saved["provenance"]["candidates_rejected"] == 1
-    client.patch(base, json={"patient_name": "Human correction"})
+    client.patch(base, json={**AUDIT, "patient_name": "Human correction"})
     assert client.get(f"{base}/extractions/{saved['id']}").json() == saved
     assert "private-test-key" not in response.text
     with Session(db_engine) as session:
