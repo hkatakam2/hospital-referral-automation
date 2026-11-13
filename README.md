@@ -68,7 +68,7 @@ Use synthetic data only. From the inbox:
    document/page and shows its exact quote. This viewer displays extracted text,
    rather than rendering the original PDF.
 5. Edit the correction draft, or use a valid candidate to copy a value into it.
-   Select **Save corrections** to persist only changed fields. Copying a candidate
+   Enter a correction reviewer and reason, then select **Save corrections** to persist only changed fields. Copying a candidate
    preserves other draft edits. Validation failures retain the draft.
 
 Saved referral values, unsaved corrections, and extraction snapshots are separate.
@@ -161,6 +161,12 @@ event containing actual previous/new field values, reviewer, reason, and server 
 Earlier changes are not reconstructed. Workflow status/version and extraction
 snapshots remain unchanged. Supplied reviewer names are unauthenticated demo identities.
 Apply migration 0006 with `alembic upgrade head` before using the updated API.
+
+The browser shows correction history and requires audit metadata when saving.
+**Refresh corrections** reloads current saved values while retaining the draft;
+compare the two before retrying a stale save. **Refresh correction history** only
+retries the history read. A failed history refresh does not repeat a committed save.
+After an interrupted response, refresh and compare before deciding whether to retry.
 
 To verify the manual workflow, create two synthetic referrals, list them, correct
 one referral, and retrieve both to confirm only the intended record changed.
@@ -622,5 +628,3 @@ enter a reviewer and reason and select **Resume review**. The inbox shows the sa
 **Refresh workflow** reloads status/history after conflicts or interrupted requests.
 Workflow actions and refreshes preserve unsaved corrections; reload/navigation still
 loses local drafts. A committed action remains successful if only its history refresh fails.
-
-Correction history is currently available through the API; browser audit controls follow in the next increment.

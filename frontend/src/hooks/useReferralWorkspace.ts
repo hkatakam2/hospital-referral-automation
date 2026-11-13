@@ -2,9 +2,9 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { errorMessage } from '../api/client'
 import { getDocument, listDocuments, uploadDocument } from '../api/documents'
 import { createExtraction, listExtractionMethods, getExtraction, listExtractions } from '../api/extractions'
-import { getReferral } from '../api/referrals'
+import { getReferral, listCorrectionEvents, updateReferral } from '../api/referrals'
 import { listReviewEvents, requestInformation, resumeReview } from '../api/workflow'
-import type { ExtractorChoice, Evidence, InformationRequest, WorkflowCommand } from '../api/types'
+import type { CorrectionCommand, ExtractorChoice, Evidence, InformationRequest, WorkflowCommand } from '../api/types'
 
 // Each resource owns its error/loading state. A failed panel does not hide its siblings.
 function useResource<T>(load: (signal: AbortSignal) => Promise<T>) {
@@ -33,6 +33,21 @@ export function useReferralWorkspace(id: string) {
   const methods = useResource(useCallback(signal => listExtractionMethods(signal), []))
   const [extractor, setExtractor] = useState<ExtractorChoice>('rules')
   const referral = useResource(useCallback(signal => getReferral(id, signal), [id]))
+  const correctionEvents = useResource(useCallback(signal => listCorrectionEvents(id, signal), [id]))
+  const corrections = useWorkspaceWrite(async (command: CorrectionCommand) => {
+    const result = await updateReferral(id, command)
+    return { result, publish: () => {
+      referral.setData(result)
+      correctionEvents.refresh()
+    } }
+  }, 'refresh corrections and compare saved values with your draft', true)
+  const refreshCorrections = useWorkspaceWrite(async () => {
+    const result = await getReferral(id)
+    return { result, publish: () => {
+      referral.setData(result)
+      correctionEvents.refresh()
+    } }
+  }, 'refresh corrections')
   const reviewEvents = useResource(useCallback(signal => listReviewEvents(id, signal), [id]))
   const workflow = useWorkspaceWrite(async (action: 'request' | 'resume', command: InformationRequest | WorkflowCommand) => {
     const result = action === 'request'
@@ -84,6 +99,7 @@ export function useReferralWorkspace(id: string) {
       if (documentId) setSelection({ documentId, page })
     },
     openEvidence, sourcesChanged, upload, runExtraction, reviewEvents, workflow,
+    corrections, correctionEvents, refreshCorrections,
   }
 }
 export type ReferralWorkspace = ReturnType<typeof useReferralWorkspace>
@@ -91,7 +107,7 @@ export type ReferralWorkspace = ReturnType<typeof useReferralWorkspace>
 // Writes are explicit and never retried. Only an active workspace may publish their
 // consequences; aborting a read cannot undo a write that the server has committed.
 function useWorkspaceWrite<Args extends unknown[], T>(
-  write: (...args: Args) => Promise<{ result: T; publish: () => void }>, recovery: string,
+  write: (...args: Args) => Promise<{ result: T; publish: () => void }>, recovery: string, propagateError = false,
 ) {
   const active = useRef(false)
   const locked = useRef(false)
@@ -116,6 +132,7 @@ function useWorkspaceWrite<Args extends unknown[], T>(
       if (active.current) setState({ pending: false, data: null,
         error: `${errorMessage(error)} If the connection was interrupted, ${recovery} before retrying.`,
       })
+      if (propagateError) throw error
       return null
     } finally {
       locked.current = false

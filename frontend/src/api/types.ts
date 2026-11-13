@@ -17,7 +17,7 @@ export const workflowLabels: Record<WorkflowStatus, string> = {
   received: 'Received', missing_information: 'Missing information', review_required: 'Review required',
 }
 export interface Referral extends ReferralInput {
-  id: string; created_at: string; status: WorkflowStatus; workflow_version: number
+  id: string; created_at: string; status: WorkflowStatus; workflow_version: number; values_version: number
 }
 export interface WorkflowCommand { reviewer: string; reason: string; expected_workflow_version: number }
 export interface InformationRequest extends WorkflowCommand {
@@ -61,4 +61,13 @@ export interface ExtractionDetail extends ExtractionSummary {
 export type ExtractorChoice = 'rules' | 'gemini'
 export interface ExtractionMethod {
   extractor: ExtractorChoice; available: boolean; reason: string | null
+}
+
+export type CorrectionCommand = Partial<ReferralInput> & {
+  reviewer: string; reason: string; expected_values_version: number
+}
+export interface CorrectionEvent {
+  id: string; referral_id: string; values_version: number
+  reviewer: string; reason: string; created_at: string
+  changes: Partial<Record<FieldName, { previous: string; new: string }>>
 }

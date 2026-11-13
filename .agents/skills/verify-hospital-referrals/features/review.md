@@ -20,7 +20,7 @@ Workspace write coordination lives in `useReferralWorkspace.ts`; document and ex
 
 ## Gotchas
 
-Correcting the referral does not resolve contradictory source documents or rewrite historical checklists. Invalid candidates have no apply action. Candidate copying is disabled while a correction save is pending. Workflow action history is separate (see [workflow.md](workflow.md)); API correction history is available; browser audit controls follow in the next increment. There is no approval action, clinical decision, or automatic save. Unsaved edits are local and are lost on leaving/reloading; the current UI shows a warning but has no navigation blocker. Screenshots need visual inspection before layout can be described as visually verified.
+Correcting the referral does not resolve contradictory source documents or rewrite historical checklists. Invalid candidates have no apply action. Candidate copying is disabled while a correction save is pending. Workflow action history is separate (see [workflow.md](workflow.md)); there is no approval action, clinical decision, or automatic save. Unsaved edits are local and are lost on leaving/reloading; the current UI shows a warning but has no navigation blocker. Screenshots need visual inspection before layout can be described as visually verified.
 
 ## Provenance and rejected candidates
 
@@ -34,10 +34,27 @@ real review journey covers default metadata and reload; the optional-field layou
 probe mocks detail only (see extraction coverage) and needs screenshot inspection.
 A satisfied checklist may still show optional invalid/conflicting/missing findings.
 
-## Correction API persistence
+## Correction events
+
+Save corrections requires Correction reviewer (demo identity) and Reason for corrections.
+The correction service commits only actual field changes with an event and incremented
+saved-values version. Workflow status/version and extraction snapshots remain unchanged.
+History is separate from workflow history. Existing referrals have no invented prior events.
 
 `test_corrections.py` exercises real PostgreSQL changes/history, normalization, no-op
-saves, required audit metadata, fresh connections, scoped reads, concurrent commands,
-stale retry, injected commit failure rollback, and legacy migration/schema drift.
-Corrections use a saved-values version separate from workflow version. Source snapshots
-and workflow status remain unchanged. Reviewer names are supplied demo identities.
+saves, metadata validation, fresh connections, scoped reads, concurrent commands, stale
+retry, injected commit failure rollback, and legacy migration/schema drift. Existing
+extraction and workflow tests retain their snapshot/status preservation checks.
+
+The real correction-events journey in `frontend/tests/review.spec.ts` saves and reads
+back events, advances the version with a second real API client, rejects a stale browser
+save, preserves its draft during explicit refresh, saves again and reloads history.
+A history-only mocked 503 verifies that a committed write stays successful and history
+recovery does not repeat it. Desktop/mobile screenshots and overflow checks cover the
+new history surface; visual inspection remains a separate verification step.
+
+The skill live journey and other correction browser journeys now supply audit metadata.
+Mocked field-validation and changed-fields probes remain mocks, not persistence proof.
+Refresh corrections updates the saved baseline while retaining the draft for comparison;
+refreshing history alone does not change the baseline. No auto retry, authenticated
+reviewer attribution, or protection from privileged database edits is claimed.

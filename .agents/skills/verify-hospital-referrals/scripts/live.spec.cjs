@@ -23,6 +23,8 @@ test('real browser intake and correction persist through API reads and reload', 
   });
   await test.step('Save an explicit correction and read it back after reload', async () => {
     await page.getByLabel('Patient name', { exact: true }).fill('Verification Avery Corrected');
+    await page.getByLabel('Correction reviewer (demo identity)', { exact: true }).fill('Browser coordinator');
+    await page.getByLabel('Reason for corrections', { exact: true }).fill('Confirmed synthetic source');
     await page.getByRole('button', { name: 'Save corrections', exact: true }).click();
     await expect(page.getByText('Corrections saved.', { exact: true })).toBeVisible();
     await page.reload();

@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import type { FormEvent } from 'react'
+import type { FormEvent, ReactNode } from 'react'
 import { ApiError, errorMessage } from '../api/client'
 import { fieldLabels, fieldNames } from '../api/types'
 import type { FieldName, ReferralInput } from '../api/types'
 
-export function ReferralForm({ value: draft, onChange, onSave, submitLabel = 'Create referral' }: {
+export function ReferralForm({ value: draft, onChange, onSave, submitLabel = 'Create referral', children, disabled = false }: {
   value: ReferralInput; onChange: (value: ReferralInput) => void
-  onSave: (data: ReferralInput) => Promise<void>; submitLabel?: string
+  onSave: (data: ReferralInput) => Promise<void>; submitLabel?: string; children?: ReactNode; disabled?: boolean
 }) {
   const [pending, setPending] = useState(false)
   const [error, setError] = useState('')
@@ -22,7 +22,7 @@ export function ReferralForm({ value: draft, onChange, onSave, submitLabel = 'Cr
     onChange({ ...draft, [field]: value })
   }
   return <form onSubmit={submit}>
-    <fieldset disabled={pending}>
+    <fieldset disabled={pending || disabled}>
       {fieldNames.map(field => <div className="form-field" key={field}>
         <label htmlFor={field}>{fieldLabels[field]}</label>
         {field === 'requested_specialty'
@@ -32,6 +32,7 @@ export function ReferralForm({ value: draft, onChange, onSave, submitLabel = 'Cr
             : <input id={field} required type={field === 'date_of_birth' ? 'date' : 'text'} value={draft[field]} onChange={e => change(field, e.target.value)} aria-invalid={!!fields[field]} aria-describedby={fields[field] ? `${field}-error` : undefined} />}
         {fields[field] && <span className="error" id={`${field}-error`}>{fields[field]}</span>}
       </div>)}
+      {children}
       {error && <p role="alert" className="error">{error}</p>}
       <button className="primary" type="submit">{pending ? 'Saving…' : submitLabel}</button>
     </fieldset>

@@ -19,7 +19,8 @@ features. Commits explain why the implementation changed.
    The server applies its startup-loaded policy to those findings and retains the
    policy definition and requirement outcomes with each new snapshot.
 5. **Review and correct.** Inspect evidence in the page-text viewer. Copy a usable
-   candidate or type a correction into the draft, then explicitly save corrections.
+   candidate or type a correction into the draft, then save corrections with a supplied
+   demo reviewer and reason. Changed saves retain previous/new values in correction history.
 
 6. **Coordinate follow-up.** Record missing information and a reason, inspect workflow
    history, then explicitly resume review. The inbox displays the saved workflow status.
@@ -74,7 +75,7 @@ For **Save corrections**, start with the [correction service](../backend/app/ser
 | Document metadata and numbered page text | PostgreSQL | Document list and page-text viewer |
 | Assessed extraction snapshots and input document links | PostgreSQL | Run history, candidates, findings, warnings, and recorded provenance |
 | Original extraction output and available model claims/raw response | Separate PostgreSQL artifact table | An allowlisted provenance summary is shown; raw artifacts have no public endpoint |
-| Correction events and saved-values versions | PostgreSQL | API history of actual previous/new field values, demo reviewer, reason and server time |
+| Correction events and saved-values versions | PostgreSQL | Actual previous/new field values, demo reviewer, reason and server time |
 | Unsaved correction draft | Browser memory | Editable values; unsaved edits are lost on reload/navigation |
 | Evaluation reports | Files written by the evaluator; selected reports are retained in Git | Developer comparison reports, separate from referral history |
 
@@ -176,6 +177,10 @@ time; history is scoped to the referral and ordered newest saved-values version 
 There are no public event-edit/deletion operations. This is application audit history,
 not protection against privileged database modification or authenticated attribution.
 
+The workspace hook owns correction writes and history reads. The review page keeps
+the correction draft and its saved baseline. Refresh corrections explicitly reloads
+saved values while preserving the draft for comparison before retrying. History-read
+failures do not undo or repeat a committed save. Interrupted saves require refresh and
+comparison before retrying; automatic retry/deduplication is not implemented.
 Correction events and saved-values versions are separate from workflow events and
 versions. Corrections never alter source text, extraction snapshots, or workflow status.
-API correction history is available; browser audit controls follow in the next increment.

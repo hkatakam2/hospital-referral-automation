@@ -8,7 +8,7 @@ opt-in browser/API Gemini extraction, and file-configured field completeness pol
 | Intake | Inbox, creation, registered referral | [intake.md](intake.md) |
 | Documents | PDF upload, attachment list, numbered text | [documents.md](documents.md) |
 | Extraction | Run action, checklist, saved history | [extraction.md](extraction.md) |
-| Review | Candidate evidence, correction draft, saved values | [review.md](review.md) |
+| Review | Candidate evidence, correction draft, saved values and correction history | [review.md](review.md) |
 | Evaluation | Rule baseline and Gemini command-line comparison | [evaluation.md](evaluation.md) |
 | Workflow | Saved missing-information requests and resume-review actions | [workflow.md](workflow.md) |
 | Persistence | Reload/restart recovery, storage, transactions | [persistence.md](persistence.md) |

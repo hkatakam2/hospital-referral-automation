@@ -9,7 +9,7 @@ const initial = {
   id: '00000000-0000-0000-0000-000000000001', patient_name: 'Avery Morgan',
   date_of_birth: '1974-03-12', referring_organization: 'Lakeside Primary Care',
   requested_specialty: 'cardiology', referral_reason: 'Palpitations',
-  created_at: '2026-01-01T00:00:00Z',
+  created_at: '2026-01-01T00:00:00Z', status: 'received', workflow_version: 0, values_version: 0,
 }
 
 test('create, correct only changed fields, and recover saved values on reload', async ({ page }) => {
@@ -37,9 +37,12 @@ test('create, correct only changed fields, and recover saved values on reload', 
   await page.getByRole('button', { name: 'Create referral', exact: true }).click()
   await expect(page).toHaveURL(new RegExp(initial.id))
   await page.getByLabel('Patient name', { exact: true }).fill('Avery Corrected')
+  await page.getByLabel('Correction reviewer (demo identity)', { exact: true }).fill('Browser coordinator')
+  await page.getByLabel('Reason for corrections', { exact: true }).fill('Confirmed synthetic source')
   await page.getByRole('button', { name: 'Save corrections' }).click()
   await expect(page.getByText('Corrections saved.')).toBeVisible()
-  expect(patch).toEqual({ patient_name: 'Avery Corrected' })
+  expect(patch).toEqual({ patient_name: 'Avery Corrected', reviewer: 'Browser coordinator',
+    reason: 'Confirmed synthetic source', expected_values_version: 0 })
   await page.reload()
   await expect(page.getByLabel('Patient name', { exact: true })).toHaveValue('Avery Corrected')
   await page.getByRole('link', { name: '← Referral inbox' }).click()
@@ -54,6 +57,8 @@ test('failed correction preserves draft and renders field validation', async ({ 
   })
   await page.goto(`/referrals/${initial.id}`)
   await page.getByLabel('Patient name', { exact: true }).fill('Unsaved name')
+  await page.getByLabel('Correction reviewer (demo identity)', { exact: true }).fill('Browser coordinator')
+  await page.getByLabel('Reason for corrections', { exact: true }).fill('Confirmed synthetic source')
   await page.getByRole('button', { name: 'Save corrections' }).click()
   await expect(page.getByText('Name rejected')).toBeVisible()
   await expect(page.getByLabel('Patient name', { exact: true })).toHaveValue('Unsaved name')
