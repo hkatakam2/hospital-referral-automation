@@ -4,8 +4,10 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, StringConstraints
 
-WorkflowStatus = Literal["received", "missing_information", "review_required"]
-WorkflowAction = Literal["request_missing_information", "resume_review"]
+WorkflowStatus = Literal["received", "missing_information", "review_required", "ready"]
+WorkflowAction = Literal[
+    "request_missing_information", "resume_review", "mark_ready", "reopen_review"
+]
 ReviewText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=2000)]
 
 
@@ -15,6 +17,11 @@ class WorkflowCommand(BaseModel):
     reviewer: ReviewText
     reason: ReviewText
     expected_workflow_version: int = Field(ge=0, strict=True)
+
+
+class ReadyCommand(WorkflowCommand):
+    extraction_id: UUID
+    expected_values_version: int = Field(ge=0, strict=True)
 
 
 class InformationRequest(WorkflowCommand):
@@ -35,4 +42,5 @@ class ReviewEvent(BaseModel):
     reason: str
     requested_information: str | None
     extraction_id: UUID | None
+    reviewed_values_version: int | None
     created_at: datetime

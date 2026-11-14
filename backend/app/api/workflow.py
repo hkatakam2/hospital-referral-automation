@@ -8,7 +8,7 @@ from app.database import get_session
 from app.models.referral import ReferralRecord
 from app.repositories.workflow import WorkflowRepository
 from app.schemas.referral import Referral
-from app.schemas.workflow import InformationRequest, ReviewEvent, WorkflowCommand
+from app.schemas.workflow import InformationRequest, ReadyCommand, ReviewEvent, WorkflowCommand
 from app.services.referral_workflow import ReferralWorkflowService
 
 router = APIRouter(prefix="/referrals/{referral_id}", tags=["workflow"])
@@ -32,3 +32,13 @@ def list_events(referral_id: UUID, session: DatabaseSession) -> list[ReviewEvent
     if session.get(ReferralRecord, referral_id) is None:
         raise HTTPException(404, "Referral not found")
     return WorkflowRepository(session).list_events(referral_id)
+
+
+@router.post("/mark-ready", response_model=Referral)
+def mark_ready(referral_id: UUID, data: ReadyCommand, session: DatabaseSession) -> Referral:
+    return ReferralWorkflowService(session).apply(referral_id, "mark_ready", data)
+
+
+@router.post("/reopen-review", response_model=Referral)
+def reopen_review(referral_id: UUID, data: WorkflowCommand, session: DatabaseSession) -> Referral:
+    return ReferralWorkflowService(session).apply(referral_id, "reopen_review", data)

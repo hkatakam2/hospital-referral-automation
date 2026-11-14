@@ -17,7 +17,7 @@
 
 | Term | Plain meaning |
 | --- | --- |
-| Workflow status | The saved administrative stage: received, missing information, or review required. It is separate from extraction checklist completeness and does not grant approval. |
+| Workflow status | The saved administrative stage: received, missing information, review required, or ready for downstream processing. It is separate from extraction checklist completeness and does not grant approval. |
 | Missing-information request | A coordinator's saved description of information needed and why. It changes workflow status and stays in history after review resumes; the application does not send it externally. |
 | Review event | An append-only application record of a workflow action, including supplied demo reviewer, server time, reason, previous/new status and version. It does not record field correction history. |
 | Workflow version | A counter advanced by each saved workflow action. A stale expected version prevents a browser from applying a decision against an older workflow state. |
@@ -28,3 +28,12 @@
 | --- | --- |
 | Correction event | An append-only record of one changed correction save: actual previous/new field values, supplied demo reviewer, reason, and server time. Separate from workflow events, source text, and extraction snapshots. Earlier corrections are not reconstructed. |
 | Saved-values version | A counter advanced by each correction save that changes values. A stale expected version rejects a save; workflow actions do not advance this counter. |
+
+## Administrative readiness
+
+| Term | Plain meaning |
+| --- | --- |
+| Ready for downstream processing | A saved administrative status explicitly recorded by a demo reviewer after the current packet passes its retained checklist. It does not grant clinical approval or send data downstream. |
+| Ready decision | A workflow event identifying the extraction run and saved-values version reviewed, together with reviewer, reason and time. It never includes unsaved correction drafts. |
+| Reopen review | An explicit action moving a ready referral back to review required before documents or saved values can change. Previous decisions stay in history. |
+| Reviewed saved-values version | The version number of the saved referral values assessed when a ready decision was recorded. It is separate from the immutable source-text assessment and the browser's unsaved draft. |

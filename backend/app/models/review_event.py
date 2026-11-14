@@ -17,10 +17,19 @@ class ReviewEventRecord(Base):
             "(action = 'request_missing_information' "
             "AND previous_status IN ('received', 'review_required') "
             "AND new_status = 'missing_information' "
-            "AND requested_information IS NOT NULL AND btrim(requested_information) <> '') OR "
+            "AND requested_information IS NOT NULL AND btrim(requested_information) <> '' "
+            "AND reviewed_values_version IS NULL) OR "
             "(action = 'resume_review' AND previous_status = 'missing_information' "
             "AND new_status = 'review_required' AND requested_information IS NULL "
-            "AND extraction_id IS NULL)", name="review_event_transition",
+            "AND extraction_id IS NULL AND reviewed_values_version IS NULL) OR "
+            "(action = 'mark_ready' AND previous_status IN ('received', 'review_required') "
+            "AND new_status = 'ready' AND requested_information IS NULL "
+            "AND extraction_id IS NOT NULL AND reviewed_values_version IS NOT NULL "
+            "AND reviewed_values_version >= 0) OR "
+            "(action = 'reopen_review' AND previous_status = 'ready' "
+            "AND new_status = 'review_required' AND requested_information IS NULL "
+            "AND extraction_id IS NULL AND reviewed_values_version IS NULL)",
+            name="review_event_transition",
         ),
     )
 
@@ -34,4 +43,5 @@ class ReviewEventRecord(Base):
     reason: Mapped[str] = mapped_column(Text)
     requested_information: Mapped[str | None] = mapped_column(Text)
     extraction_id: Mapped[UUID | None] = mapped_column(ForeignKey("extraction_runs.id"))
+    reviewed_values_version: Mapped[int | None] = mapped_column(Integer)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))

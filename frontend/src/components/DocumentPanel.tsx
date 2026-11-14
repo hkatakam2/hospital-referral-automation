@@ -5,6 +5,7 @@ import { SourceTextViewer } from './SourceTextViewer'
 
 export function DocumentPanel({ workspace: w }: { workspace: ReferralWorkspace }) {
   const [file, setFile] = useState<File | null>(null)
+  const locked = w.referral.data?.status === 'ready' || w.workflow.pending
   const { pending, error, data: uploaded } = w.upload
   async function upload(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -14,9 +15,10 @@ export function DocumentPanel({ workspace: w }: { workspace: ReferralWorkspace }
   }
   return <section className="card" aria-labelledby="documents-title">
     <h2 id="documents-title">Source documents</h2>
+    {w.referral.data?.status === 'ready' && <p>Reopen review before attaching documents or saving corrections.</p>}
     <form onSubmit={upload}>
-      <label>Attach a synthetic PDF<input type="file" accept="application/pdf,.pdf" required disabled={pending} onChange={event => setFile(event.target.files?.[0] ?? null)} /></label>
-      <button type="submit" disabled={pending || !file}>{pending ? 'Uploading and parsing…' : 'Upload PDF'}</button>
+      <label>Attach a synthetic PDF<input type="file" accept="application/pdf,.pdf" required disabled={pending || locked} onChange={event => setFile(event.target.files?.[0] ?? null)} /></label>
+      <button type="submit" disabled={pending || locked || !file}>{pending ? 'Uploading and parsing…' : 'Upload PDF'}</button>
     </form>
     {error && <p role="alert" className="error">{error}</p>}
     {uploaded && <p role="status" className="success">Uploaded {uploaded.original_filename}. Run extraction to include this document.</p>}

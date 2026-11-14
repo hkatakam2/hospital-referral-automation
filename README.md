@@ -70,6 +70,10 @@ Use synthetic data only. From the inbox:
 5. Edit the correction draft, or use a valid candidate to copy a value into it.
    Enter a correction reviewer and reason, then select **Save corrections** to persist only changed fields. Copying a candidate
    preserves other draft edits. Validation failures retain the draft.
+6. In **Coordinator workflow**, record missing information and explicitly resume review
+   after follow-up, or select **Mark ready for downstream processing** after reviewing
+   a satisfied latest extraction and saving corrections. **Reopen review** before
+   attaching documents or saving further corrections to a ready referral.
 
 Saved referral values, unsaved corrections, and extraction snapshots are separate.
 Corrections do not rewrite historical candidates or resolve source-text findings.
@@ -576,8 +580,7 @@ For a separate frontend origin, set `CORS_ORIGINS` in the backend environment to
 This is a development prototype with manual referral intake, corrections, and
 text-based PDF ingestion. PostgreSQL and local file storage are implemented;
 rule-based field extraction and browser review are implemented. Authentication
-and approval workflows
-are not.
+is not implemented; administrative ready decisions and explicit reopening are available.
 
 Framework references: [Vite guide](https://vite.dev/guide/) and [FastAPI CORS](https://fastapi.tiangolo.com/tutorial/cors/).
 
@@ -616,8 +619,7 @@ or correction PATCH. Read referral/history after an interrupted request before r
 
 Requests are local records, not sent messages. Supplied reviewer names are demo
 identities without authentication. Uploads, extraction, and saved corrections do not
-close requests or change workflow status. Correction events have their own history and saved-values version. Approval remains
-future work; checklist completeness remains separate from workflow status.
+close requests or change workflow status. Correction events have their own history and saved-values version. Administrative ready decisions are described below; checklist completeness remains separate from workflow status.
 
 
 In the referral detail screen, **Coordinator workflow** shows saved status and history.
@@ -628,3 +630,60 @@ enter a reviewer and reason and select **Resume review**. The inbox shows the sa
 **Refresh workflow** reloads status/history after conflicts or interrupted requests.
 Workflow actions and refreshes preserve unsaved corrections; reload/navigation still
 loses local drafts. A committed action remains successful if only its history refresh fails.
+
+### Mark ready and reopen review
+
+Apply migration `0007` before using the new actions:
+
+```sh
+cd backend
+uv run alembic upgrade head
+```
+
+In Coordinator workflow, select **Workflow action → Mark ready for downstream
+processing** after reviewing the latest extraction and saving corrections. Supply
+Reviewer name (demo identity) and Reason for workflow action. The action requires
+that the latest saved extraction covers all current attachments and its retained
+checklist is satisfied. Explicitly Resume review first if missing information is
+open. Unsaved corrections and unfinished/failed reads block the UI action.
+
+`POST /api/referrals/{id}/mark-ready` returns `200` and the updated referral:
+
+```json
+{
+  "reviewer": "Demo coordinator",
+  "reason": "Reviewed source evidence and saved values",
+  "expected_workflow_version": 0,
+  "expected_values_version": 1,
+  "extraction_id": "UUID-of-the-latest-reviewed-run"
+}
+```
+
+The server independently checks status, both expected versions, latest run identity,
+current attachments and saved checklist completeness. Readiness uses the run's
+retained checklist even if the configured policy has since changed. Unknown referrals
+return 404, invalid command shapes return 422, and failed readiness/version/status
+checks return 409 without changing status or appending history. Refresh workflow,
+corrections, documents or extraction history as appropriate before retrying; writes
+are never automatically retried.
+
+Ready referrals reject correction saves and attachment uploads with 409. Select
+**Reopen review** with reviewer/reason before making those changes.
+`POST /api/referrals/{id}/reopen-review` accepts the existing workflow command
+(`reviewer`, `reason`, `expected_workflow_version`) and returns `200`, moving ready
+to review required. Both actions commit status and a review event atomically.
+Ready events retain `extraction_id` and `reviewed_values_version`; older events
+return null for the latter. History and the inbox survive reloads. A failed history
+refresh does not undo or repeat a committed action. Workflow refresh preserves
+correction drafts; Refresh corrections updates their saved baseline for comparison.
+
+This is a local administrative decision with supplied demo identities. It is not
+clinical approval, authenticated authorization or downstream delivery. Further
+extraction is allowed while ready and does not replace the decision's referenced
+run. Reopening retains every earlier decision and extraction snapshot.
+
+Migration 0007 preserves older statuses/history without inventing decisions. An
+empty database or one containing only older workflow actions can downgrade with
+`uv run alembic downgrade 0006`. Downgrade refuses while ready referrals or any
+ready/reopen events exist, including after reopening, to avoid silently discarding
+administrative decisions. Retain that history and use a forward migration instead.

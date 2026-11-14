@@ -62,7 +62,7 @@ function ReviewWorkspace({ referral, workspace }: { referral: Referral; workspac
           <p>Edits change the registered referral. Historical extraction findings remain unchanged.</p>
           {dirty && <p className="warning">You have unsaved corrections.</p>}
           {notice && <p role="status" className="success">{notice}</p>}
-          <ReferralForm value={draft} onChange={value => { setDraft(value); setNotice('') }} onSave={save} submitLabel="Save corrections" disabled={workspace.refreshCorrections.pending}>
+          <ReferralForm value={draft} onChange={value => { setDraft(value); setNotice('') }} onSave={save} submitLabel="Save corrections" disabled={workspace.refreshCorrections.pending || referral.status === 'ready' || workspace.workflow.pending}>
             <label htmlFor="correction-reviewer">Correction reviewer (demo identity)</label>
             <input id="correction-reviewer" required maxLength={2000} value={reviewer} onChange={e => setReviewer(e.target.value)} />
             <p>This supplied name is not an authenticated identity.</p>
@@ -94,7 +94,7 @@ function ReviewWorkspace({ referral, workspace }: { referral: Referral; workspac
             </div>)}</dl>
           </li>)}</ol>
         </section>
-        <WorkflowPanel workspace={workspace} />
+        <WorkflowPanel workspace={workspace} dirty={dirty} savedValuesVersion={saved.values_version} />
         <ExtractionPanel workspace={workspace} onUse={useCandidate} saving={saving} />
       </div>
     </div>

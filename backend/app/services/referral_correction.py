@@ -19,6 +19,8 @@ class ReferralCorrectionService:
             record = self.repository.get_for_update(referral_id)
             if record is None:
                 raise HTTPException(404, "Referral not found")
+            if record.status == "ready":
+                raise HTTPException(409, "Reopen review before saving corrections")
             if record.values_version != command.expected_values_version:
                 raise HTTPException(
                     409, "Saved values changed; refresh corrections before retrying",

@@ -24,6 +24,8 @@ features. Commits explain why the implementation changed.
 
 6. **Coordinate follow-up.** Record missing information and a reason, inspect workflow
    history, then explicitly resume review. The inbox displays the saved workflow status.
+7. **Record readiness.** Review the latest current packet, save corrections, and mark
+   ready for downstream processing. Reopen review explicitly before changing values or attachments.
 
 ## Keep three kinds of information separate
 
@@ -96,7 +98,7 @@ For **Save corrections**, start with the [correction service](../backend/app/ser
   deterministic provider stub unless live mode is explicitly selected.
 - Evidence checks establish literal source support and controlled formatting.
   They do not prove semantic correctness or resistance to document instructions.
-- Review shows extracted page text. OCR, original-PDF viewing, approvals,
+- Review shows extracted page text. OCR, original-PDF viewing, authenticated approvals,
   authentication, and document-first intake are not implemented.
 - Completeness uses one server-configured, versioned JSON policy over the five
   supported extraction fields. The default requires all five. Every field still
@@ -149,8 +151,9 @@ live in PostgreSQL; they are separate from immutable extraction snapshots and ar
 Uploads, extraction and corrections do not change workflow status or close requests.
 The application records requests locally; it sends no email or other notification.
 Reviewer names are supplied demo identities, not authenticated identities. This history
-covers workflow actions only; corrections have separate history. Administrative approval
-remains future work. An interrupted action should be checked through referral/history reads
+covers workflow actions only; corrections have separate history. Administrative ready
+decisions and explicit reopening are described below. An interrupted action should
+be checked through referral/history reads
 before retrying; stale workflow versions and invalid transitions return a conflict.
 
 The [workspace hook](../frontend/src/hooks/useReferralWorkspace.ts) owns workflow writes
@@ -184,3 +187,42 @@ failures do not undo or repeat a committed save. Interrupted saves require refre
 comparison before retrying; automatic retry/deduplication is not implemented.
 Correction events and saved-values versions are separate from workflow events and
 versions. Corrections never alter source text, extraction snapshots, or workflow status.
+
+## Administrative ready decisions
+
+After inspecting evidence and saving corrections, choose **Workflow action → Mark
+ready for downstream processing** and supply a demo reviewer and reason. The UI
+requires a satisfied latest extraction covering all current attachments, no unsaved
+corrections, and completed reads/writes. The backend independently checks the
+expected workflow and saved-values versions, that the selected run is the latest
+saved run for this referral, that its document set is current, and that its retained
+checklist passes. A missing-information request must be explicitly resumed first.
+Readiness uses the run's saved policy assessment, not the server's current policy.
+
+The workflow service locks the referral and commits `ready` status with one review
+event. The event retains the reviewed extraction ID and saved-values version,
+reviewer, reason, and server time. It records an administrative decision; it does
+not certify clinical correctness or trigger downstream processing. Supplied reviewer
+names remain unauthenticated demo identities. Saved values may differ from extracted
+suggestions; the decision records which saved-values version the reviewer assessed.
+
+While ready, the server rejects attachment uploads and correction saves with 409.
+**Reopen review**, with reviewer and reason, moves ready to review required and
+records another event before those edits are allowed. Earlier decisions, correction
+history and extraction snapshots remain unchanged. New extraction runs may still
+be created; they do not replace the run referenced by an existing decision or change
+status. There is no automatic decision renewal or downstream delivery.
+
+Attachment publication, correction saves, extraction snapshot publication and workflow
+writes serialize on the referral row. PDF parsing occurs before the attachment lock;
+status is reread under that lock before publishing files/metadata. Provider waiting
+still holds no database connection. This prevents a concurrent upload/correction
+from silently changing the packet or saved values after the ready check.
+
+The existing workspace hook coordinates these actions and refreshes status/history;
+the correction baseline remains separate from refreshed workflow data. A stale
+saved-values baseline requires Refresh corrections and comparison with the retained
+draft before readiness. History-read failure does not repeat a committed decision.
+Migration 0007 adds the nullable reviewed-values version and expands status/event
+constraints without inventing historical decisions. Downgrade refuses to discard
+ready/reopen history; see the README for the migration boundary.

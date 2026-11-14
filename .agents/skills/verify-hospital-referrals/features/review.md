@@ -20,7 +20,7 @@ Workspace write coordination lives in `useReferralWorkspace.ts`; document and ex
 
 ## Gotchas
 
-Correcting the referral does not resolve contradictory source documents or rewrite historical checklists. Invalid candidates have no apply action. Candidate copying is disabled while a correction save is pending. Workflow action history is separate (see [workflow.md](workflow.md)); there is no approval action, clinical decision, or automatic save. Unsaved edits are local and are lost on leaving/reloading; the current UI shows a warning but has no navigation blocker. Screenshots need visual inspection before layout can be described as visually verified.
+Correcting the referral does not resolve contradictory source documents or rewrite historical checklists. Invalid candidates have no apply action. Candidate copying is disabled while a correction save is pending. Workflow action history is separate (see [workflow.md](workflow.md)); there is no clinical decision or automatic save. Administrative ready decisions use the workflow panel. Unsaved edits are local and are lost on leaving/reloading; the current UI shows a warning but has no navigation blocker. Screenshots need visual inspection before layout can be described as visually verified.
 
 ## Provenance and rejected candidates
 
@@ -38,7 +38,7 @@ A satisfied checklist may still show optional invalid/conflicting/missing findin
 
 Save corrections requires Correction reviewer (demo identity) and Reason for corrections.
 The correction service commits only actual field changes with an event and incremented
-saved-values version. Workflow status/version and extraction snapshots remain unchanged.
+saved-values version. Workflow status/version and extraction snapshots remain unchanged. Ready referrals must explicitly reopen review before saving corrections.
 History is separate from workflow history. Existing referrals have no invented prior events.
 
 `test_corrections.py` exercises real PostgreSQL changes/history, normalization, no-op

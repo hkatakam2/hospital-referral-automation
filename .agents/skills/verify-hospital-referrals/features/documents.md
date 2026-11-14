@@ -19,3 +19,7 @@ Run `verify.py run --feature documents`. In `frontend/tests/review.spec.ts`, rea
 ## Gotchas
 
 `parsed` means text was extracted, not that all image content was read. `partial` cannot distinguish blank from scanned pages. OCR and original-PDF rendering/download are absent. Repeating an upload creates another document; no automatic retries or deduplication. Ordinary failures roll back; crash reconciliation across filesystem/database is not implemented. Not every parser rejection is driven in the UI; the backend suite supplies that coverage.
+
+Ready referrals must explicitly Reopen review before an attachment can be saved.
+The server rechecks status under a referral lock after parsing; see workflow.md
+for ready/upload race and browser reopening coverage.

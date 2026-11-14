@@ -3,8 +3,8 @@ import { errorMessage } from '../api/client'
 import { getDocument, listDocuments, uploadDocument } from '../api/documents'
 import { createExtraction, listExtractionMethods, getExtraction, listExtractions } from '../api/extractions'
 import { getReferral, listCorrectionEvents, updateReferral } from '../api/referrals'
-import { listReviewEvents, requestInformation, resumeReview } from '../api/workflow'
-import type { CorrectionCommand, ExtractorChoice, Evidence, InformationRequest, WorkflowCommand } from '../api/types'
+import { listReviewEvents, markReady, reopenReview, requestInformation, resumeReview } from '../api/workflow'
+import type { CorrectionCommand, ExtractorChoice, Evidence, InformationRequest, ReadyCommand, WorkflowCommand } from '../api/types'
 
 // Each resource owns its error/loading state. A failed panel does not hide its siblings.
 function useResource<T>(load: (signal: AbortSignal) => Promise<T>) {
@@ -49,9 +49,11 @@ export function useReferralWorkspace(id: string) {
     } }
   }, 'refresh corrections')
   const reviewEvents = useResource(useCallback(signal => listReviewEvents(id, signal), [id]))
-  const workflow = useWorkspaceWrite(async (action: 'request' | 'resume', command: InformationRequest | WorkflowCommand) => {
+  const workflow = useWorkspaceWrite(async (action: 'request' | 'resume' | 'ready' | 'reopen', command: InformationRequest | ReadyCommand | WorkflowCommand) => {
     const result = action === 'request'
       ? await requestInformation(id, command as InformationRequest)
+      : action === 'ready' ? await markReady(id, command as ReadyCommand)
+      : action === 'reopen' ? await reopenReview(id, command)
       : await resumeReview(id, command)
     return { result, publish: () => {
       referral.setData(result)

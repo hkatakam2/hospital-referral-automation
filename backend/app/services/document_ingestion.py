@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 from typing import BinaryIO
 from uuid import UUID, uuid4
 
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.document_processing.pdf import DocumentInputError, PdfReaderAdapter
@@ -35,6 +36,14 @@ class DocumentIngestionService:
                     document_id=document_id, page_number=page.page_number, text=page.text,
                     text_status="extracted" if page.text.strip() else "no_text",
                 ) for page in parsed.pages]
+                # Serialize attachment writes with ready decisions, after parsing.
+                record = self.session.scalar(select(ReferralRecord).where(
+                    ReferralRecord.id == referral_id,
+                ).with_for_update().execution_options(populate_existing=True))
+                if record is None:
+                    raise DocumentInputError("Referral not found", 404)
+                if record.status == "ready":
+                    raise DocumentInputError("Reopen review before attaching documents", 409)
                 key = self.storage.promote(staged, document_id)
                 repository.add(DocumentRecord(
                     id=document_id, referral_id=referral_id, original_filename=filename,

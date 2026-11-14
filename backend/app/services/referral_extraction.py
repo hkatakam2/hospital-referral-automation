@@ -2,6 +2,7 @@ from collections.abc import Callable
 from datetime import datetime, timezone
 from uuid import UUID, uuid4
 
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.extraction.assessment import assess_sources
@@ -64,6 +65,10 @@ class ReferralExtractionService:
         }
         with self.session_factory() as session:
             try:
+                # Ready checks and snapshot publication share the referral lock.
+                session.scalar(select(ReferralRecord).where(
+                    ReferralRecord.id == referral_id,
+                ).with_for_update())
                 ExtractionRepository(session).add(result, artifact)
                 session.commit()
             except Exception:

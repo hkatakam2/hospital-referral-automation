@@ -10,7 +10,7 @@ from app.database import Base
 class ReferralRecord(Base):
     __tablename__ = "referrals"
     __table_args__ = (
-        CheckConstraint("status IN ('received', 'missing_information', 'review_required')",
+        CheckConstraint("status IN ('received', 'missing_information', 'review_required', 'ready')",
                         name="workflow_status"),
         CheckConstraint("workflow_version >= 0", name="workflow_version_nonnegative"),
         CheckConstraint("values_version >= 0", name="values_version_nonnegative"),
